@@ -1,0 +1,94 @@
+---
+title: "What is IPv4?"
+description: "Learn about IPv4 addressing, its format, types, and limitations"
+---
+
+# What is IPv4?
+
+**IP** stands for **Internet Protocol version** and **v4** stands for **Version Four** (IPv4), which is the most widely used system for identifying devices on a network. It uses a set of four numbers, separated by periods (like 192.168.0.1), to give each device a unique address. This address helps data find its way from one device to another over the internet.
+
+IPv4 was the primary version brought into action for production within the ARPANET in 1983. IP version four addresses are 32-bit integers which are expressed in decimal notation. Example: 192.0.2.126 is an IPv4 address.
+
+## What is an IP Address?
+
+An **IP address (Internet Protocol address)** is a unique identifier assigned to each device connected to a network that uses the Internet Protocol for communication. It serves two main purposes:
+
+- **Identification:** It uniquely identifies a device on a network.
+- **Location Addressing:** It indicates where a device is located within a network, making data routing possible.
+
+## Understanding IPv4 Addressing
+
+An IPv4 address consists of a series of four eight-bit binary numbers which are separated by decimal points. Although any numbering system can be used to represent a unique 32-bit number, most commonly you see IP addresses expressed in dot decimal notation. Some examples are:
+
+| Site | Dot-decimal | Binary |
+|------|-------------|--------|
+| Twitter.com | 104.244.42.129 | 01101000.11110100.00101010.10000001 |
+| Reddit.com | 151.101.65.140 | 10010111.01100101.01000001.10001100 |
+| Linkedin.com | 108.174.10.10 | 01101100.10101110.00001010.00001010 |
+
+## IPv4 Address Format
+
+An IPv4 address consists of 32 bits (binary digits), grouped into four sections known as **octets or bytes**. Each octet has 8 bits and these bits can be represented only in 0 or 1 form, and when they are grouped together, they form a binary number. Since each octet has 8 bits, it can represent 256 numbers ranging from 0 to 255. These four octets are represented as decimal numbers, separated by periods known as **dotted decimal notation**. For example, IPv4 address **185.107.80.231** consists of four octets.
+
+### Binary Representation
+
+IPv4 is basically converted into binary form by computers although these are usually seen in decimal form for human readability. Each octet is converted into an 8-bit binary number. For instance **185.107.80.231** in binary looks like:
+
+- 185: 10111001
+- 107: 01101011
+- 80: 01010000
+- 231: 11100111
+
+So **185.107.80.231** in binary is: **10111001.01101011.01010000.11100111**
+
+<img className="max-w-xl mx-auto" src="/images/ipv4-address-format.webp" alt="IPv4 address format" />
+
+## Parts of IPv4
+
+IPv4 addresses consist of three parts:
+
+- **Network Part**: The network part indicates the distinctive variety that's appointed to the network. The network part also identifies the class of the network that's assigned.
+- **Host Part**: The host part uniquely identifies the machine on your network. This part of the IPv4 address is assigned to each host. For each host on the network, the network part is the same, however, the host part must vary.
+- **Subnet Number**: This is the optional part of IPv4. Local networks that have large numbers of hosts are divided into subnets and subnet numbers are appointed to them.
+
+## Types of IPv4 Addressing
+
+IPv4 basically supports three different types of addressing modes:
+
+- **Unicast Addressing Mode**: This addressing mode is used to specify single sender and single receiver. Example: Accessing a website.
+- **Broadcast Addressing Mode**: This addressing mode is used to send messages to all devices in a network. Example: sending a message in local network to all the devices.
+- **Multicast Addressing Mode**: This addressing mode is typically used within a local network or across networks and sends messages to a group of devices. Example: Streaming audio to multiple devices at once.
+
+## Characteristics of IPv4
+
+- IPv4 is a 32-bit IP Address.
+- IPv4 is a numeric address, and its bits are separated by a dot.
+- The number of header fields is twelve and the length of the header field is twenty.
+- It has Unicast, broadcast, and multicast-style addresses.
+- IPv4 supports VLSM (Virtual Length Subnet Mask).
+- IPv4 uses the Post Address Resolution Protocol to map to the MAC address.
+- RIP is a routing protocol supported by the routed daemon.
+- Networks must be designed either manually or with DHCP.
+- Packet fragmentation allows from routers and causes host.
+
+## Advantages of IPv4
+
+- IPv4 security permits encryption to maintain privacy and security.
+- IPv4 network allocation is significant and currently has more than 85,000 practical routers.
+- It becomes easy to connect multiple devices across a large network without NAT.
+- This is a model of communication so provides quality service as well as efficient data transfer.
+- IPv4 addresses are redefined and allow flawless encoding.
+- IPv4 has high System Management costs and it's labor-intensive, complex, slow & prone to errors.
+- Routing is scalable and economical as a result of addressing its collective more effectively.
+- Data communication across the network becomes more specific in multicast organizations.
+
+## Limitations of IPv4
+
+- IP relies on network layer addresses to identify end-points on the network, and each network has a unique IP address.
+- The world's supply of unique IP addresses is dwindling, and they might eventually run out theoretically.
+- If there are multiple hosts, we need the IP addresses of the next class.
+- Complex host and routing configuration, non-hierarchical addressing, difficult to re-numbering addresses, large routing tables, non-trivial implementations in providing security, QoS (Quality of Service), mobility, and multi-homing, multicasting, etc. are the big limitations of IPv4 so that's why IPv6 came into the picture.
+
+## Conclusion
+
+In conclusion, IPv4 is a widely used system for identifying devices on a network with unique addresses made up of four numbers. It plays a crucial role in enabling devices to communicate over the internet by directing data to the correct destinations. Despite its limitations, IPv4 has been fundamental to the growth and operation of the internet.
