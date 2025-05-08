@@ -53,6 +53,7 @@ export default async function Page(props: {
 
   return (
     <DocsPage
+        breadcrumb={{}} 
         article={{
           className: "max-w-5xl max-sm:pb-16",
         }}

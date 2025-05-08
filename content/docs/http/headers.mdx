@@ -1,0 +1,62 @@
+---
+title: Headers
+description: Metadata for the Web
+---
+
+# What are HTTP Headers?
+
+HTTP headers are key-value pairs that are included in both HTTP requests and HTTP responses. They are sent _before_ the actual data (the body) and are separated from the body by a blank line. Headers are text-based, making them relatively easy to read and understand.
+
+Here's a simplified example of what some HTTP headers might look like in a request:
+
+```bash
+GET /index.html HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Accept: text/html,application/xhtml+xml
+```
+
+And here's an example of some headers in a response:
+
+```bash
+HTTP/1.1 200 OK
+Date: Tue, 26 Sep 2023 12:00:00 GMT
+Server: Apache/2.4.41 (Unix)
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1234
+```
+
+## Common HTTP Header Fields
+
+There are many different HTTP headers, each serving a specific purpose. They can be broadly categorized into:
+
+- **Request Headers:** Sent by the client to provide information about the request and the client itself.
+- **Response Headers:** Sent by the server to provide information about the response and the server.
+- **General Headers:** Can be used in both requests and responses.
+
+Here are some of the most common and important HTTP headers:
+
+### Request Headers
+
+- `Host:`: Specifies the domain name of the server (e.g., `www.example.com`). This is required in HTTP/1.1 requests.
+- `User-Agent:`: Identifies the client making the request (e.g., the browser type and version).
+- `Accept:`: Specifies the types of content the client is willing to accept (e.g., `text/html`, `image/jpeg`, `application/json`).
+- `Accept-Encoding:`: Specifies the encoding methods the client can handle (e.g., `gzip`, `deflate` for compression).
+- `Accept-Language:`: Specifies the preferred languages of the client (e.g., `en-US`, `fr-CA`).
+- `Cookie:`: Sends cookies (small pieces of data stored by the browser) back to the server.
+- `Authorization:`: Provides credentials for authenticating with the server (e.g., for accessing protected resources).
+- `Referer:` [sic]: Indicates the URL of the page that linked to the requested resource.
+- `If-Modified-Since:`: Makes the request conditional. The server will only send the resource if it has been modified since the specified date.
+
+### Response Headers
+
+- `Content-Type:`: Specifies the type of content in the response body (e.g., `text/html; charset=UTF-8`, `image/jpeg`, `application/json`). This tells the browser how to interpret the data.
+- `Content-Length:`: Specifies the size of the response body in bytes.
+- `Server:`: Identifies the web server software being used (e.g., `Apache/2.4.41`, `nginx/1.18.0`).
+- `Date:`: Indicates the date and time the response was generated.
+- `Cache-Control:`: Provides directives for caching the response (e.g., `public`, `private`, `max-age`).
+- `Expires:`: Specifies a date and time after which the response should be considered stale.
+- `Last-Modified:`: Indicates the date and time the resource was last modified.
+- `Set-Cookie:`: Sends cookies from the server to the client.
+- `Location:`: Used in redirection responses (3xx status codes) to specify the new URL.
+- `ETag`: An identifier for a version of the resource.

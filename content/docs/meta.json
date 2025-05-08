@@ -8,6 +8,8 @@
     "ip-and-dns",
     "internet",
     "tcp",
-    "mac"
+    "mac",
+    "url",
+    "http"
   ]
 }
