@@ -1,0 +1,19 @@
+{
+  "root": true,
+  "pages": [
+    "introduction",
+    "network-models",
+    "network-topologies",
+    "ip",
+    "dns",
+    "urls",
+    "protocols",
+    "network-security",
+    "firewalls",
+    "vpn",
+    "network-monitoring",
+    "network-troubleshooting",
+    "network-optimization",
+    "conclusion"
+  ]
+}
