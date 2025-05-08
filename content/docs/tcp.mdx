@@ -1,0 +1,167 @@
+---
+title: "TCP/IP Model and TCP 3-Way Handshake"
+description: "Learn about the TCP/IP model, its layers, and the TCP 3-way handshake process for establishing reliable connections"
+icon: "network-wired"
+---
+
+# TCP/IP Model and TCP 3-Way Handshake
+
+The TCP/IP model (Transmission Control Protocol/Internet Protocol) is a four-layer networking framework that enables reliable communication between devices over interconnected networks. It provides a standardized set of protocols for transmitting data across networks, ensuring efficient and error-free delivery.
+
+## TCP/IP Model Overview
+
+The TCP/IP model was designed and developed by the Department of Defense (DoD) in the 1970s and is based on standard protocols. It's a concise version of the OSI model, containing four layers instead of seven.
+
+<img className="max-w-xl mx-auto" src="/images/tcp-ip-model-2.webp" alt="TCP/IP Model" />
+
+### Role of TCP/IP
+
+TCP/IP enables interoperability between diverse systems over various network types (copper, fiber, wireless). It ensures seamless communication across LANs, WANs, and the internet. Without TCP/IP, large-scale global networking would not be possible.
+
+The main condition of this process is to make data reliable and accurate so that the receiver will receive the same information which is sent by the sender. To ensure that each message reaches its final destination accurately, the TCP/IP model divides data into packets and combines them at the other end, which helps in maintaining the accuracy of the data during transfer.
+
+## Layers of TCP/IP Model
+
+The TCP/IP model is composed of four interconnected layers, compared to the seven layers in the OSI model. Each layer performs a specific task on the data being transmitted over the network.
+
+<img className="max-w-xl mx-auto" src="/images/tcp-ip-vs-osi.webp" alt="TCP/IP vs OSI Model" />
+
+### 1. Application Layer
+
+The Application Layer is the closest to the end user and is where applications and user interfaces reside. It serves as the bridge between user programs and the lower layers responsible for data transmission.
+
+- **Function:** Provides services and interfaces for end-user applications to access network resources.
+- **Key responsibilities:**
+  - Supports application protocols like HTTP, FTP, SMTP, DNS, etc.
+  - Enables communication between software applications across networks.
+  - Handles data formatting, encryption, and session management.
+
+### 2. Transport Layer
+
+This layer ensures data is delivered reliably and in the correct order between devices. The two main protocols in this layer are TCP (Transmission Control Protocol) and UDP (User Datagram Protocol).
+
+- **Function:** Ensures reliable or unreliable delivery of data between hosts.
+- **Key responsibilities:**
+  - TCP (Transmission Control Protocol): Provides reliable, connection-oriented delivery with error checking, retransmission, and flow control.
+  - UDP (User Datagram Protocol): Provides faster, connectionless transmission without guarantees.
+  - Manages flow control and segmentation/reassembly of data.
+
+### 3. Internet Layer
+
+It handles the routing of data packets across networks. It uses the Internet Protocol (IP) to assign unique IP addresses to devices and decide the most efficient path for data to reach its destination.
+
+- **Function:** Determines the best path for data to travel across networks.
+- **Key responsibilities:**
+  - IP (Internet Protocol): Provides addressing and routing.
+  - Handles packet forwarding, fragmentation, and logical addressing (IP addresses).
+  - Involves protocols like IP, ICMP (for diagnostics), and ARP (for address resolution).
+
+### 4. Network Access Layer
+
+This layer is the lowest layer in the model and responsible for the physical connection between devices within the same network segment.
+
+- **Function:** Manages the physical transmission of data over the network hardware.
+- **Key responsibilities:**
+  - Handles how data is physically sent over cables, Wi-Fi, etc.
+  - Manages MAC addressing, framing, and error detection at the physical link.
+  - Includes Ethernet, Wi-Fi, and other data link technologies.
+
+## Working of TCP/IP Model
+
+<img className="max-w-xl mx-auto" src="/images/tcp-ip-model-1.webp" alt="TCP/IP Working Model" />
+
+### When Sending Data (From Sender to Receiver)
+
+- **Application Layer**
+  - A user sends data through an application (e.g., opening a website via a browser).
+  - The application prepares data for transmission (e.g., using HTTP, FTP, SMTP).
+- **Transport Layer (TCP/UDP)**
+  - TCP breaks data into small segments, adds a header (with sequence numbers, source/destination ports).
+  - Ensures reliable delivery (TCP) or fast, connectionless delivery (UDP).
+- **Internet Layer (IP)**
+  - Adds IP addresses to each packet (source and destination).
+  - Determines the route the packet should take to reach the destination.
+- **Link Layer (Network Access Layer)**
+  - Converts packets into frames, adds MAC (physical) addresses.
+  - Sends data as binary bits (0s and 1s) over the physical medium (e.g., Ethernet, Wi-Fi).
+
+### When Receiving Data (At the Destination)
+
+- **Link Layer**
+  - Receives bits and reconstructs frames.
+  - Passes frames up to the Internet layer.
+- **Internet Layer**
+  - Reads the IP address to confirm it's the correct recipient.
+  - Removes the IP header and sends the data to the Transport layer.
+- **Transport Layer**
+  - Reassembles TCP segments in the correct order.
+  - Verifies data integrity using acknowledgments and checksums.
+- **Application Layer**
+  - The data is delivered to the appropriate application (e.g., browser displays a web page).
+
+## Advantages of TCP/IP Model
+
+- **Interoperability**: Allows different types of computers and networks to communicate with each other.
+- **Scalability**: Suitable for both small and large networks, from LANs to the internet.
+- **Standardization**: Based on open standards and protocols, ensuring compatibility.
+- **Flexibility**: Supports various routing protocols, data types, and communication methods.
+- **Reliability**: Includes error-checking and retransmission features for reliable data transfer.
+
+## Disadvantages of TCP/IP Model
+
+- **Security Concerns**: Not originally designed with security in mind, requiring additional security protocols.
+- **Inefficiency for Small Networks**: May be unnecessarily complex for very small networks.
+- **Limited by Address Space**: IPv4 has a limited address space, though IPv6 addresses this issue.
+- **Data Overhead**: TCP includes significant overhead to ensure reliable transmission.
+
+## TCP 3-Way Handshake Process
+
+The TCP 3-Way Handshake is a fundamental process that establishes a reliable connection between two devices over a TCP/IP network. It involves three steps: SYN (Synchronize), SYN-ACK (Synchronize-Acknowledge), and ACK (Acknowledge).
+
+### TCP Segment Structure
+
+A TCP segment consists of data bytes to be sent and a header that is added to the data by TCP:
+
+<img className="max-w-xl mx-auto" src="/images/tcp-segment-header.png" alt="TCP Segment Header" />
+
+The header of a TCP segment can range from 20-60 bytes. If there are no options, a header is 20 bytes; otherwise, it can be up to 60 bytes. Key header fields include:
+
+- **Source Port Address**: A 16-bit field for the sending application's port.
+- **Destination Port Address**: A 16-bit field for the receiving application's port.
+- **Sequence Number**: A 32-bit field for the byte number of the first byte in the segment.
+- **Acknowledgement Number**: A 32-bit field for the next byte the receiver expects.
+- **Header Length (HLEN)**: A 4-bit field indicating the TCP header length in 4-byte words.
+- **Control flags**: Six 1-bit control bits that manage the connection:
+  - URG: Urgent pointer is valid
+  - ACK: Acknowledgement number is valid
+  - PSH: Request for push
+  - RST: Reset the connection
+  - SYN: Synchronize sequence numbers
+  - FIN: Terminate the connection
+- **Window size**: Indicates the sender's receive window size in bytes.
+- **Checksum**: For error control (mandatory in TCP).
+- **Urgent pointer**: Points to urgent data (valid only if the URG flag is set).
+
+### How the TCP 3-Way Handshake Works
+
+<img className="max-w-xl mx-auto" src="/images/tcp-handshake-1.png" alt="TCP 3-Way Handshake" />
+
+The TCP 3-way handshake uses a mechanism called Positive Acknowledgement with Re-transmission (PAR). Under PAR, a device resends data units until it receives an acknowledgment. If a received data unit is damaged, the receiver discards it, and the sender must resend it.
+
+<img className="max-w-xl mx-auto" src="/images/tcp-connection.png" alt="TCP Connection Establishment" />
+
+The three steps of the TCP 3-way handshake are:
+
+1. **Step 1 (SYN)**: The client wants to establish a connection with a server, so it sends a segment with the SYN (Synchronize Sequence Number) flag set. This informs the server that the client wants to start communication and indicates the initial sequence number.
+
+2. **Step 2 (SYN + ACK)**: The server responds to the client's request with a segment that has both the SYN and ACK flags set. The ACK flag acknowledges the client's SYN, while the SYN flag indicates the server's initial sequence number.
+
+3. **Step 3 (ACK)**: The client acknowledges the server's response by sending a segment with the ACK flag set. At this point, both the client and server have established a reliable connection and can begin transferring data.
+
+## Conclusion
+
+The TCP/IP model is a critical framework for modern networking, providing the foundation for internet communication. Its four-layer structure efficiently handles the complex task of transmitting data across diverse networks while ensuring reliability and compatibility.
+
+The TCP 3-Way Handshake is an essential mechanism within this model, establishing secure and reliable connections between devices. By following the SYN, SYN-ACK, and ACK sequence, devices can synchronize their communication parameters and prepare for dependable data exchange.
+
+Understanding these fundamental networking concepts is crucial for anyone working with computer networks, from network administrators to software developers building internet-connected applications.
