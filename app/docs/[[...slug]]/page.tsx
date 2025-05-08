@@ -54,7 +54,7 @@ export default async function Page(props: {
   return (
     <DocsPage
         article={{
-          className: "max-w-6xl max-sm:pb-16",
+          className: "max-w-5xl max-sm:pb-16",
         }}
         toc={page.data.toc}
         full={page.data.full}
@@ -63,13 +63,8 @@ export default async function Page(props: {
           single: false,
           style: "clerk",
         }}
-        breadcrumb={{
-          full: true,
-        }}
         // lastUpdate={lastModified ? new Date(lastModified) : undefined}
       >
-        <DocsTitle>{page.data.title}</DocsTitle>
-        <DocsDescription>{page.data.description}</DocsDescription>
         <DocsBody>
           <MDX
             components={{
