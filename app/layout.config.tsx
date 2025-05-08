@@ -1,9 +1,4 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import {
-  AlbumIcon,
-  Globe,
-  Code,
-} from "lucide-react";
 import Image from "next/image";
 
 export const baseOptions: BaseLayoutProps = {
@@ -19,24 +14,4 @@ export const baseOptions: BaseLayoutProps = {
     ),
     transparentMode: "top",
   },
-  links: [
-    {
-      text: "Introduction",
-      url: "/docs/introduction",
-      active: "nested-url",
-      icon: <AlbumIcon />,
-    },
-    {
-      text: "IP",
-      url: "/docs/ip",
-      active: "nested-url",
-      icon: <Globe />,
-    },
-    {
-      text: "Codes",
-      url: "/docs/codes",
-      active: "nested-url",
-      icon: <Code />,
-    },
-  ],
 };
