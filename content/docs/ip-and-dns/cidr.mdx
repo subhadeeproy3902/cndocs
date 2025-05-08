@@ -1,0 +1,92 @@
+---
+title: "Classless Inter-Domain Routing (CIDR)"
+description: "Learn about CIDR notation, its advantages, and how it efficiently allocates IP addresses"
+---
+
+# Classless Inter-Domain Routing (CIDR)
+
+Classless Inter-Domain Routing (CIDR) is a method of IP address allocation and IP routing that allows for more efficient use of IP addresses. CIDR is based on the idea that IP addresses can be allocated and routed based on their network prefix rather than their class, which was the traditional way of IP address allocation.
+
+CIDR addresses are represented using a slash notation, which specifies the number of bits in the network prefix. For example, an IP address of 192.168.1.0 with a prefix length of 24 would be represented as 192.168.1.0/24. This notation indicates that the first 24 bits of the IP address are the network prefix and the remaining 8 bits are the host identifier.
+
+## Advantages of CIDR Over Traditional Class-Based Addressing
+
+- **Efficient use of IP addresses**: CIDR allows for more efficient use of IP addresses by allowing the allocation of IP addresses based on their network prefix rather than their class.
+- **Flexibility**: CIDR allows for more flexible IP address allocation, as it enables the allocation of arbitrary-sized blocks of IP addresses.
+- **Better routing**: CIDR allows for better routing of IP traffic, as it allows routers to aggregate IP addresses based on their network prefix, reducing the size of routing tables.
+- **Reduced administrative overhead**: CIDR reduces administrative overhead by allowing for the allocation and routing of IP addresses in a more efficient and flexible way.
+
+## Advantages and Disadvantages of CIDR
+
+### Advantages of CIDR
+
+- **Efficient use of IP addresses**: CIDR allows for more efficient use of IP addresses, which is important as the pool of available IPv4 addresses continues to shrink.
+- **Flexibility**: CIDR allows for more flexible allocation of IP addresses, which can be important for organizations with complex network requirements.
+- **Better routing**: CIDR allows for more efficient routing of IP traffic, which can lead to better network performance.
+- **Reduced administrative overhead**: CIDR reduces administrative overhead by allowing for easier management of IP addresses and routing.
+
+### Disadvantages of CIDR
+
+- **Complexity**: CIDR can be more complex to implement and manage than traditional class-based addressing, which can require additional training and expertise.
+- **Compatibility issues**: Some older network devices may not be compatible with CIDR, which can make it difficult to transition to a CIDR-based network.
+- **Security concerns**: CIDR can make it more difficult to implement security measures such as firewall rules and access control lists, which can increase security risks.
+
+## CIDR vs. Classful Addressing
+
+In Classful addressing, the number of hosts within a network always remains the same depending upon the class of the Network:
+
+- Class A network contains 2^24 (IP addresses) or 2^24 - 2 Hosts
+- Class B network contains 2^16 (IP addresses) or 2^16 - 2 Hosts
+- Class C network contains 2^8 (IP addresses) or 2^8 - 2 Hosts
+
+Let's suppose an organization requires 2^14 hosts. In classful addressing, it would have to purchase a Class B network, resulting in 49,150 wasted host addresses. This is the major drawback of Classful Addressing. To reduce the wastage of IP addresses, the concept of Classless Inter-Domain Routing was introduced.
+
+Nowadays, IANA (Internet Assigned Numbers Authority) uses this technique to provide IP addresses. Whenever any user asks for IP addresses, IANA assigns exactly that many IP addresses to the user.
+
+<img className="max-w-xl mx-auto" src="/images/32-bit-address.jpg" alt="32 Bit Address" />
+
+## CIDR Representation
+
+CIDR is also a 32-bit address, which includes a special number that represents the number of bits that are present in the Block ID:
+
+```
+a.b.c.d/n
+```
+
+Where `n` is the number of bits that are present in Block ID / Network ID.
+
+**Example**: 20.10.50.100/20
+
+## Rules for Forming CIDR Blocks
+
+1. **All IP addresses must be contiguous.**
+2. **Block size must be a power of 2 (2^n)**. If the size of the block is a power of 2, then it will be easy to divide the Network. Finding out the Block ID is very easy if the block size is a power of 2.
+
+   **Example**: If the Block size is 2^5 then, Host ID will contain 5 bits and Network will contain 32 – 5 = 27 bits.
+
+   <img className="max-w-xl mx-auto" src="/images/cidr-block.jpg" alt="CIDR Block" />
+
+3. **First IP address of the Block must be evenly divisible by the size of the block**. In simple words, the least significant part should always start with zeroes in Host ID. Since all the least significant bits of Host ID are zero, then we can use it as Block ID part.
+
+## Example of CIDR Block Validation
+
+**Example**: Check whether 100.1.2.32 to 100.1.2.47 is a valid IP address block or not?
+
+1. All the IP addresses are contiguous.
+2. Total number of IP addresses in the Block = 16 = 2^4.
+3. First IP address: 100.1.2.00100000 (Since Host ID will contain the last 4 bits and all the least significant 4 bits are zero). Hence, the first IP address is evenly divisible by the size of the block.
+
+All three rules are followed by this Block. Hence, it is a valid IP address block.
+
+## Practical Applications of CIDR
+
+1. **Network Design**: Network administrators use CIDR to design networks that efficiently use IP address space.
+2. **Routing Efficiency**: CIDR allows for route aggregation, which reduces the size of routing tables and improves routing efficiency.
+3. **IP Address Conservation**: With the exhaustion of IPv4 addresses, CIDR helps conserve IP addresses by allocating only the necessary number of addresses.
+4. **Subnet Creation**: CIDR makes it easier to create subnets of various sizes based on organizational needs.
+
+## Conclusion
+
+Classless Inter-Domain Routing (CIDR) is a critical advancement in IP addressing that has significantly extended the usable life of IPv4 addressing. By allowing for more flexible and efficient allocation of IP addresses, CIDR has helped address the limitations of the traditional class-based addressing system.
+
+While CIDR does introduce some complexity and potential compatibility issues, its benefits in terms of efficient IP address usage, flexible allocation, and improved routing make it an essential component of modern networking. As the internet continues to grow and evolve, CIDR remains a fundamental technique for managing IP addresses and ensuring efficient routing of network traffic.
