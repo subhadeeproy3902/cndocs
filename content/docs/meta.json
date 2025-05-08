@@ -1,15 +1,3 @@
 {
-  "root": true,
-  "pages": [
-    "introduction",
-    "basics",
-    "osi-model",
-    "network-topologies",
-    "ip-and-dns",
-    "internet",
-    "tcp",
-    "mac",
-    "url",
-    "http"
-  ]
+  "pages": ["fundamentals", "socket-programming"]
 }
