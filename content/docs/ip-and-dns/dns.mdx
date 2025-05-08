@@ -1,0 +1,68 @@
+---
+title: The DNS
+description: The Internet's Phone Book
+---
+
+# What is DNS?
+
+DNS is a hierarchical and distributed system that translates human-readable domain names (like `www.example.com`) into the numerical IP addresses (like `192.168.1.1`) that computers use to identify each other on the internet.
+It's like a giant, global directory service.
+
+Without DNS, you'd have to remember and type in the IP address of every website you wanted to visit.
+Imagine trying to remember `172.217.160.142` instead of `google.com`! DNS makes the internet much more user-friendly.
+
+## How DNS Works: The Lookup Process
+
+When you type a domain name into your browser, here's a simplified overview of what happens behind the scenes:
+
+1.  **The Request:** Your browser (the client) needs to find the IP address associated with the domain name.
+    It starts by asking a **DNS resolver**.
+    Often, your internet service provider (ISP) provides a DNS resolver, but you can also use public resolvers like Google Public DNS or Cloudflare DNS.
+2.  **Recursive Query:** The DNS resolver doesn't usually know the IP address offhand.
+    It starts a _recursive query_, meaning it will ask other DNS servers until it finds the answer.
+3.  **Root Servers:** The resolver first contacts one of the **root name servers**.
+    There are 13 sets of root servers around the world, and they are the top of the DNS hierarchy.
+    They don't know the IP address of `example.com`, but they know which servers are responsible for the `.com` top-level domain (TLD).
+4.  **TLD Servers:** The root server directs the resolver to a **TLD (Top-Level Domain) name server**.
+    TLD servers are responsible for specific domain extensions like `.com`, `.org`, `.net`, `.edu`, etc.
+    The TLD server for `.com` doesn't know the IP address of `www.example.com`, but it knows which servers are responsible for the `example.com` domain.
+5.  **Authoritative Name Servers:** The TLD server directs the resolver to an **authoritative name server** for the specific domain (`example.com` in our example).
+    These servers are maintained by the domain name registrar (the company where the domain name was registered) or the website owner.
+    The authoritative name server _does_ know the IP address associated with `www.example.com`.
+6.  **The Answer:** The authoritative name server sends the IP address back to the DNS resolver.
+7.  **Caching:** The DNS resolver _caches_ (stores) the IP address for a certain period (determined by the "Time to Live" or TTL value).
+    This speeds up future lookups for the same domain name.
+8.  **Response to Client:** The DNS resolver sends the IP address to your browser.
+9.  **Connection:** Your browser now has the IP address and can connect directly to the web server hosting `www.example.com` to request the web page.
+
+This entire process, involving multiple DNS servers, usually happens in milliseconds.
+
+## The DNS Hierarchy
+
+DNS is organized in a hierarchical structure, like an upside-down tree:
+
+- **Root:** At the top are the root name servers.
+- **Top-Level Domains (TLDs):** Below the root are TLDs, such as `.com`, `.org`, `.net`, `.edu`, `.gov`, and country-code TLDs like `.uk`, `.ca`, `.jp`.
+- **Second-Level Domains:** These are the domains that you register, like `example` in `example.com`.
+- **Subdomains:** These are further divisions within a domain, like `www` in `www.example.com` or `blog` in `blog.example.com`.
+
+This hierarchical structure allows DNS to be distributed and managed efficiently.
+No single server needs to know all the IP addresses for every domain name on the internet.
+
+![Domain](https://i.postimg.cc/t43ry9cJ/domain.webp)
+
+## DNS Records
+
+DNS servers store information about domain names in **DNS records**.
+There are many different types of DNS records, each serving a specific purpose.
+Some of the most common include:
+
+- **A Record (Address Record):** Maps a domain name to an IPv4 address.
+  This is the most common type of record, used for finding the IP address of a website.
+- **AAAA Record (IPv6 Address Record):** Maps a domain name to an IPv6 address.
+- **CNAME Record (Canonical Name Record):** Creates an alias for a domain name.
+  For example, `www.example.com` might be a CNAME record pointing to `example.com`.
+- **MX Record (Mail Exchange Record):** Specifies the mail servers responsible for receiving email messages for a domain.
+- **TXT Record (Text Record):** Stores text-based information about a domain.
+  Often used for verification purposes or for storing additional data.
+- **NS Record (Name Server Record):** Specifies the authoritative name servers for a domain.
