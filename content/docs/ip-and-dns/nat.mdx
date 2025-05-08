@@ -1,0 +1,89 @@
+---
+title: "Network Address Translation (NAT)"
+description: "Learn about NAT, how it works, its types, and its role in conserving IP addresses"
+---
+
+# Network Address Translation (NAT)
+
+Network Address Translation (NAT) allows multiple devices to use the same public IP address and access the Internet. This technology has been crucial in extending the usable life of IPv4 addressing by allowing many private IP addresses to be represented by a much smaller number of public IP addresses.
+
+## What is NAT?
+
+Network Address Translation (NAT) is a process in which one or more local IP addresses are translated into one or more global IP addresses and vice versa to provide Internet access to local hosts. It also translates port numbers, masking the port number of the host with another port number in the packet that will be routed to the destination.
+
+NAT creates corresponding entries of IP addresses and port numbers in the NAT table. It generally operates on a router or firewall that connects a private network to a public network like the Internet.
+
+<img className="max-w-xl mx-auto" src="/images/nat-diagram.jpg" alt="Network Address Translation" />
+
+## Why NAT is Important
+
+There can be a total of 2^32 (around 4.3 billion) different IPv4 addresses, which is very limited considering the number of devices connected to the Internet today. NAT helps address this limitation by allowing multiple devices to share a single public IP address.
+
+The idea of NAT saves us from IP address exhaustion. Only one public IP address is needed to access the Internet, but we can use multiple private IP addresses in our internal network and access the internet from different devices using the same public IP address. To achieve this, a private IP address must be translated into a public IP address.
+
+## Working of Network Address Translation (NAT)
+
+Generally, the border router is configured for NAT - this is the router that has one interface in the local (inside) network and one interface in the global (outside) network. When a packet travels outside the local network, NAT converts the local (private) IP address to a global (public) IP address. When a packet enters the local network, the global IP address is converted to a local IP address.
+
+If NAT runs out of addresses (no address is left in the configured pool), the packets will be dropped, and an Internet Control Message Protocol (ICMP) host unreachable packet is sent to the destination.
+
+## Why Mask Port Numbers?
+
+Suppose two hosts A and B in a network are connected and both request the same destination on the same port number (e.g., 1000) at the same time. If NAT only translated IP addresses, when their packets arrive at the NAT, both of their IP addresses would be masked by the public IP address of the network and sent to the destination.
+
+The destination would send replies to the public IP address of the router. Upon receiving a reply, it would be unclear to NAT which reply belongs to which host (because the source port numbers for both A and B are the same). To avoid this problem, NAT also masks the source port number and makes an entry in the NAT table.
+
+## NAT Inside and Outside Addresses
+
+Inside refers to the addresses that must be translated. Outside refers to the addresses that are not in control of an organization. These are the network addresses in which the translation of the addresses will be done.
+
+<img className="max-w-xl mx-auto" src="/images/nat-addresses.png" alt="NAT Inside and Outside Addresses" />
+
+- **Inside local address**: An IP address assigned to a host on the inside (local) network. The address is probably not an IP address assigned by the service provider (i.e., these are private IP addresses). This is the inside host seen from the inside network.
+- **Inside global address**: IP address that represents one or more inside local IP addresses to the outside world. This is the inside host as seen from the outside network.
+- **Outside local address**: This is the actual IP address of the destination host in the local network after translation.
+- **Outside global address**: This is the outside host as seen from the outside network. It is the IP address of the outside destination host before translation.
+
+## Types of Network Address Translation (NAT)
+
+There are three main ways to configure NAT:
+
+### 1. Static NAT
+
+In static NAT, a single unregistered (private) IP address is mapped with a legally registered (public) IP address, creating a one-to-one mapping between local and global addresses. This is generally used for web hosting.
+
+Static NAT is not commonly used in organizations because there are many devices that need Internet access, and each would require its own public IP address. For example, if an organization has 3,000 devices that need Internet access, it would need to purchase 3,000 public addresses, which would be very costly.
+
+### 2. Dynamic NAT
+
+In dynamic NAT, an unregistered IP address is translated into a registered (public) IP address from a pool of public IP addresses. If no IP address in the pool is free, the packet will be dropped, as only a fixed number of private IP addresses can be translated to public addresses at any given time.
+
+For example, if there is a pool of 2 public IP addresses, then only 2 private IP addresses can be translated at a given time. If a third private IP address wants to access the Internet, the packet will be dropped. Dynamic NAT is used when the number of users who want to access the Internet is fixed. This is also costly as the organization has to buy many global IP addresses to create a pool.
+
+### 3. Port Address Translation (PAT)
+
+Also known as NAT overload, PAT allows many local (private) IP addresses to be translated to a single registered IP address. Port numbers are used to distinguish the traffic, identifying which traffic belongs to which IP address.
+
+PAT is the most frequently used form of NAT because it is cost-effective. Thousands of users can be connected to the Internet using only one real global (public) IP address.
+
+## Advantages of NAT
+
+- **Conservation of IP Addresses**: NAT conserves legally registered IP addresses by allowing many private addresses to be represented by a few public addresses.
+- **Enhanced Privacy**: NAT provides privacy as the device's IP address, sending and receiving the traffic, will be hidden from the public Internet.
+- **Simplified Network Renumbering**: NAT eliminates the need for address renumbering when a network evolves or changes service providers.
+- **Improved Network Security**: By hiding internal IP addresses, NAT adds a layer of security, making it harder for external attackers to directly target internal hosts.
+- **Flexible Network Design**: NAT allows for more flexible network design and easier management of IP address space.
+
+## Disadvantages of NAT
+
+- **Performance Impact**: Translation results in switching path delays, which can affect network performance.
+- **Application Compatibility**: Certain applications will not function while NAT is enabled, particularly those that embed IP addresses in the application data.
+- **Tunneling Protocol Complications**: NAT complicates tunneling protocols such as IPsec, which can make implementing VPNs more difficult.
+- **Layer Violation**: The router, being a network layer device, should not tamper with port numbers (transport layer), but it has to do so because of NAT.
+- **End-to-End Connectivity Issues**: NAT breaks the end-to-end connectivity model of the Internet, which can cause problems for peer-to-peer applications.
+
+## Conclusion
+
+Network Address Translation (NAT) has been a critical technology in extending the life of IPv4 addressing by allowing multiple devices to share a limited number of public IP addresses. While it introduces some complications and performance impacts, its benefits in terms of IP address conservation and enhanced privacy have made it an essential component of modern networking.
+
+As the Internet continues to grow and evolve, NAT remains an important tool for network administrators, particularly in environments where IPv6 adoption is still in progress. Understanding the different types of NAT and their applications can help in designing more efficient and secure networks.
