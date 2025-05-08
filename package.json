@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@types/mdx": "^2.0.13",
@@ -14,6 +15,7 @@
     "clsx": "^2.1.1",
     "fumadocs-core": "^15.2.12",
     "fumadocs-mdx": "^11.6.1",
+    "fumadocs-typescript": "^4.0.3",
     "fumadocs-ui": "^15.2.12",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",
