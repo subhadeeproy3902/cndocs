@@ -1,0 +1,644 @@
+---
+title: "Socket Security"
+description: "Learn about common socket programming vulnerabilities and best practices for implementing secure networked applications"
+---
+
+# Socket Security
+
+Security is a critical aspect of socket programming. Networked applications are exposed to various threats, from data interception to denial-of-service attacks. This section covers common vulnerabilities in socket programming and best practices for developing secure networked applications.
+
+## Common Socket Security Vulnerabilities
+
+### 1. Buffer Overflows
+
+Buffer overflows occur when a program writes more data to a buffer than it can hold, potentially allowing attackers to execute arbitrary code.
+
+**Vulnerable Code:**
+
+```c
+void process_request(int sockfd) {
+    char buffer[128];
+
+    // Dangerous: No bounds checking
+    recv(sockfd, buffer, 1024, 0);
+
+    // Process the buffer...
+}
+```
+
+**Secure Code:**
+
+```c
+void process_request(int sockfd) {
+    char buffer[128];
+
+    // Limit received data to buffer size
+    ssize_t bytes_received = recv(sockfd, buffer, sizeof(buffer) - 1, 0);
+
+    if (bytes_received > 0) {
+        buffer[bytes_received] = '\0';  // Null-terminate
+        // Process the buffer...
+    }
+}
+```
+
+### 2. Format String Vulnerabilities
+
+Format string vulnerabilities occur when user-supplied data is used directly as a format string in functions like `printf()`.
+
+**Vulnerable Code:**
+
+```c
+void log_request(const char *client_data) {
+    // Dangerous: User data used as format string
+    printf(client_data);
+}
+```
+
+**Secure Code:**
+
+```c
+void log_request(const char *client_data) {
+    // Safe: Format string is fixed
+    printf("%s", client_data);
+}
+```
+
+### 3. Integer Overflows
+
+Integer overflows can lead to buffer overflows or other memory corruption issues.
+
+**Vulnerable Code:**
+
+```c
+void process_data(int sockfd) {
+    uint16_t length;
+    recv(sockfd, &length, sizeof(length), 0);
+
+    // Dangerous: length could be very large after conversion
+    length = ntohs(length);
+
+    char *buffer = malloc(length);
+    recv(sockfd, buffer, length, 0);
+    // ...
+}
+```
+
+**Secure Code:**
+
+```c
+void process_data(int sockfd) {
+    uint16_t length;
+    recv(sockfd, &length, sizeof(length), 0);
+
+    length = ntohs(length);
+
+    // Check for reasonable size
+    if (length > MAX_ALLOWED_SIZE) {
+        fprintf(stderr, "Received length too large: %u\n", length);
+        return;
+    }
+
+    char *buffer = malloc(length);
+    if (buffer == NULL) {
+        perror("malloc failed");
+        return;
+    }
+
+    recv(sockfd, buffer, length, 0);
+    // ...
+
+    free(buffer);
+}
+```
+
+### 4. Injection Attacks
+
+Injection attacks occur when untrusted data is sent to an interpreter as part of a command or query.
+
+**Vulnerable Code:**
+
+```c
+void execute_command(const char *user_input) {
+    char command[256];
+
+    // Dangerous: Command injection possible
+    sprintf(command, "ls %s", user_input);
+    system(command);
+}
+```
+
+**Secure Code:**
+
+```c
+void execute_command(const char *user_input) {
+    // Validate input
+    for (int i = 0; user_input[i]; i++) {
+        if (!isalnum(user_input[i]) && user_input[i] != '_' && user_input[i] != '-') {
+            fprintf(stderr, "Invalid character in input\n");
+            return;
+        }
+    }
+
+    char command[256];
+    snprintf(command, sizeof(command), "ls %s", user_input);
+    system(command);
+}
+```
+
+### 5. Denial of Service (DoS)
+
+DoS attacks attempt to make a service unavailable by overwhelming it with traffic or exploiting resource exhaustion.
+
+**Vulnerable Code:**
+
+```c
+void handle_client(int sockfd) {
+    // Dangerous: No timeout, client can keep connection open indefinitely
+    char buffer[1024];
+    while (recv(sockfd, buffer, sizeof(buffer), 0) > 0) {
+        // Process data...
+    }
+}
+```
+
+**Secure Code:**
+
+```c
+void handle_client(int sockfd) {
+    // Set receive timeout
+    struct timeval tv;
+    tv.tv_sec = 30;  // 30 seconds timeout
+    tv.tv_usec = 0;
+    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
+    char buffer[1024];
+    while (recv(sockfd, buffer, sizeof(buffer), 0) > 0) {
+        // Process data...
+    }
+}
+```
+
+### 6. Information Disclosure
+
+Information disclosure vulnerabilities leak sensitive information to unauthorized parties.
+
+**Vulnerable Code:**
+
+```c
+void handle_error(int sockfd, const char *error_msg) {
+    // Dangerous: Detailed error messages expose system information
+    char buffer[1024];
+    snprintf(buffer, sizeof(buffer), "Error: %s\nSystem: %s\nUser: %s",
+             error_msg, system_info(), current_user());
+    send(sockfd, buffer, strlen(buffer), 0);
+}
+```
+
+**Secure Code:**
+
+```c
+void handle_error(int sockfd, const char *error_msg) {
+    // Safe: Generic error message
+    const char *generic_error = "An error occurred. Please try again later.";
+    send(sockfd, generic_error, strlen(generic_error), 0);
+
+    // Log detailed error information server-side
+    log_error("Client %d: %s", sockfd, error_msg);
+}
+```
+
+### 7. Man-in-the-Middle (MITM) Attacks
+
+MITM attacks intercept communication between two parties, potentially allowing attackers to eavesdrop or modify data.
+
+**Vulnerable Code:**
+
+```c
+// Dangerous: Unencrypted communication
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+send(sockfd, sensitive_data, strlen(sensitive_data), 0);
+```
+
+**Secure Code:**
+
+```c
+// Use TLS/SSL for encrypted communication
+SSL_library_init();
+SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
+SSL *ssl = SSL_new(ctx);
+
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+
+SSL_set_fd(ssl, sockfd);
+SSL_connect(ssl);
+SSL_write(ssl, sensitive_data, strlen(sensitive_data));
+```
+
+## Secure Socket Programming Techniques
+
+### 1. Input Validation
+
+Always validate input from untrusted sources before processing it.
+
+```c
+bool validate_input(const char *input, size_t length) {
+    // Check length
+    if (length > MAX_INPUT_LENGTH) {
+        return false;
+    }
+
+    // Check for invalid characters
+    for (size_t i = 0; i < length; i++) {
+        if (!is_valid_character(input[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void process_client_data(int sockfd) {
+    char buffer[1024];
+    ssize_t bytes_received = recv(sockfd, buffer, sizeof(buffer) - 1, 0);
+
+    if (bytes_received > 0) {
+        buffer[bytes_received] = '\0';
+
+        if (validate_input(buffer, bytes_received)) {
+            // Process valid input
+        } else {
+            // Handle invalid input
+            const char *error = "Invalid input";
+            send(sockfd, error, strlen(error), 0);
+        }
+    }
+}
+```
+
+### 2. Secure Memory Management
+
+Use secure memory management practices to prevent buffer overflows and memory leaks.
+
+```c
+void *secure_malloc(size_t size) {
+    // Check for reasonable size
+    if (size == 0 || size > MAX_ALLOCATION_SIZE) {
+        return NULL;
+    }
+
+    void *ptr = malloc(size);
+    if (ptr != NULL) {
+        memset(ptr, 0, size);  // Initialize memory
+    }
+
+    return ptr;
+}
+
+void secure_free(void **ptr) {
+    if (ptr != NULL && *ptr != NULL) {
+        free(*ptr);
+        *ptr = NULL;  // Prevent use-after-free
+    }
+}
+
+void process_data(int sockfd) {
+    uint32_t length;
+    recv(sockfd, &length, sizeof(length), 0);
+    length = ntohl(length);
+
+    if (length > MAX_BUFFER_SIZE) {
+        // Handle error
+        return;
+    }
+
+    char *buffer = secure_malloc(length + 1);  // +1 for null terminator
+    if (buffer == NULL) {
+        // Handle allocation failure
+        return;
+    }
+
+    recv(sockfd, buffer, length, 0);
+    buffer[length] = '\0';
+
+    // Process buffer...
+
+    secure_free((void **)&buffer);
+}
+```
+
+### 3. Encryption and Authentication
+
+Use encryption to protect data in transit and authentication to verify the identity of clients and servers.
+
+```c
+// Initialize OpenSSL
+SSL_library_init();
+OpenSSL_add_all_algorithms();
+SSL_load_error_strings();
+
+// Create SSL context
+SSL_CTX *create_ssl_context() {
+    SSL_CTX *ctx = SSL_CTX_new(TLS_server_method());
+    if (ctx == NULL) {
+        ERR_print_errors_fp(stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    // Load certificate and private key
+    if (SSL_CTX_use_certificate_file(ctx, "server.crt", SSL_FILETYPE_PEM) <= 0) {
+        ERR_print_errors_fp(stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    if (SSL_CTX_use_PrivateKey_file(ctx, "server.key", SSL_FILETYPE_PEM) <= 0) {
+        ERR_print_errors_fp(stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    // Verify private key
+    if (!SSL_CTX_check_private_key(ctx)) {
+        fprintf(stderr, "Private key does not match the certificate\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return ctx;
+}
+
+// Handle client with SSL
+void handle_client(int client_fd, SSL_CTX *ctx) {
+    SSL *ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, client_fd);
+
+    if (SSL_accept(ssl) <= 0) {
+        ERR_print_errors_fp(stderr);
+    } else {
+        // Secure communication
+        char buffer[1024];
+        int bytes = SSL_read(ssl, buffer, sizeof(buffer) - 1);
+
+        if (bytes > 0) {
+            buffer[bytes] = '\0';
+            printf("Received: %s\n", buffer);
+
+            SSL_write(ssl, "Secure response", 15);
+        }
+    }
+
+    SSL_free(ssl);
+    close(client_fd);
+}
+```
+
+### 4. Principle of Least Privilege
+
+Run your application with the minimum privileges necessary.
+
+```c
+#include <sys/capability.h>
+#include <unistd.h>
+
+void drop_privileges() {
+    // If running as root
+    if (getuid() == 0) {
+        // Create capability set with only necessary capabilities
+        cap_t caps = cap_init();
+        cap_value_t cap_list[] = {CAP_NET_BIND_SERVICE};
+
+        cap_set_flag(caps, CAP_PERMITTED, 1, cap_list, CAP_SET);
+        cap_set_flag(caps, CAP_EFFECTIVE, 1, cap_list, CAP_SET);
+
+        if (cap_set_proc(caps) == -1) {
+            perror("cap_set_proc failed");
+            exit(EXIT_FAILURE);
+        }
+
+        cap_free(caps);
+
+        // Change to unprivileged user
+        if (setuid(1000) == -1) {  // Change to appropriate user ID
+            perror("setuid failed");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Privileges dropped\n");
+    }
+}
+
+int main() {
+    // Create socket and bind to privileged port
+    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(80);  // Privileged port
+
+    bind(server_fd, (struct sockaddr *)&addr, sizeof(addr));
+    listen(server_fd, 5);
+
+    // Drop privileges after binding to privileged port
+    drop_privileges();
+
+    // Continue with reduced privileges
+    // ...
+
+    return 0;
+}
+```
+
+### 5. Rate Limiting and Timeouts
+
+Implement rate limiting and timeouts to prevent resource exhaustion.
+
+```c
+#include <time.h>
+
+struct client_info {
+    struct sockaddr_in addr;
+    time_t last_request;
+    int request_count;
+};
+
+#define MAX_CLIENTS 1000
+#define MAX_REQUESTS_PER_MINUTE 60
+#define CLIENT_TIMEOUT 300  // 5 minutes
+
+struct client_info clients[MAX_CLIENTS];
+int client_count = 0;
+
+// Check if client is allowed to make a request
+bool check_rate_limit(struct sockaddr_in *addr) {
+    time_t now = time(NULL);
+    char ip_str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &addr->sin_addr, ip_str, INET_ADDRSTRLEN);
+
+    // Look for existing client
+    for (int i = 0; i < client_count; i++) {
+        if (clients[i].addr.sin_addr.s_addr == addr->sin_addr.s_addr) {
+            // Check timeout
+            if (now - clients[i].last_request > CLIENT_TIMEOUT) {
+                // Reset if timed out
+                clients[i].request_count = 1;
+                clients[i].last_request = now;
+                return true;
+            }
+
+            // Check rate limit
+            if (clients[i].request_count >= MAX_REQUESTS_PER_MINUTE &&
+                now - clients[i].last_request < 60) {
+                printf("Rate limit exceeded for %s\n", ip_str);
+                return false;
+            }
+
+            // Update client info
+            clients[i].request_count++;
+            clients[i].last_request = now;
+            return true;
+        }
+    }
+
+    // New client
+    if (client_count < MAX_CLIENTS) {
+        clients[client_count].addr = *addr;
+        clients[client_count].last_request = now;
+        clients[client_count].request_count = 1;
+        client_count++;
+        return true;
+    }
+
+    // Too many clients
+    printf("Too many clients, rejecting %s\n", ip_str);
+    return false;
+}
+```
+
+### 6. Secure Error Handling
+
+Implement secure error handling that doesn't leak sensitive information.
+
+```c
+enum error_type {
+    ERROR_NONE,
+    ERROR_INVALID_INPUT,
+    ERROR_INTERNAL,
+    ERROR_AUTHENTICATION,
+    ERROR_AUTHORIZATION
+};
+
+const char *public_error_messages[] = {
+    "Success",
+    "Invalid input provided",
+    "An internal error occurred",
+    "Authentication failed",
+    "You are not authorized to perform this action"
+};
+
+void handle_error(int sockfd, enum error_type error, const char *detailed_message) {
+    // Log detailed error message server-side
+    fprintf(stderr, "Error: %s\n", detailed_message);
+
+    // Send generic message to client
+    const char *public_message = public_error_messages[error];
+    send(sockfd, public_message, strlen(public_message), 0);
+}
+```
+
+### 7. Secure Configuration
+
+Use secure default configurations and allow security parameters to be configured.
+
+```c
+struct security_config {
+    int max_connections;
+    int connection_timeout;
+    int max_request_size;
+    bool require_authentication;
+    char *allowed_cipher_suites;
+    char *certificate_path;
+    char *private_key_path;
+};
+
+struct security_config load_security_config(const char *config_file) {
+    struct security_config config;
+
+    // Set secure defaults
+    config.max_connections = 100;
+    config.connection_timeout = 30;
+    config.max_request_size = 1024 * 1024;  // 1 MB
+    config.require_authentication = true;
+    config.allowed_cipher_suites = strdup("TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256");
+    config.certificate_path = strdup("/etc/ssl/certs/server.crt");
+    config.private_key_path = strdup("/etc/ssl/private/server.key");
+
+    // Load configuration from file
+    // ...
+
+    return config;
+}
+```
+
+## Security Checklist for Socket Applications
+
+### 1. Data Validation
+
+- Validate all input from untrusted sources
+- Implement length checks on all received data
+- Sanitize data before using it in commands or queries
+- Use whitelisting rather than blacklisting for validation
+
+### 2. Memory Management
+
+- Use safe string functions (strncpy, snprintf, etc.)
+- Check buffer sizes before writing data
+- Validate allocation sizes before calling malloc
+- Free allocated memory to prevent leaks
+- Initialize memory before use
+
+### 3. Authentication and Authorization
+
+- Implement strong authentication mechanisms
+- Use secure password storage (bcrypt, Argon2)
+- Implement proper session management
+- Apply the principle of least privilege
+- Verify authorization for all actions
+
+### 4. Encryption
+
+- Use TLS/SSL for all sensitive communications
+- Keep cryptographic libraries updated
+- Use strong cipher suites
+- Validate certificates properly
+- Protect private keys
+
+### 5. Error Handling
+
+- Implement secure error handling
+- Avoid leaking sensitive information in error messages
+- Log detailed errors server-side
+- Return generic errors to clients
+- Handle all error conditions gracefully
+
+### 6. Resource Protection
+
+- Implement timeouts for all operations
+- Apply rate limiting to prevent abuse
+- Set maximum limits for resource usage
+- Monitor and log unusual activity
+- Implement graceful degradation under load
+
+### 7. Configuration and Deployment
+
+- Use secure default configurations
+- Minimize attack surface by disabling unnecessary features
+- Run with minimal privileges
+- Keep software and dependencies updated
+- Perform security testing before deployment
+
+## Conclusion
+
+Security is a critical aspect of socket programming. By understanding common vulnerabilities and implementing secure coding practices, you can develop networked applications that are resilient against attacks.
+Remember that security is an ongoing process, not a one-time task. Regularly review your code for security issues, keep your knowledge of security best practices up to date, and be prepared to respond to new threats as they emerge.
+In the next section, we'll explore socket programming best practices, including performance optimization, code organization, and testing strategies.
