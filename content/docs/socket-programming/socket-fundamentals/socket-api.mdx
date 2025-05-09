@@ -1,0 +1,446 @@
+---
+title: "Socket API Overview"
+description: "A comprehensive guide to the Socket API functions and their usage in C programming"
+---
+
+# Socket API Overview
+
+The Socket API provides a set of functions that allow applications to create and use sockets for network communication. This API is implemented as system calls in most operating systems and is accessible through the C programming language. This page provides a comprehensive overview of the core Socket API functions and their usage.
+
+## Header Files
+
+To use the Socket API in C, you need to include several header files:
+
+```c
+#include <sys/types.h>    // For data types
+#include <sys/socket.h>   // For socket functions
+#include <netinet/in.h>   // For Internet address structures
+#include <arpa/inet.h>    // For inet_addr() and related functions
+#include <unistd.h>       // For close()
+#include <netdb.h>        // For gethostbyname() and related functions
+```
+
+For Windows systems, you would use:
+
+```c
+#include <winsock2.h>
+#include <ws2tcpip.h>
+```
+
+## Core Socket Functions
+
+### Creating a Socket
+
+```c
+int socket(int domain, int type, int protocol);
+```
+
+**Parameters:**
+- `domain`: Address family (AF_INET for IPv4, AF_INET6 for IPv6, AF_UNIX for local)
+- `type`: Socket type (SOCK_STREAM for TCP, SOCK_DGRAM for UDP)
+- `protocol`: Protocol (usually 0 for default protocol)
+
+**Returns:**
+- A socket descriptor (a non-negative integer) on success
+- -1 on error
+
+**Example:**
+```c
+// Create a TCP socket for IPv4
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+if (sockfd < 0) {
+    perror("socket creation failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Binding a Socket to an Address
+
+```c
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `addr`: Pointer to a sockaddr structure containing the address
+- `addrlen`: Size of the address structure
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+struct sockaddr_in server_addr;
+memset(&server_addr, 0, sizeof(server_addr));
+server_addr.sin_family = AF_INET;
+server_addr.sin_addr.s_addr = htonl(INADDR_ANY); // Accept connections on any interface
+server_addr.sin_port = htons(8080);              // Port 8080
+
+if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    perror("bind failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Listening for Connections
+
+```c
+int listen(int sockfd, int backlog);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `backlog`: Maximum length of the queue of pending connections
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+if (listen(sockfd, 5) < 0) {
+    perror("listen failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Accepting a Connection
+
+```c
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `addr`: Pointer to a sockaddr structure to store the client's address
+- `addrlen`: Pointer to the size of the address structure
+
+**Returns:**
+- A new socket descriptor for the accepted connection on success
+- -1 on error
+
+**Example:**
+```c
+struct sockaddr_in client_addr;
+socklen_t client_len = sizeof(client_addr);
+int client_sockfd = accept(sockfd, (struct sockaddr *)&client_addr, &client_len);
+if (client_sockfd < 0) {
+    perror("accept failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Connecting to a Server
+
+```c
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `addr`: Pointer to a sockaddr structure containing the server's address
+- `addrlen`: Size of the address structure
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+struct sockaddr_in server_addr;
+memset(&server_addr, 0, sizeof(server_addr));
+server_addr.sin_family = AF_INET;
+server_addr.sin_port = htons(8080);
+inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
+
+if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    perror("connection failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Sending Data
+
+```c
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `buf`: Pointer to the data buffer
+- `len`: Length of the data buffer
+- `flags`: Flags to modify the behavior (usually 0)
+
+**Returns:**
+- The number of bytes sent on success
+- -1 on error
+
+**Example:**
+```c
+const char *message = "Hello, server!";
+ssize_t bytes_sent = send(sockfd, message, strlen(message), 0);
+if (bytes_sent < 0) {
+    perror("send failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Receiving Data
+
+```c
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `buf`: Pointer to the buffer to store received data
+- `len`: Maximum length of the buffer
+- `flags`: Flags to modify the behavior (usually 0)
+
+**Returns:**
+- The number of bytes received on success
+- 0 if the connection has been closed
+- -1 on error
+
+**Example:**
+```c
+char buffer[1024];
+ssize_t bytes_received = recv(sockfd, buffer, sizeof(buffer) - 1, 0);
+if (bytes_received < 0) {
+    perror("recv failed");
+    exit(EXIT_FAILURE);
+} else if (bytes_received == 0) {
+    printf("Connection closed by peer\n");
+} else {
+    buffer[bytes_received] = '\0';  // Null-terminate the string
+    printf("Received: %s\n", buffer);
+}
+```
+
+### Sending Datagrams
+
+```c
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *dest_addr, socklen_t addrlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `buf`: Pointer to the data buffer
+- `len`: Length of the data buffer
+- `flags`: Flags to modify the behavior (usually 0)
+- `dest_addr`: Pointer to the destination address
+- `addrlen`: Size of the destination address structure
+
+**Returns:**
+- The number of bytes sent on success
+- -1 on error
+
+**Example:**
+```c
+struct sockaddr_in server_addr;
+memset(&server_addr, 0, sizeof(server_addr));
+server_addr.sin_family = AF_INET;
+server_addr.sin_port = htons(8080);
+inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
+
+const char *message = "Hello, server!";
+ssize_t bytes_sent = sendto(sockfd, message, strlen(message), 0,
+                           (struct sockaddr *)&server_addr, sizeof(server_addr));
+if (bytes_sent < 0) {
+    perror("sendto failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Receiving Datagrams
+
+```c
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                 struct sockaddr *src_addr, socklen_t *addrlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `buf`: Pointer to the buffer to store received data
+- `len`: Maximum length of the buffer
+- `flags`: Flags to modify the behavior (usually 0)
+- `src_addr`: Pointer to store the source address
+- `addrlen`: Pointer to the size of the source address structure
+
+**Returns:**
+- The number of bytes received on success
+- -1 on error
+
+**Example:**
+```c
+char buffer[1024];
+struct sockaddr_in client_addr;
+socklen_t client_len = sizeof(client_addr);
+
+ssize_t bytes_received = recvfrom(sockfd, buffer, sizeof(buffer) - 1, 0,
+                                 (struct sockaddr *)&client_addr, &client_len);
+if (bytes_received < 0) {
+    perror("recvfrom failed");
+    exit(EXIT_FAILURE);
+} else {
+    buffer[bytes_received] = '\0';  // Null-terminate the string
+    printf("Received from %s:%d: %s\n",
+           inet_ntoa(client_addr.sin_addr),
+           ntohs(client_addr.sin_port),
+           buffer);
+}
+```
+
+### Closing a Socket
+
+```c
+int close(int sockfd);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+if (close(sockfd) < 0) {
+    perror("close failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### Shutting Down a Socket
+
+```c
+int shutdown(int sockfd, int how);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `how`: Type of shutdown (SHUT_RD, SHUT_WR, or SHUT_RDWR)
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+// Shutdown the writing end of the socket
+if (shutdown(sockfd, SHUT_WR) < 0) {
+    perror("shutdown failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+## Address Structures
+
+### IPv4 Address Structure
+
+```c
+struct sockaddr_in {
+    sa_family_t    sin_family;    // Address family (AF_INET)
+    in_port_t      sin_port;      // Port number
+    struct in_addr sin_addr;      // IPv4 address
+};
+
+struct in_addr {
+    uint32_t       s_addr;        // IPv4 address in network byte order
+};
+```
+
+### IPv6 Address Structure
+
+```c
+struct sockaddr_in6 {
+    sa_family_t     sin6_family;   // Address family (AF_INET6)
+    in_port_t       sin6_port;     // Port number
+    uint32_t        sin6_flowinfo; // IPv6 flow information
+    struct in6_addr sin6_addr;     // IPv6 address
+    uint32_t        sin6_scope_id; // Scope ID
+};
+
+struct in6_addr {
+    unsigned char   s6_addr[16];   // IPv6 address
+};
+```
+
+### Generic Address Structure
+
+```c
+struct sockaddr {
+    sa_family_t  sa_family;     // Address family
+    char         sa_data[14];   // Address data
+};
+```
+
+## Byte Order Functions
+
+### Host to Network Byte Order
+
+```c
+uint16_t htons(uint16_t hostshort);   // Host to network short
+uint32_t htonl(uint32_t hostlong);    // Host to network long
+```
+
+### Network to Host Byte Order
+
+```c
+uint16_t ntohs(uint16_t netshort);    // Network to host short
+uint32_t ntohl(uint32_t netlong);     // Network to host long
+```
+
+## Address Conversion Functions
+
+### String to Binary Address
+
+```c
+int inet_pton(int af, const char *src, void *dst);
+```
+
+**Parameters:**
+- `af`: Address family (AF_INET or AF_INET6)
+- `src`: Pointer to the string representation of the address
+- `dst`: Pointer to store the binary address
+
+**Returns:**
+- 1 on success
+- 0 if the input is not a valid address
+- -1 on error
+
+**Example:**
+```c
+struct sockaddr_in server_addr;
+inet_pton(AF_INET, "192.168.1.1", &server_addr.sin_addr);
+```
+
+### Binary to String Address
+
+```c
+const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
+```
+
+**Parameters:**
+- `af`: Address family (AF_INET or AF_INET6)
+- `src`: Pointer to the binary address
+- `dst`: Pointer to store the string representation
+- `size`: Size of the destination buffer
+
+**Returns:**
+- Pointer to the destination string on success
+- NULL on error
+
+**Example:**
+```c
+char ip_str[INET_ADDRSTRLEN];
+inet_ntop(AF_INET, &client_addr.sin_addr, ip_str, INET_ADDRSTRLEN);
+printf("Client IP: %s\n", ip_str);
+```
+
+## Conclusion
+
+This overview covers the core functions of the Socket API in C. Understanding these functions is essential for developing networked applications. In the next sections, we'll explore how to use these functions to implement various types of socket applications, including TCP and UDP clients and servers.
