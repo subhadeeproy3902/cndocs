@@ -1,0 +1,437 @@
+---
+title: "Advanced Multiplexing with epoll()"
+description: "Learn how to use the high-performance epoll API for scalable socket programming on Linux systems"
+---
+
+# Advanced Multiplexing with epoll()
+
+The `epoll` API is a Linux-specific I/O event notification facility that provides a more efficient way to monitor multiple file descriptors compared to `select()` and `poll()`. It's designed to scale well with a large number of file descriptors and is particularly useful for high-performance servers.
+
+## Limitations of select() and poll()
+
+Before diving into `epoll`, let's review why `select()` and `poll()` can be inefficient for large-scale applications:
+
+1. **O(n) Scanning**: Both functions require scanning all monitored file descriptors to find which ones are ready
+2. **Inefficient Data Transfer**: The entire set of file descriptors must be copied between user space and kernel space on each call
+3. **Repeated Setup**: The set of monitored file descriptors must be rebuilt for each call
+4. **Limited Scalability**: Performance degrades significantly with a large number of file descriptors
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://www.davepacheco.net/blog/2006/event-ports-and-performance/tiny.png" alt="select() vs epoll() Performance" />
+
+## The epoll API
+
+The `epoll` API addresses these limitations by:
+
+1. **Using a File Descriptor Set Object**: The set of monitored file descriptors is maintained by the kernel
+2. **Providing Edge-Triggered Notifications**: Events can be delivered when state changes occur
+3. **Returning Only Ready File Descriptors**: No need to scan all file descriptors
+4. **Separating Monitoring Setup from Waiting**: The set of monitored file descriptors is set up once and can be modified as needed
+
+The `epoll` API consists of three main functions:
+
+### epoll_create()
+
+Creates an epoll instance and returns a file descriptor referring to that instance.
+
+```c
+int epoll_create(int size);
+int epoll_create1(int flags);  // Since Linux 2.6.27
+```
+
+**Parameters:**
+- `size`: Hint about the number of file descriptors to be monitored (ignored since Linux 2.6.8)
+- `flags`: Optional flags (EPOLL_CLOEXEC is the only valid flag)
+
+**Returns:**
+- A file descriptor referring to the new epoll instance on success
+- -1 on error
+
+### epoll_ctl()
+
+Controls the epoll instance by adding, modifying, or removing file descriptors.
+
+```c
+int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+```
+
+**Parameters:**
+- `epfd`: The epoll file descriptor
+- `op`: The operation to perform (EPOLL_CTL_ADD, EPOLL_CTL_MOD, EPOLL_CTL_DEL)
+- `fd`: The file descriptor to operate on
+- `event`: Describes the events to monitor and contains a user-defined data field
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+### epoll_wait()
+
+Waits for events on the epoll instance.
+
+```c
+int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
+```
+
+**Parameters:**
+- `epfd`: The epoll file descriptor
+- `events`: Array where the ready events are returned
+- `maxevents`: Maximum number of events to return
+- `timeout`: Timeout in milliseconds, -1 for infinite, 0 for immediate return
+
+**Returns:**
+- The number of file descriptors ready for the requested I/O on success
+- 0 if the timeout expired
+- -1 on error
+
+### epoll_event Structure
+
+```c
+struct epoll_event {
+    uint32_t     events;    /* Epoll events */
+    epoll_data_t data;      /* User data variable */
+};
+
+typedef union epoll_data {
+    void    *ptr;
+    int      fd;
+    uint32_t u32;
+    uint64_t u64;
+} epoll_data_t;
+```
+
+**Common event flags:**
+- `EPOLLIN`: The file descriptor is available for read operations
+- `EPOLLOUT`: The file descriptor is available for write operations
+- `EPOLLRDHUP`: Stream socket peer closed connection, or shut down writing half of connection
+- `EPOLLERR`: Error condition happened on the file descriptor
+- `EPOLLHUP`: Hang up happened on the file descriptor
+- `EPOLLET`: Edge-triggered behavior (instead of default level-triggered)
+- `EPOLLONESHOT`: One-shot behavior (event reported only once, then removed from set)
+
+## Level-Triggered vs Edge-Triggered
+
+`epoll` supports two different modes of operation:
+
+### Level-Triggered (LT)
+
+- Default mode
+- An event is reported as long as the condition is true
+- Similar to how `select()` and `poll()` work
+- More forgiving of programming errors
+- May result in more system calls
+
+### Edge-Triggered (ET)
+
+- An event is reported only when the state changes
+- Requires using non-blocking file descriptors
+- More efficient (fewer system calls)
+- More complex to program correctly
+- Must read/write all available data until EAGAIN/EWOULDBLOCK
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20230216153935/Level-triggering.png" alt="Level-Triggered vs Edge-Triggered" />
+
+## Example: TCP Echo Server Using epoll()
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/epoll.h>
+
+#define PORT 8080
+#define MAX_EVENTS 10
+#define BUFFER_SIZE 1024
+
+// Set socket to non-blocking mode
+int set_nonblocking(int sockfd) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) {
+        perror("fcntl F_GETFL");
+        return -1;
+    }
+    
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
+        perror("fcntl F_SETFL O_NONBLOCK");
+        return -1;
+    }
+    
+    return 0;
+}
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    
+    // Create server socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Set socket options to reuse address
+    int opt = 1;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Set server socket to non-blocking mode
+    if (set_nonblocking(server_fd) < 0) {
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for connections
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on port %d...\n", PORT);
+    
+    // Create epoll instance
+    int epfd = epoll_create1(0);
+    if (epfd < 0) {
+        perror("epoll_create1 failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Add server socket to epoll
+    struct epoll_event ev;
+    ev.events = EPOLLIN;
+    ev.data.fd = server_fd;
+    if (epoll_ctl(epfd, EPOLL_CTL_ADD, server_fd, &ev) < 0) {
+        perror("epoll_ctl failed");
+        close(epfd);
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Event loop
+    struct epoll_event events[MAX_EVENTS];
+    while (1) {
+        int nfds = epoll_wait(epfd, events, MAX_EVENTS, -1);
+        if (nfds < 0) {
+            perror("epoll_wait failed");
+            break;
+        }
+        
+        for (int i = 0; i < nfds; i++) {
+            // Handle server socket (new connection)
+            if (events[i].data.fd == server_fd) {
+                client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+                if (client_fd < 0) {
+                    if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                        perror("Accept failed");
+                    }
+                    continue;
+                }
+                
+                printf("New connection from %s:%d\n", 
+                       inet_ntoa(client_addr.sin_addr), 
+                       ntohs(client_addr.sin_port));
+                
+                // Set client socket to non-blocking mode
+                if (set_nonblocking(client_fd) < 0) {
+                    close(client_fd);
+                    continue;
+                }
+                
+                // Add client socket to epoll
+                ev.events = EPOLLIN | EPOLLET;  // Edge-triggered mode
+                ev.data.fd = client_fd;
+                if (epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &ev) < 0) {
+                    perror("epoll_ctl failed");
+                    close(client_fd);
+                    continue;
+                }
+            } else {
+                // Handle client socket (data available)
+                int fd = events[i].data.fd;
+                
+                // Read all available data (required for edge-triggered mode)
+                while (1) {
+                    ssize_t count = read(fd, buffer, BUFFER_SIZE - 1);
+                    
+                    if (count == -1) {
+                        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                            // No more data available
+                            break;
+                        } else {
+                            perror("read failed");
+                            close(fd);
+                            epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+                            break;
+                        }
+                    } else if (count == 0) {
+                        // Connection closed by client
+                        printf("Client disconnected\n");
+                        close(fd);
+                        epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+                        break;
+                    } else {
+                        // Data received, echo it back
+                        buffer[count] = '\0';
+                        printf("Received: %s\n", buffer);
+                        
+                        // Echo back to client
+                        ssize_t sent = write(fd, buffer, count);
+                        if (sent < 0) {
+                            if (errno != EAGAIN && errno != EWOULDBLOCK) {
+                                perror("write failed");
+                                close(fd);
+                                epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    close(epfd);
+    close(server_fd);
+    
+    return 0;
+}
+```
+
+## Edge-Triggered Mode Best Practices
+
+When using edge-triggered mode with `epoll`, follow these best practices to avoid common pitfalls:
+
+1. **Always Use Non-blocking File Descriptors**: Edge-triggered mode requires non-blocking file descriptors to prevent blocking when reading/writing all available data
+2. **Read/Write Until EAGAIN/EWOULDBLOCK**: In edge-triggered mode, you must read/write all available data until you get EAGAIN or EWOULDBLOCK
+3. **Handle Partial Reads/Writes**: Implement proper buffer management to handle partial reads and writes
+4. **Be Careful with Blocking Operations**: Avoid other blocking operations that could prevent processing all available data
+5. **Consider Using a Thread Pool**: For operations that might block, consider offloading them to a thread pool
+
+## Using epoll with User Data
+
+The `epoll_data_t` union allows you to associate user data with each file descriptor. This can be useful for storing context information:
+
+```c
+struct client_context {
+    int fd;
+    char *buffer;
+    size_t buffer_size;
+    size_t bytes_read;
+    // Other client-specific data
+};
+
+// When adding a file descriptor to epoll
+struct client_context *ctx = malloc(sizeof(struct client_context));
+ctx->fd = client_fd;
+ctx->buffer = malloc(BUFFER_SIZE);
+ctx->buffer_size = BUFFER_SIZE;
+ctx->bytes_read = 0;
+
+struct epoll_event ev;
+ev.events = EPOLLIN | EPOLLET;
+ev.data.ptr = ctx;  // Store pointer to context
+epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &ev);
+
+// When handling events
+struct client_context *ctx = events[i].data.ptr;
+int fd = ctx->fd;
+```
+
+## One-shot Events
+
+The `EPOLLONESHOT` flag can be used to ensure that a file descriptor is reported only once, after which it is automatically disabled:
+
+```c
+// Add client socket to epoll with EPOLLONESHOT
+ev.events = EPOLLIN | EPOLLET | EPOLLONESHOT;
+ev.data.fd = client_fd;
+epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &ev);
+
+// After handling the event, re-arm the file descriptor if needed
+ev.events = EPOLLIN | EPOLLET | EPOLLONESHOT;
+ev.data.fd = fd;
+epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &ev);
+```
+
+This is useful in multi-threaded applications to ensure that only one thread processes events for a given file descriptor at a time.
+
+## Monitoring for Write Readiness
+
+To monitor when a file descriptor is ready for writing, use the `EPOLLOUT` flag:
+
+```c
+// Add client socket to epoll with EPOLLOUT
+ev.events = EPOLLIN | EPOLLOUT | EPOLLET;
+ev.data.fd = client_fd;
+epoll_ctl(epfd, EPOLL_CTL_ADD, client_fd, &ev);
+
+// When handling events
+if (events[i].events & EPOLLOUT) {
+    // Socket is ready for writing
+    // ...
+}
+```
+
+This is useful when implementing asynchronous write operations or when dealing with non-blocking connects.
+
+## Comparison with Other Multiplexing APIs
+
+| Feature | select() | poll() | epoll() | kqueue() (BSD) | IOCP (Windows) |
+|---------|----------|--------|---------|----------------|----------------|
+| Scalability | Poor | Moderate | Excellent | Excellent | Excellent |
+| Portability | Very High | High | Linux only | BSD/macOS only | Windows only |
+| Event Model | Level-triggered | Level-triggered | Both LT and ET | Both LT and ET | Completion-based |
+| API Complexity | Low | Low | Moderate | Moderate | High |
+| Performance with Many FDs | Poor | Poor | Excellent | Excellent | Excellent |
+| Memory Usage | High | Moderate | Low | Low | Low |
+
+## When to Use epoll()
+
+`epoll()` is particularly well-suited for:
+
+1. **High-Performance Servers**: Handling thousands or even millions of connections
+2. **Long-Lived Connections**: Applications with connections that remain open for extended periods
+3. **Linux-Based Systems**: When portability to non-Linux systems is not a requirement
+4. **Event-Driven Architecture**: Applications built around an event loop
+
+## Limitations of epoll()
+
+Despite its advantages, `epoll()` has some limitations:
+
+1. **Linux-Specific**: Not portable to other operating systems
+2. **Learning Curve**: More complex API compared to `select()` and `poll()`
+3. **Edge-Triggered Complexity**: Edge-triggered mode requires careful programming
+4. **Regular Files Not Supported**: `epoll()` does not work with regular files, only with certain types of file descriptors (sockets, pipes, etc.)
+
+## Conclusion
+
+The `epoll` API provides a high-performance solution for multiplexing I/O on Linux systems. By addressing the limitations of `select()` and `poll()`, it enables the development of scalable server applications capable of handling thousands or even millions of concurrent connections.
+
+While `epoll()` has a steeper learning curve than `select()` and `poll()`, its performance benefits make it the preferred choice for high-performance Linux servers. For cross-platform applications, consider using a library that abstracts the differences between `epoll()`, `kqueue()`, and IOCP, such as libuv or Boost.Asio.
+
+In the next section, we'll explore socket I/O techniques, including asynchronous I/O and scatter-gather operations, which can further improve the performance and flexibility of socket applications.
