@@ -181,8 +181,8 @@ export const GET = metadataImage.createAPI((page) => {
         >
           {/* Wifi icon from Lucide - smaller size */}
           <svg
-            width="40"
-            height="40"
+            width="64"
+            height="64"
             viewBox="0 0 32 32"
             fill="none"
             stroke="rgba(0, 255, 170, 1)"
@@ -199,7 +199,7 @@ export const GET = metadataImage.createAPI((page) => {
           {/* Cndocs name - now white */}
           <div
             style={{
-              fontSize: 40,
+              fontSize: 48,
               fontWeight: "bold",
               color: "white",
               textShadow: "0 0 10px rgba(0, 255, 170, 0.3)",
@@ -275,7 +275,7 @@ export const GET = metadataImage.createAPI((page) => {
         {/* Title with enhanced styling */}
         <div
           style={{
-            fontSize: 64,
+            fontSize: 80,
             fontWeight: "bold",
             background:
               "linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 255, 175, 0.8))",
@@ -298,7 +298,7 @@ export const GET = metadataImage.createAPI((page) => {
         {/* Description with enhanced styling */}
         <div
           style={{
-            fontSize: 32,
+            fontSize: 44,
             color: "rgba(255, 255, 255, 0.85)",
             marginTop: "10px",
             textAlign: "center",
@@ -356,7 +356,7 @@ export const GET = metadataImage.createAPI((page) => {
             position: "absolute",
             bottom: "10px",
             right: "10px",
-            fontSize: "24px",
+            fontSize: "32px",
             color: "rgba(0, 255, 170, 0.4)",
           }}
         >
