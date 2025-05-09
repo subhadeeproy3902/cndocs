@@ -181,9 +181,9 @@ export const GET = metadataImage.createAPI((page) => {
         >
           {/* Wifi icon from Lucide - smaller size */}
           <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
+            width="40"
+            height="40"
+            viewBox="0 0 32 32"
             fill="none"
             stroke="rgba(0, 255, 170, 1)"
             strokeWidth="2"
@@ -199,7 +199,7 @@ export const GET = metadataImage.createAPI((page) => {
           {/* Cndocs name - now white */}
           <div
             style={{
-              fontSize: 24,
+              fontSize: 40,
               fontWeight: "bold",
               color: "white",
               textShadow: "0 0 10px rgba(0, 255, 170, 0.3)",
@@ -275,7 +275,7 @@ export const GET = metadataImage.createAPI((page) => {
         {/* Title with enhanced styling */}
         <div
           style={{
-            fontSize: 40,
+            fontSize: 64,
             fontWeight: "bold",
             background:
               "linear-gradient(to right, rgba(255, 255, 255, 1), rgba(0, 255, 175, 0.8))",
@@ -287,6 +287,9 @@ export const GET = metadataImage.createAPI((page) => {
             width: "100%",
             position: "relative",
             zIndex: 10,
+            margin: "3rem auto",
+            display: "flex",
+            justifyContent: "center"
           }}
         >
           {page.data.title}
@@ -295,7 +298,7 @@ export const GET = metadataImage.createAPI((page) => {
         {/* Description with enhanced styling */}
         <div
           style={{
-            fontSize: 16,
+            fontSize: 32,
             color: "rgba(255, 255, 255, 0.85)",
             marginTop: "10px",
             textAlign: "center",
@@ -320,9 +323,9 @@ export const GET = metadataImage.createAPI((page) => {
           }}
         >
           <svg
-            width="120"
-            height="120"
-            viewBox="0 0 100 100"
+            width="200"
+            height="200"
+            viewBox="0 0 180 180"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -353,7 +356,7 @@ export const GET = metadataImage.createAPI((page) => {
             position: "absolute",
             bottom: "10px",
             right: "10px",
-            fontSize: "10px",
+            fontSize: "24px",
             color: "rgba(0, 255, 170, 0.4)",
           }}
         >
