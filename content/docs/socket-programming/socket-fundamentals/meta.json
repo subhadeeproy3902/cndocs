@@ -1,0 +1,13 @@
+{
+  "icon": "BookOpen",
+  "title": "Socket Fundamentals",
+  "pages": [
+    "index",
+    "socket-types",
+    "socket-api",
+    "socket-options",
+    "byte-order",
+    "socket-security",
+    "best-practices"
+  ]
+}
