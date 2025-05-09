@@ -1,0 +1,439 @@
+---
+title: "Blocking vs Non-blocking Sockets"
+description: "Understanding the differences between blocking and non-blocking socket operations and their use cases"
+---
+
+# Blocking vs Non-blocking Sockets
+
+Socket operations can be performed in either blocking or non-blocking mode, each with its own advantages and challenges. Understanding these modes is crucial for designing efficient and responsive networked applications.
+
+## Blocking Sockets
+
+By default, socket operations in most systems are blocking. This means that when a program calls a socket function like `accept()`, `connect()`, `send()`, or `recv()`, the function does not return until the operation completes or an error occurs.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20220420215511/Blocking.png" alt="Blocking Socket Operation" />
+
+### Characteristics of Blocking Sockets
+
+1. **Simplicity**: Blocking sockets are easier to program and reason about
+2. **Sequential Execution**: Operations happen in a predictable sequence
+3. **Resource Efficiency**: No need to constantly check for completion
+4. **Thread Blocking**: The calling thread is blocked until the operation completes
+5. **Potential Deadlocks**: Can lead to deadlocks if not carefully managed
+
+### Example of Blocking Socket Operations
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for connections
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on port %d...\n", PORT);
+    
+    // Accept connection (blocking call)
+    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+    if (client_fd < 0) {
+        perror("Accept failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Client connected: %s:%d\n", 
+           inet_ntoa(client_addr.sin_addr), 
+           ntohs(client_addr.sin_port));
+    
+    // Receive data (blocking call)
+    ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
+    if (bytes_received < 0) {
+        perror("Receive failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    buffer[bytes_received] = '\0';
+    printf("Received: %s\n", buffer);
+    
+    // Send response (blocking call)
+    const char *response = "Message received";
+    send(client_fd, response, strlen(response), 0);
+    
+    close(client_fd);
+    close(server_fd);
+    
+    return 0;
+}
+```
+
+In this example, the `accept()`, `recv()`, and `send()` calls are all blocking. The program will wait at each of these calls until the operation completes or an error occurs.
+
+## Non-blocking Sockets
+
+Non-blocking sockets allow operations to return immediately, even if they cannot be completed right away. This enables a program to perform other tasks while waiting for socket operations to complete.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://miro.medium.com/v2/resize:fit:1400/1*uGTFBoxMJKezJPyoPa8Vlg.png" alt="Non-blocking Socket Operation" />
+
+### Characteristics of Non-blocking Sockets
+
+1. **Immediate Return**: Operations return immediately, regardless of completion
+2. **Error Codes**: Special error codes indicate when operations would block
+3. **Polling Required**: The application must check for completion
+4. **Resource Intensive**: Constant checking can consume CPU resources
+5. **Complexity**: More complex to program and reason about
+6. **Responsiveness**: Can improve application responsiveness
+
+### Setting a Socket to Non-blocking Mode
+
+There are two common ways to set a socket to non-blocking mode:
+
+#### Using fcntl()
+
+```c
+#include <fcntl.h>
+
+int set_nonblocking(int sockfd) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) {
+        perror("fcntl F_GETFL");
+        return -1;
+    }
+    
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
+        perror("fcntl F_SETFL O_NONBLOCK");
+        return -1;
+    }
+    
+    return 0;
+}
+```
+
+#### Using ioctl()
+
+```c
+#include <sys/ioctl.h>
+
+int set_nonblocking(int sockfd) {
+    int non_blocking = 1;
+    if (ioctl(sockfd, FIONBIO, &non_blocking) == -1) {
+        perror("ioctl FIONBIO");
+        return -1;
+    }
+    
+    return 0;
+}
+```
+
+### Example of Non-blocking Socket Operations
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+
+// Set socket to non-blocking mode
+int set_nonblocking(int sockfd) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) {
+        perror("fcntl F_GETFL");
+        return -1;
+    }
+    
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
+        perror("fcntl F_SETFL O_NONBLOCK");
+        return -1;
+    }
+    
+    return 0;
+}
+
+int main() {
+    int server_fd, client_fd = -1;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Set socket to non-blocking mode
+    if (set_nonblocking(server_fd) < 0) {
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for connections
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on port %d (non-blocking mode)...\n", PORT);
+    
+    // Main loop
+    while (1) {
+        // Try to accept a connection (non-blocking)
+        if (client_fd < 0) {
+            client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+            
+            if (client_fd < 0) {
+                if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                    // No connection available, do other work
+                    printf("No connection available, doing other work...\n");
+                    sleep(1);
+                    continue;
+                } else {
+                    perror("Accept failed");
+                    close(server_fd);
+                    exit(EXIT_FAILURE);
+                }
+            }
+            
+            // Set client socket to non-blocking mode
+            if (set_nonblocking(client_fd) < 0) {
+                close(client_fd);
+                client_fd = -1;
+                continue;
+            }
+            
+            printf("Client connected: %s:%d\n", 
+                   inet_ntoa(client_addr.sin_addr), 
+                   ntohs(client_addr.sin_port));
+        }
+        
+        // Try to receive data (non-blocking)
+        ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
+        
+        if (bytes_received < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                // No data available, do other work
+                printf("No data available, doing other work...\n");
+                sleep(1);
+                continue;
+            } else {
+                perror("Receive failed");
+                close(client_fd);
+                client_fd = -1;
+                continue;
+            }
+        } else if (bytes_received == 0) {
+            // Connection closed by client
+            printf("Client disconnected\n");
+            close(client_fd);
+            client_fd = -1;
+            continue;
+        }
+        
+        buffer[bytes_received] = '\0';
+        printf("Received: %s\n", buffer);
+        
+        // Try to send response (non-blocking)
+        const char *response = "Message received";
+        ssize_t bytes_sent = send(client_fd, response, strlen(response), 0);
+        
+        if (bytes_sent < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                // Cannot send now, try again later
+                printf("Cannot send now, will try again...\n");
+                sleep(1);
+                continue;
+            } else {
+                perror("Send failed");
+                close(client_fd);
+                client_fd = -1;
+                continue;
+            }
+        }
+        
+        printf("Response sent\n");
+        
+        // Close the connection after one message
+        close(client_fd);
+        client_fd = -1;
+    }
+    
+    close(server_fd);
+    return 0;
+}
+```
+
+In this example, the `accept()`, `recv()`, and `send()` calls are all non-blocking. When an operation would block, it returns immediately with an error code (`EAGAIN` or `EWOULDBLOCK`), allowing the program to perform other tasks and try again later.
+
+## Handling Non-blocking Operations
+
+When using non-blocking sockets, you need to handle the special error codes that indicate an operation would block:
+
+### EAGAIN / EWOULDBLOCK
+
+These error codes (which are typically the same value) indicate that the operation cannot be completed immediately and would block if the socket were in blocking mode.
+
+```c
+ssize_t bytes_sent = send(sockfd, buffer, length, 0);
+if (bytes_sent < 0) {
+    if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // Operation would block, try again later
+        return 0;
+    } else {
+        // Real error
+        perror("send failed");
+        return -1;
+    }
+}
+```
+
+### EINPROGRESS
+
+This error code is returned by `connect()` when the connection cannot be established immediately.
+
+```c
+if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    if (errno == EINPROGRESS) {
+        // Connection in progress, check later for completion
+        return 0;
+    } else {
+        // Real error
+        perror("connect failed");
+        return -1;
+    }
+}
+```
+
+## Timeouts with Blocking Sockets
+
+Even with blocking sockets, you can set timeouts to prevent operations from blocking indefinitely:
+
+```c
+// Set receive timeout to 5 seconds
+struct timeval tv;
+tv.tv_sec = 5;
+tv.tv_usec = 0;
+setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
+// Now recv() will return with an error if no data is received within 5 seconds
+ssize_t bytes_received = recv(sockfd, buffer, BUFFER_SIZE, 0);
+if (bytes_received < 0) {
+    if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // Timeout occurred
+        printf("Receive timeout\n");
+    } else {
+        // Real error
+        perror("recv failed");
+    }
+}
+```
+
+## Comparison: Blocking vs Non-blocking
+
+| Aspect | Blocking | Non-blocking |
+|--------|----------|--------------|
+| Ease of Use | Simpler to program | More complex |
+| Resource Usage | Efficient when idle | May consume CPU with polling |
+| Responsiveness | Thread blocks until completion | Immediate return, can do other work |
+| Error Handling | Straightforward | Must handle special error codes |
+| Concurrency Model | Typically multi-threaded | Can be single-threaded with event loop |
+| Use Cases | Simple applications, per-client threads | High-performance servers, GUI applications |
+
+## When to Use Each Mode
+
+### Use Blocking Sockets When:
+
+1. **Simplicity is a priority**: The application logic is straightforward
+2. **Using multiple threads**: Each connection has its own thread
+3. **Operations are expected to complete quickly**: Minimal waiting time
+4. **Resource efficiency is important**: No need for constant polling
+
+### Use Non-blocking Sockets When:
+
+1. **Handling many connections**: Need to manage many clients with few threads
+2. **Responsiveness is critical**: Cannot afford to block the application
+3. **Implementing event-driven architecture**: Using select(), poll(), or epoll()
+4. **Building high-performance servers**: Need to maximize throughput
+5. **Developing GUI applications**: Must keep the UI responsive
+
+## Best Practices
+
+### For Blocking Sockets:
+
+1. **Set timeouts**: Prevent indefinite blocking
+2. **Use multiple threads**: Handle multiple clients concurrently
+3. **Implement proper error handling**: Recover from network issues
+4. **Consider connection pooling**: Reuse connections when possible
+
+### For Non-blocking Sockets:
+
+1. **Use event notification**: Combine with select(), poll(), or epoll()
+2. **Implement state machines**: Track the state of each connection
+3. **Avoid busy waiting**: Don't continuously poll without sleeping
+4. **Handle partial operations**: Send and receive may complete partially
+5. **Use buffer management**: Efficiently handle data that cannot be sent immediately
+
+## Conclusion
+
+Both blocking and non-blocking sockets have their place in network programming. Blocking sockets are simpler to use but can limit responsiveness, while non-blocking sockets offer greater flexibility at the cost of increased complexity.
+
+For simple applications or those with dedicated threads per connection, blocking sockets are often sufficient. For high-performance servers handling many connections, non-blocking sockets combined with event notification mechanisms like select(), poll(), or epoll() provide better scalability.
+
+In the next section, we'll explore these event notification mechanisms in detail and learn how to implement efficient multiplexing with non-blocking sockets.
