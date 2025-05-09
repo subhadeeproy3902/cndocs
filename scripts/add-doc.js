@@ -189,7 +189,7 @@ async function extractContent(html, url) {
     if (src && (src.startsWith('http://') || src.startsWith('https://'))) {
       const promise = downloadImage(src).then(localPath => {
         mainContent(img).attr('src', localPath);
-        mainContent(img).attr('className', 'max-w-xl mx-auto');
+        mainContent(img).attr('className', 'max-w-xl rounded-xl mx-auto');
       });
       imagePromises.push(promise);
     }
@@ -250,7 +250,7 @@ function convertHtmlToMdx(html) {
   $('img').each((i, el) => {
     const src = $(el).attr('src');
     const alt = $(el).attr('alt') || 'Image';
-    $(el).replaceWith(`<img className="max-w-xl mx-auto" src="${src}" alt="${alt}" />`);
+    $(el).replaceWith(`<img className="max-w-xl rounded-xl mx-auto" src="${src}" alt="${alt}" />`);
   });
 
   // Replace tables with MDX tables
@@ -274,7 +274,7 @@ function convertHtmlToMdx(html) {
     const src = img.attr('src');
     const alt = caption || img.attr('alt') || 'Image';
 
-    $(el).replaceWith(`<figure>\n<img className="max-w-xl mx-auto" src="${src}" alt="${alt}" />\n<figcaption className="text-center text-sm mt-2">${caption}</figcaption>\n</figure>`);
+    $(el).replaceWith(`<figure>\n<img className="max-w-xl rounded-xl mx-auto" src="${src}" alt="${alt}" />\n<figcaption className="text-center text-sm mt-2">${caption}</figcaption>\n</figure>`);
   });
 
   // Clean up list items with value attributes (common in GeeksforGeeks)

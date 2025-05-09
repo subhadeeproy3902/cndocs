@@ -203,7 +203,7 @@ async function extractContent(html, url) {
     if (src && (src.startsWith('http://') || src.startsWith('https://'))) {
       const promise = downloadImage(src).then(localPath => {
         cleanDoc(img).attr('src', localPath);
-        cleanDoc(img).attr('className', 'max-w-xl mx-auto');
+        cleanDoc(img).attr('className', 'max-w-xl rounded-xl mx-auto');
       });
       imagePromises.push(promise);
     }
@@ -298,7 +298,7 @@ function convertHtmlToMdx(html) {
     const $img = $(el);
     const src = $img.attr('src');
     const alt = $img.attr('alt') || 'Image';
-    $img.replaceWith(`\n\n<img className="max-w-xl mx-auto" src="${src}" alt="${alt}" />\n\n`);
+    $img.replaceWith(`\n\n<img className="max-w-xl rounded-xl mx-auto" src="${src}" alt="${alt}" />\n\n`);
   });
 
   // Fix figure captions
@@ -313,7 +313,7 @@ function convertHtmlToMdx(html) {
 
     $figure.replaceWith(`
 <figure>
-  <img className="max-w-xl mx-auto" src="${src}" alt="${alt}" />
+  <img className="max-w-xl rounded-xl mx-auto" src="${src}" alt="${alt}" />
   <figcaption className="text-center text-sm mt-2">${caption}</figcaption>
 </figure>
 `);
