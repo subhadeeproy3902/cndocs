@@ -1,0 +1,7 @@
+{
+  "title": "III. Code in Action",
+  "description": "Explore real-world networking projects.",
+  "icon": "Code",
+  "root": true,
+  "pages": ["index", "message-queues"]
+}

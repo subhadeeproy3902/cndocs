@@ -1,0 +1,382 @@
+---
+title: "Number Base Conversion with Message Queues"
+description: "A project demonstrating the use of System V IPC message queues for inter-process communication"
+---
+
+# Number Base Conversion with Message Queues
+
+This project demonstrates the use of System V IPC message queues in Linux for inter-process communication. The system consists of four separate programs that work together to convert decimal numbers to different bases and display them.
+
+## Problem Statement
+
+Take a decimal number from user. Convert it to different bases (e.g.: 2, 8, 16 etc.) and send those values to message queue. Write three separate programs to read and display the binary, octal and hex value from the message queue distinctively.
+
+## Overview
+
+```
++-------------------+
+|                   |
+|  User Input (p1)  |
+|                   |
++--------+----------+
+         |
+         | Convert to different bases
+         |
+         v
++--------+----------+     +-----------------+     +------------------+
+|                   |     |                 |     |                  |
+| Message Queue     |<--->| Binary Reader   |     | Binary Output    |
+|                   |     | (p2)            |---->| 00101010         |
+|                   |     |                 |     |                  |
+|                   |     +-----------------+     +------------------+
+|                   |
+|                   |     +-----------------+     +------------------+
+|                   |     |                 |     |                  |
+|                   |<--->| Octal Reader    |     | Octal Output     |
+|                   |     | (p3)            |---->| 52               |
+|                   |     |                 |     |                  |
+|                   |     +-----------------+     +------------------+
+|                   |
+|                   |     +-----------------+     +------------------+
+|                   |     |                 |     |                  |
+|                   |<--->| Hex Reader      |     | Hex Output       |
+|                   |     | (p4)            |---->| 2A               |
+|                   |     |                 |     |                  |
++-------------------+     +-----------------+     +------------------+
+```
+
+The system takes a decimal number from the user, converts it to binary, octal, and hexadecimal representations, and then sends these values to a message queue. Three separate programs read from the message queue and display the converted values.
+
+## Components
+
+### Header File (msgq.h)
+
+First, we define a common header file that will be included by all programs. This header contains the message queue structure and constants.
+
+```c
+#define N 128
+#define key 1234
+typedef struct {
+    long mt;
+    char md[N];
+}MQ;
+```
+
+The header defines:
+- `N`: The maximum size of the message data
+- `key`: The IPC key used to identify the message queue
+- `MQ`: The message structure with a message type (`mt`) and message data (`md`)
+
+### Main Program (p1.c)
+
+The main program takes decimal input from the user, converts it to different bases, and sends each converted value to the message queue with a unique message type.
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include<string.h>
+#include<unistd.h>
+#include "msgq.h"
+
+void toBinary(int num, char *bin) {
+    int i = 0;
+    for (int bit = 31; bit >= 0; bit--) {
+        bin[i++] = ((num >> bit) & 1) ? '1' : '0';
+    }
+    bin[i] = '\0';
+}
+
+void toOctal(int num, char *oct) {
+    int i = 0;
+    for (int shift = 30; shift >= 0; shift -= 3) {
+        int digit = (num >> shift) & 7;
+        if (i || digit) {
+            oct[i++] = digit + '0';
+        }
+    }
+    if (i == 0) oct[i++] = '0';
+    oct[i] = '\0';
+}
+
+void toHex(int num, char *hex) {
+    int i = 0;
+    for (int shift = 28; shift >= 0; shift -= 4) {
+        int digit = (num >> shift) & 15;
+        if (i || digit) {
+            hex[i++] = digit < 10 ? (digit + '0') : (digit - 10 + 'A');
+        }
+    }
+    if (i == 0) hex[i++] = '0';
+    hex[i] = '\0';
+}
+
+int main() {
+    int msgid = msgget(key, IPC_CREAT | 0666);
+    MQ msg;
+    char binary[N], octal[N], hex[N];
+    int num;
+
+    while (1) {
+        printf("Enter a decimal number (-1 to exit): ");
+        scanf("%d", &num);
+
+        if (num == -1) {
+            msg.mt = 2;
+            strcpy(msg.md, "-1");
+            msgsnd(msgid, &msg, sizeof(msg.md), 0);
+
+            msg.mt = 3;
+            strcpy(msg.md, "-1");
+            msgsnd(msgid, &msg, sizeof(msg.md), 0);
+
+            msg.mt = 4;
+            strcpy(msg.md, "-1");
+            msgsnd(msgid, &msg, sizeof(msg.md), 0);
+
+            printf("Process terminated\n");
+            break;
+        }
+
+        toBinary(num, binary);
+        toOctal(num, octal);
+        toHex(num, hex);
+
+        msg.mt = 2;
+        strcpy(msg.md, binary);
+        msgsnd(msgid, &msg, sizeof(msg.md), 0);
+
+        msg.mt = 3;
+        strcpy(msg.md, octal);
+        msgsnd(msgid, &msg, sizeof(msg.md), 0);
+
+        msg.mt = 4;
+        strcpy(msg.md, hex);
+        msgsnd(msgid, &msg, sizeof(msg.md), 0);
+    }
+    return 0;
+}
+```
+
+Key functions in this program:
+- `toBinary()`: Converts a decimal number to binary representation
+- `toOctal()`: Converts a decimal number to octal representation
+- `toHex()`: Converts a decimal number to hexadecimal representation
+- The main loop takes user input and sends converted values to the message queue
+- Each conversion is sent with a different message type (2 for binary, 3 for octal, 4 for hex)
+- When the user enters -1, termination signals are sent to all receivers
+
+### Binary Display Program (p2.c)
+
+This program reads messages of type 2 from the queue and displays the binary representation.
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include <string.h>
+#include<sys/types.h>
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include "msgq.h"
+
+int main() {
+    int msgid = msgget(key, IPC_CREAT | 0666);
+    MQ msg;
+    while (1) {
+        msgrcv(msgid, &msg, sizeof(msg.md), 2, 0);
+        if (strcmp(msg.md, "-1") == 0) {
+            printf("Process terminated\n");
+            break;
+        }
+        printf("Binary: %s\n", msg.md);
+    }
+
+    return 0;
+}
+```
+
+This program:
+- Connects to the same message queue using the same key
+- Reads only messages with type 2 (binary representations)
+- Terminates when it receives a "-1" message
+- Displays the binary representation of each number
+
+### Octal Display Program (p3.c)
+
+This program reads messages of type 3 from the queue and displays the octal representation.
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include <string.h>
+#include<sys/types.h>
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include "msgq.h"
+
+int main() {
+    int msgid = msgget(key, IPC_CREAT | 0666);
+    MQ msg;
+    while (1) {
+        msgrcv(msgid, &msg, sizeof(msg.md), 3, 0);
+        if (strcmp(msg.md, "-1") == 0) {
+            printf("Process terminated\n");
+            break;
+        }
+        printf("Octal: %s\n", msg.md);
+    }
+
+    return 0;
+}
+```
+
+This program:
+- Connects to the same message queue using the same key
+- Reads only messages with type 3 (octal representations)
+- Terminates when it receives a "-1" message
+- Displays the octal representation of each number
+
+### Hexadecimal Display Program (p4.c)
+
+This program reads messages of type 4 from the queue and displays the hexadecimal representation.
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include <string.h>
+#include<sys/types.h>
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include "msgq.h"
+
+int main() {
+    int msgid = msgget(key, IPC_CREAT | 0666);
+    MQ msg;
+
+    while (1) {
+        msgrcv(msgid, &msg, sizeof(msg.md), 4, 0);
+        if (strcmp(msg.md, "-1") == 0) {
+            printf("Process terminated\n");
+            break;
+        }
+        printf("Hexadecimal: %s\n", msg.md);
+    }
+
+    msgctl(msgid, IPC_RMID, NULL);
+    return 0;
+}
+```
+
+This program:
+- Connects to the same message queue using the same key
+- Reads only messages with type 4 (hexadecimal representations)
+- Terminates when it receives a "-1" message
+- Displays the hexadecimal representation of each number
+- Cleans up the message queue when terminating using `msgctl()`
+
+## How It Works
+
+```
++-------------------+     +-------------------+     +-------------------+
+|                   |     |                   |     |                   |
+| 1. User enters    |---->| 2. Convert to     |---->| 3. Send to        |
+|    decimal number |     |    different bases|     |    message queue  |
+|                   |     |                   |     |                   |
++-------------------+     +-------------------+     +--------+----------+
+                                                             |
+                                                             |
+                                                             v
++-------------------+     +-------------------+     +-------------------+
+|                   |     |                   |     |                   |
+| 6. Display        |<----| 5. Process        |<----| 4. Receive        |
+|    results        |     |    messages       |     |    messages       |
+|                   |     |                   |     |                   |
++-------------------+     +-------------------+     +-------------------+
+```
+
+1. The main program (`p1.c`) creates a message queue or connects to an existing one
+2. It takes decimal numbers as input from the user
+3. For each input number, it:
+   - Converts the number to binary, octal, and hexadecimal
+   - Sends each converted value to the message queue with a unique message type
+4. The three receiver programs (`p2.c`, `p3.c`, `p4.c`) each read messages of their specific type
+5. Each receiver displays its respective number representation
+6. When the user enters -1, the main program sends termination signals to all receivers
+7. The last receiver (`p4.c`) cleans up the message queue
+
+## System V IPC Message Queue Functions
+
+The programs use the following System V IPC functions:
+
+1. `msgget(key, flags)`: Creates a new message queue or gets the ID of an existing queue
+   - `key`: A unique identifier for the message queue
+   - `flags`: Control flags (e.g., `IPC_CREAT` to create a new queue)
+   - Returns: Message queue ID on success, -1 on failure
+
+2. `msgsnd(msgid, msgp, msgsz, flags)`: Sends a message to a queue
+   - `msgid`: Message queue ID
+   - `msgp`: Pointer to the message structure
+   - `msgsz`: Size of the message data
+   - `flags`: Control flags (e.g., `IPC_NOWAIT` for non-blocking operation)
+   - Returns: 0 on success, -1 on failure
+
+3. `msgrcv(msgid, msgp, msgsz, msgtyp, flags)`: Receives a message from a queue
+   - `msgid`: Message queue ID
+   - `msgp`: Pointer to the message structure
+   - `msgsz`: Size of the message data buffer
+   - `msgtyp`: Type of message to receive
+   - `flags`: Control flags (e.g., `IPC_NOWAIT` for non-blocking operation)
+   - Returns: Number of bytes received on success, -1 on failure
+
+4. `msgctl(msgid, cmd, buf)`: Controls message queue operations
+   - `msgid`: Message queue ID
+   - `cmd`: Command (e.g., `IPC_RMID` to remove the queue)
+   - `buf`: Buffer for information (can be NULL for some commands)
+   - Returns: 0 on success, -1 on failure
+
+## Compilation and Execution
+
+To compile the programs:
+
+```bash
+gcc -o p1 p1.c
+gcc -o p2 p2.c
+gcc -o p3 p3.c
+gcc -o p4 p4.c
+```
+
+To run the system, open four terminal windows and execute:
+
+```bash
+# Terminal 1
+./p2
+
+# Terminal 2
+./p3
+
+# Terminal 3
+./p4
+
+# Terminal 4
+./p1
+```
+
+Enter decimal numbers in the p1 terminal to see the converted values appear in the other terminals.
+
+## Example Output
+
+<img className="rounded-xl mx-auto" src="/images/message-queues/1.png" alt="Number Base Conversion Output" />
+
+## Conclusion
+
+This project demonstrates the use of System V IPC message queues for inter-process communication. The message queue provides a reliable way for processes to exchange data asynchronously. The message type field allows for selective message reception, enabling each receiver to process only the messages intended for it.
+
+The implementation showcases:
+- Creating and using message queues
+- Sending messages with different types
+- Selective message reception based on message type
+- Proper cleanup of IPC resources
+
+These concepts are fundamental to understanding inter-process communication in Unix/Linux systems and can be applied to more complex distributed applications.
