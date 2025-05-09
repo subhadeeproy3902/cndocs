@@ -1,0 +1,680 @@
+---
+title: "Client-Server Architecture"
+description: "Understanding the client-server model and implementing robust networked applications"
+---
+
+# Client-Server Architecture
+
+The client-server model is a distributed application structure that partitions tasks between providers of a resource or service (servers) and service requesters (clients). This architecture is the foundation of most networked applications, from web browsers and email clients to database systems and online games.
+
+## Understanding the Client-Server Model
+
+In the client-server model:
+
+- **Servers** provide resources, data, services, or functionality to clients
+- **Clients** request and use the resources, data, services, or functionality provided by servers
+- Communication between clients and servers occurs over a network using a predefined protocol
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://www.liquidweb.com/wp-content/uploads/2024/03/client-server-network-1024x653-1.jpg" alt="Client-Server Model" />
+
+### Key Characteristics
+
+1. **Centralized Control**: Servers centralize resources and control access to them
+2. **Scalability**: The model can scale by adding more servers or distributing load
+3. **Separation of Concerns**: Clients and servers have distinct roles and responsibilities
+4. **Network-Based**: Communication occurs over a network using protocols like TCP/IP
+5. **Request-Response Pattern**: Clients send requests, servers process them and send responses
+
+## Client-Server Communication Patterns
+
+### Request-Response
+
+The most common pattern where a client sends a request and waits for a response from the server.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRex1xXsz9_EXysqvWuA6995QaMy_AkbaVOIw&s" alt="Request-Response Pattern" />
+
+**Example**: HTTP web requests, database queries
+
+### Publish-Subscribe
+
+Clients subscribe to specific types of messages, and servers publish messages to subscribers.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://images.ctfassets.net/fo9twyrwpveg/3sjqsYmw5Q3okhaES3TQD1/6b016709917a1c6ae5459c63d1268bc0/image6.png" alt="Publish-Subscribe Pattern" />
+
+**Example**: Message queues, event notification systems
+
+### Push
+
+Servers proactively send data to clients without explicit requests.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://media.licdn.com/dms/image/v2/D5612AQHai0smaoyKJw/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1715178584502?e=2147483647&v=beta&t=kmJ_Z3MuXqJxyfxnAa20u1CRHjooO1pLKJgkuI7sCIU" alt="Push Model" />
+
+**Example**: Real-time notifications, streaming updates
+
+### Long Polling
+
+Clients make a request and the server holds the connection open until new data is available.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://media.licdn.com/dms/image/v2/D5612AQGNemPqrl-ZXQ/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1722964607142?e=2147483647&v=beta&t=EAsgqUIoNer1fAGQab--LY7TcO-pqO49Ebog1zoXghA" alt="Long Polling" />
+
+**Example**: Chat applications, real-time dashboards
+
+## Designing a Client-Server Application
+
+When designing a client-server application, consider the following aspects:
+
+### 1. Protocol Design
+
+Define how clients and servers communicate, including:
+
+- **Message Format**: Structure of requests and responses (e.g., JSON, XML, binary)
+- **Message Types**: Different kinds of messages (e.g., request, response, notification)
+- **Error Handling**: How errors are reported and handled
+- **Versioning**: How protocol changes are managed over time
+
+Example of a simple text-based protocol:
+
+```
+REQUEST <command> <parameters>
+RESPONSE <status_code> <message>
+```
+
+Example of a binary protocol structure:
+
+```c
+struct message_header {
+    uint8_t  version;       // Protocol version
+    uint8_t  type;          // Message type (request, response, etc.)
+    uint16_t command;       // Command identifier
+    uint32_t payload_size;  // Size of the payload
+    uint32_t sequence_id;   // Message sequence number
+};
+```
+
+### 2. Connection Management
+
+Decide how connections between clients and servers are established and maintained:
+
+- **Connection-Oriented vs. Connectionless**: TCP vs. UDP
+- **Persistent vs. Non-Persistent**: Keep connections open or close after each transaction
+- **Connection Pooling**: Reuse connections to reduce overhead
+- **Heartbeats**: Periodic messages to verify connection status
+- **Reconnection Strategy**: How clients handle server disconnections
+
+### 3. Concurrency Model
+
+Determine how the server handles multiple clients simultaneously:
+
+- **Process per Client**: Fork a new process for each client
+- **Thread per Client**: Create a new thread for each client
+- **Thread Pool**: Use a fixed number of threads to handle client requests
+- **Event-Driven**: Use non-blocking I/O and event loops
+- **Asynchronous I/O**: Use asynchronous operations to handle multiple clients
+
+### 4. State Management
+
+Define how application state is maintained:
+
+- **Stateless**: Each request contains all necessary information
+- **Stateful**: Server maintains client state between requests
+- **Session Management**: How client sessions are tracked
+- **Persistence**: How data is stored and retrieved
+
+### 5. Security Considerations
+
+Implement security measures to protect the application:
+
+- **Authentication**: Verifying client identity
+- **Authorization**: Controlling access to resources
+- **Encryption**: Protecting data in transit
+- **Input Validation**: Preventing injection attacks
+- **Rate Limiting**: Preventing abuse
+
+## Implementing a Robust Client-Server Application
+
+Let's implement a more robust client-server application that addresses some of the considerations mentioned above.
+
+### Protocol Definition
+
+First, let's define a simple protocol for our application:
+
+```c
+// Message types
+#define MSG_REQUEST  0x01
+#define MSG_RESPONSE 0x02
+#define MSG_ERROR    0x03
+#define MSG_PING     0x04
+#define MSG_PONG     0x05
+
+// Commands
+#define CMD_ECHO     0x01
+#define CMD_TIME     0x02
+#define CMD_STATS    0x03
+
+// Status codes
+#define STATUS_OK    0x00
+#define STATUS_ERROR 0x01
+
+// Message header structure
+struct message_header {
+    uint8_t  version;       // Protocol version
+    uint8_t  type;          // Message type
+    uint16_t command;       // Command identifier
+    uint32_t payload_size;  // Size of the payload
+    uint32_t sequence_id;   // Message sequence number
+};
+
+// Complete message structure
+struct message {
+    struct message_header header;
+    char payload[MAX_PAYLOAD_SIZE];
+};
+```
+
+### Server Implementation
+
+Here's a more robust TCP server implementation:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <signal.h>
+#include <time.h>
+
+#define PORT 8080
+#define MAX_CLIENTS 10
+#define BUFFER_SIZE 1024
+#define MAX_PAYLOAD_SIZE 1000
+
+// Protocol definitions (as shown above)
+
+// Global variables
+int server_fd;
+int client_count = 0;
+pthread_mutex_t client_count_mutex = PTHREAD_MUTEX_INITIALIZER;
+volatile sig_atomic_t running = 1;
+
+// Signal handler for graceful shutdown
+void handle_signal(int sig) {
+    running = 0;
+}
+
+// Function to process client requests
+void process_message(struct message *msg, struct message *response) {
+    // Initialize response
+    response->header.version = 1;
+    response->header.type = MSG_RESPONSE;
+    response->header.command = msg->header.command;
+    response->header.sequence_id = msg->header.sequence_id;
+    
+    switch (msg->header.command) {
+        case CMD_ECHO:
+            // Echo the payload back to the client
+            memcpy(response->payload, msg->payload, msg->header.payload_size);
+            response->header.payload_size = msg->header.payload_size;
+            break;
+            
+        case CMD_TIME:
+            // Send the current time
+            time_t now = time(NULL);
+            struct tm *tm_info = localtime(&now);
+            response->header.payload_size = strftime(response->payload, 
+                                                   MAX_PAYLOAD_SIZE,
+                                                   "%Y-%m-%d %H:%M:%S",
+                                                   tm_info);
+            break;
+            
+        case CMD_STATS:
+            // Send server statistics
+            pthread_mutex_lock(&client_count_mutex);
+            int count = client_count;
+            pthread_mutex_unlock(&client_count_mutex);
+            
+            response->header.payload_size = snprintf(response->payload,
+                                                   MAX_PAYLOAD_SIZE,
+                                                   "Active clients: %d",
+                                                   count);
+            break;
+            
+        default:
+            // Unknown command
+            response->header.type = MSG_ERROR;
+            response->header.payload_size = snprintf(response->payload,
+                                                   MAX_PAYLOAD_SIZE,
+                                                   "Unknown command: %d",
+                                                   msg->header.command);
+            break;
+    }
+}
+
+// Thread function to handle a client connection
+void *handle_client(void *arg) {
+    int client_fd = *((int *)arg);
+    free(arg);
+    
+    // Increment client count
+    pthread_mutex_lock(&client_count_mutex);
+    client_count++;
+    pthread_mutex_unlock(&client_count_mutex);
+    
+    struct message msg, response;
+    ssize_t bytes_received;
+    
+    // Set socket timeout
+    struct timeval tv;
+    tv.tv_sec = 60;  // 60 seconds timeout
+    tv.tv_usec = 0;
+    setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    
+    while (running) {
+        // Receive message header
+        bytes_received = recv(client_fd, &msg.header, sizeof(msg.header), 0);
+        
+        if (bytes_received <= 0) {
+            // Connection closed or error
+            break;
+        }
+        
+        if (bytes_received < sizeof(msg.header)) {
+            // Incomplete header
+            continue;
+        }
+        
+        // Check payload size
+        if (msg.header.payload_size > MAX_PAYLOAD_SIZE) {
+            // Payload too large
+            response.header.version = 1;
+            response.header.type = MSG_ERROR;
+            response.header.command = 0;
+            response.header.sequence_id = msg.header.sequence_id;
+            response.header.payload_size = snprintf(response.payload,
+                                                  MAX_PAYLOAD_SIZE,
+                                                  "Payload too large");
+            
+            send(client_fd, &response, sizeof(response.header) + response.header.payload_size, 0);
+            continue;
+        }
+        
+        // Receive payload if any
+        if (msg.header.payload_size > 0) {
+            bytes_received = recv(client_fd, msg.payload, msg.header.payload_size, 0);
+            
+            if (bytes_received < msg.header.payload_size) {
+                // Incomplete payload
+                continue;
+            }
+        }
+        
+        // Handle ping messages
+        if (msg.header.type == MSG_PING) {
+            response.header.version = 1;
+            response.header.type = MSG_PONG;
+            response.header.command = 0;
+            response.header.sequence_id = msg.header.sequence_id;
+            response.header.payload_size = 0;
+            
+            send(client_fd, &response, sizeof(response.header), 0);
+            continue;
+        }
+        
+        // Process the message
+        if (msg.header.type == MSG_REQUEST) {
+            process_message(&msg, &response);
+            
+            // Send the response
+            send(client_fd, &response, sizeof(response.header) + response.header.payload_size, 0);
+        }
+    }
+    
+    // Decrement client count
+    pthread_mutex_lock(&client_count_mutex);
+    client_count--;
+    pthread_mutex_unlock(&client_count_mutex);
+    
+    close(client_fd);
+    return NULL;
+}
+
+int main() {
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    
+    // Set up signal handling
+    signal(SIGINT, handle_signal);
+    signal(SIGTERM, handle_signal);
+    
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Set socket options
+    int opt = 1;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for connections
+    if (listen(server_fd, 10) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on port %d...\n", PORT);
+    
+    // Accept and handle client connections
+    while (running) {
+        // Accept a client connection
+        int *client_fd = malloc(sizeof(int));
+        *client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+        
+        if (*client_fd < 0) {
+            perror("Accept failed");
+            free(client_fd);
+            continue;
+        }
+        
+        printf("Client connected: %s:%d\n", 
+               inet_ntoa(client_addr.sin_addr), 
+               ntohs(client_addr.sin_port));
+        
+        // Create a thread to handle the client
+        pthread_t thread_id;
+        if (pthread_create(&thread_id, NULL, handle_client, client_fd) != 0) {
+            perror("Thread creation failed");
+            close(*client_fd);
+            free(client_fd);
+            continue;
+        }
+        
+        // Detach the thread
+        pthread_detach(thread_id);
+    }
+    
+    // Clean up
+    close(server_fd);
+    printf("Server shutdown complete\n");
+    
+    return 0;
+}
+```
+
+### Client Implementation
+
+Here's a corresponding client implementation:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <signal.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+#define MAX_PAYLOAD_SIZE 1000
+#define SERVER_IP "127.0.0.1"
+
+// Protocol definitions (as shown above)
+
+// Global variables
+int sock_fd;
+volatile sig_atomic_t running = 1;
+uint32_t sequence_id = 0;
+
+// Signal handler for graceful shutdown
+void handle_signal(int sig) {
+    running = 0;
+}
+
+// Function to send a request and receive a response
+int send_request(uint16_t command, const char *payload, size_t payload_size,
+                struct message *response) {
+    struct message request;
+    ssize_t bytes_sent, bytes_received;
+    
+    // Prepare request
+    request.header.version = 1;
+    request.header.type = MSG_REQUEST;
+    request.header.command = command;
+    request.header.sequence_id = ++sequence_id;
+    request.header.payload_size = payload_size;
+    
+    if (payload_size > 0) {
+        memcpy(request.payload, payload, payload_size);
+    }
+    
+    // Send request header
+    bytes_sent = send(sock_fd, &request.header, sizeof(request.header), 0);
+    if (bytes_sent < sizeof(request.header)) {
+        perror("Failed to send request header");
+        return -1;
+    }
+    
+    // Send payload if any
+    if (payload_size > 0) {
+        bytes_sent = send(sock_fd, request.payload, payload_size, 0);
+        if (bytes_sent < payload_size) {
+            perror("Failed to send request payload");
+            return -1;
+        }
+    }
+    
+    // Receive response header
+    bytes_received = recv(sock_fd, &response->header, sizeof(response->header), 0);
+    if (bytes_received <= 0) {
+        perror("Failed to receive response header");
+        return -1;
+    }
+    
+    // Check if sequence ID matches
+    if (response->header.sequence_id != request.header.sequence_id) {
+        fprintf(stderr, "Sequence ID mismatch\n");
+        return -1;
+    }
+    
+    // Receive payload if any
+    if (response->header.payload_size > 0) {
+        bytes_received = recv(sock_fd, response->payload, response->header.payload_size, 0);
+        if (bytes_received < response->header.payload_size) {
+            perror("Failed to receive response payload");
+            return -1;
+        }
+        
+        // Null-terminate the payload
+        response->payload[response->header.payload_size] = '\0';
+    }
+    
+    return 0;
+}
+
+// Thread function to send periodic pings
+void *ping_thread(void *arg) {
+    struct message response;
+    
+    while (running) {
+        // Sleep for 30 seconds
+        sleep(30);
+        
+        // Prepare ping message
+        struct message ping;
+        ping.header.version = 1;
+        ping.header.type = MSG_PING;
+        ping.header.command = 0;
+        ping.header.sequence_id = ++sequence_id;
+        ping.header.payload_size = 0;
+        
+        // Send ping
+        send(sock_fd, &ping.header, sizeof(ping.header), 0);
+        
+        // Receive pong
+        recv(sock_fd, &response.header, sizeof(response.header), 0);
+        
+        if (response.header.type != MSG_PONG) {
+            fprintf(stderr, "Expected PONG, got %d\n", response.header.type);
+        }
+    }
+    
+    return NULL;
+}
+
+int main() {
+    struct sockaddr_in server_addr;
+    struct message response;
+    
+    // Set up signal handling
+    signal(SIGINT, handle_signal);
+    signal(SIGTERM, handle_signal);
+    
+    // Create socket
+    sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    
+    // Convert IP address
+    if (inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr) <= 0) {
+        perror("Invalid address/ Address not supported");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Connect to server
+    if (connect(sock_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Connection failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Connected to server at %s:%d\n", SERVER_IP, PORT);
+    
+    // Create ping thread
+    pthread_t ping_thread_id;
+    if (pthread_create(&ping_thread_id, NULL, ping_thread, NULL) != 0) {
+        perror("Thread creation failed");
+        close(sock_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Main loop
+    char input[MAX_PAYLOAD_SIZE];
+    while (running) {
+        printf("\nAvailable commands:\n");
+        printf("1. Echo\n");
+        printf("2. Time\n");
+        printf("3. Stats\n");
+        printf("4. Exit\n");
+        printf("Enter command number: ");
+        
+        int cmd;
+        if (scanf("%d", &cmd) != 1) {
+            // Clear input buffer
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            continue;
+        }
+        
+        // Clear input buffer
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+        
+        if (cmd == 4) {
+            break;
+        }
+        
+        switch (cmd) {
+            case 1:  // Echo
+                printf("Enter message to echo: ");
+                fgets(input, sizeof(input), stdin);
+                input[strcspn(input, "\n")] = '\0';  // Remove newline
+                
+                if (send_request(CMD_ECHO, input, strlen(input), &response) == 0) {
+                    printf("Server echo: %s\n", response.payload);
+                }
+                break;
+                
+            case 2:  // Time
+                if (send_request(CMD_TIME, NULL, 0, &response) == 0) {
+                    printf("Server time: %s\n", response.payload);
+                }
+                break;
+                
+            case 3:  // Stats
+                if (send_request(CMD_STATS, NULL, 0, &response) == 0) {
+                    printf("Server stats: %s\n", response.payload);
+                }
+                break;
+                
+            default:
+                printf("Invalid command\n");
+                break;
+        }
+    }
+    
+    // Clean up
+    running = 0;
+    pthread_join(ping_thread_id, NULL);
+    close(sock_fd);
+    printf("Client shutdown complete\n");
+    
+    return 0;
+}
+```
+
+## Best Practices for Client-Server Applications
+
+### Server-Side Best Practices
+
+1. **Graceful Shutdown**: Handle signals and clean up resources properly
+2. **Resource Limits**: Set limits on connections, memory usage, etc.
+3. **Logging**: Implement comprehensive logging for debugging and monitoring
+4. **Error Handling**: Handle all possible error conditions
+5. **Security**: Implement authentication, authorization, and encryption
+6. **Scalability**: Design for horizontal scaling
+7. **Monitoring**: Add health checks and performance metrics
+
+### Client-Side Best Practices
+
+1. **Connection Management**: Handle reconnection and failover
+2. **Timeout Handling**: Set appropriate timeouts for operations
+3. **Error Recovery**: Implement retry logic with backoff
+4. **Resource Cleanup**: Release resources when done
+5. **User Feedback**: Provide meaningful feedback about connection status
+6. **Offline Mode**: Consider implementing offline functionality when possible
+
+## Conclusion
+
+The client-server architecture is the foundation of most networked applications. By understanding the principles and best practices of this model, you can design and implement robust, scalable, and secure networked applications.
+
+In the next section, we'll explore socket options and configuration in more detail to optimize the performance and behavior of your socket-based applications.
