@@ -1,8 +1,5 @@
-import { readFileSync } from "node:fs";
 import { ImageResponse } from "next/og";
 import { metadataImage } from "@/lib/metadata";
-
-export const runtime = "edge";
 
 export const GET = metadataImage.createAPI((page) => {
   return new ImageResponse(
