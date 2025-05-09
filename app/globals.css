@@ -127,3 +127,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+pre code {
+  font-size: 15px !important;
+}
