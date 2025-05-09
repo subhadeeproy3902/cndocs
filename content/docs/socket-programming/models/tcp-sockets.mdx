@@ -1,0 +1,396 @@
+---
+title: "Creating Basic TCP Sockets"
+description: "Learn how to implement TCP client-server communication using sockets in C"
+---
+
+# Creating Basic TCP Sockets
+
+TCP (Transmission Control Protocol) sockets provide reliable, connection-oriented communication between applications. In this section, we'll learn how to create basic TCP client and server applications using the Socket API in C.
+
+## TCP Socket Characteristics
+
+Before diving into the implementation, let's review the key characteristics of TCP sockets:
+
+- **Connection-oriented**: A connection must be established before data can be exchanged
+- **Reliable**: Guarantees delivery of all data in the correct order
+- **Stream-based**: Data is treated as a continuous stream of bytes
+- **Bidirectional**: Data can flow in both directions simultaneously
+- **Flow control**: Prevents overwhelming the receiver with too much data
+- **Error detection and correction**: Automatically handles packet loss and retransmission
+
+## TCP Server Implementation
+
+A TCP server typically follows these steps:
+
+1. Create a socket
+2. Bind the socket to an address and port
+3. Listen for incoming connections
+4. Accept client connections
+5. Receive and send data
+6. Close the connection
+
+Let's implement a basic TCP echo server that receives messages from clients and sends them back:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_received;
+    
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Set socket options to reuse address
+    int opt = 1;
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        perror("setsockopt failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address structure
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;  // Accept connections on any interface
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket to address and port
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for incoming connections
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on port %d...\n", PORT);
+    
+    // Accept and handle client connections
+    while (1) {
+        // Accept a client connection
+        client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+        if (client_fd < 0) {
+            perror("Accept failed");
+            continue;
+        }
+        
+        printf("Client connected: %s:%d\n", 
+               inet_ntoa(client_addr.sin_addr), 
+               ntohs(client_addr.sin_port));
+        
+        // Receive and echo data
+        while ((bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0)) > 0) {
+            buffer[bytes_received] = '\0';  // Null-terminate the string
+            printf("Received: %s\n", buffer);
+            
+            // Echo back to client
+            send(client_fd, buffer, bytes_received, 0);
+        }
+        
+        if (bytes_received == 0) {
+            printf("Client disconnected\n");
+        } else {
+            perror("recv failed");
+        }
+        
+        close(client_fd);
+    }
+    
+    close(server_fd);
+    return 0;
+}
+```
+
+### Key Components of the TCP Server
+
+1. **Socket Creation**:
+   ```c
+   server_fd = socket(AF_INET, SOCK_STREAM, 0);
+   ```
+   Creates a TCP socket using the IPv4 address family.
+
+2. **Socket Options**:
+   ```c
+   setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+   ```
+   Allows the socket to reuse the address, which is useful for server restarts.
+
+3. **Binding**:
+   ```c
+   bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+   ```
+   Associates the socket with a specific address and port.
+
+4. **Listening**:
+   ```c
+   listen(server_fd, 5);
+   ```
+   Marks the socket as passive and specifies a queue length for pending connections.
+
+5. **Accepting Connections**:
+   ```c
+   client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+   ```
+   Accepts an incoming connection and creates a new socket for communication.
+
+6. **Data Exchange**:
+   ```c
+   recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
+   send(client_fd, buffer, bytes_received, 0);
+   ```
+   Receives data from the client and sends it back.
+
+7. **Connection Closure**:
+   ```c
+   close(client_fd);
+   ```
+   Closes the client socket when communication is complete.
+
+## TCP Client Implementation
+
+A TCP client typically follows these steps:
+
+1. Create a socket
+2. Connect to the server
+3. Send and receive data
+4. Close the connection
+
+Let's implement a basic TCP client that sends messages to the server and receives responses:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+#define SERVER_IP "127.0.0.1"
+
+int main() {
+    int sock_fd;
+    struct sockaddr_in server_addr;
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_received;
+    
+    // Create socket
+    sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address structure
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    
+    // Convert IP address from string to binary form
+    if (inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr) <= 0) {
+        perror("Invalid address/ Address not supported");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Connect to the server
+    if (connect(sock_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Connection failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Connected to server at %s:%d\n", SERVER_IP, PORT);
+    
+    // Send and receive data
+    while (1) {
+        printf("Enter message (or 'exit' to quit): ");
+        fgets(buffer, BUFFER_SIZE, stdin);
+        
+        // Remove newline character
+        buffer[strcspn(buffer, "\n")] = '\0';
+        
+        // Check if user wants to exit
+        if (strcmp(buffer, "exit") == 0) {
+            break;
+        }
+        
+        // Send message to server
+        send(sock_fd, buffer, strlen(buffer), 0);
+        
+        // Receive response from server
+        bytes_received = recv(sock_fd, buffer, BUFFER_SIZE - 1, 0);
+        if (bytes_received > 0) {
+            buffer[bytes_received] = '\0';  // Null-terminate the string
+            printf("Server response: %s\n", buffer);
+        } else if (bytes_received == 0) {
+            printf("Server disconnected\n");
+            break;
+        } else {
+            perror("recv failed");
+            break;
+        }
+    }
+    
+    close(sock_fd);
+    return 0;
+}
+```
+
+### Key Components of the TCP Client
+
+1. **Socket Creation**:
+   ```c
+   sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+   ```
+   Creates a TCP socket using the IPv4 address family.
+
+2. **Address Conversion**:
+   ```c
+   inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr);
+   ```
+   Converts the server's IP address from string to binary form.
+
+3. **Connection Establishment**:
+   ```c
+   connect(sock_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+   ```
+   Establishes a connection to the server.
+
+4. **Data Exchange**:
+   ```c
+   send(sock_fd, buffer, strlen(buffer), 0);
+   recv(sock_fd, buffer, BUFFER_SIZE - 1, 0);
+   ```
+   Sends data to the server and receives the response.
+
+5. **Connection Closure**:
+   ```c
+   close(sock_fd);
+   ```
+   Closes the socket when communication is complete.
+
+## Compiling and Running
+
+To compile the server and client programs:
+
+```bash
+gcc -o tcp_server tcp_server.c
+gcc -o tcp_client tcp_client.c
+```
+
+To run the programs:
+
+1. Start the server in one terminal:
+   ```bash
+   ./tcp_server
+   ```
+
+2. Start the client in another terminal:
+   ```bash
+   ./tcp_client
+   ```
+
+3. Enter messages in the client terminal and observe the echo responses from the server.
+
+## Common TCP Socket Issues and Solutions
+
+### Connection Refused
+
+**Issue**: The client receives a "Connection refused" error.
+
+**Possible causes**:
+- The server is not running
+- The server is running on a different port
+- A firewall is blocking the connection
+
+**Solutions**:
+- Ensure the server is running
+- Verify the port number
+- Check firewall settings
+
+### Connection Reset
+
+**Issue**: The connection is unexpectedly reset.
+
+**Possible causes**:
+- The server crashed
+- Network issues
+- Timeout
+
+**Solutions**:
+- Implement error handling and reconnection logic
+- Add timeout handling
+- Use keepalive options
+
+### Slow Performance
+
+**Issue**: Data transfer is slower than expected.
+
+**Possible causes**:
+- Small buffer sizes
+- Nagle's algorithm (TCP_NODELAY)
+- Network congestion
+
+**Solutions**:
+- Increase buffer sizes
+- Disable Nagle's algorithm for latency-sensitive applications
+- Implement proper flow control
+
+## Advanced TCP Socket Options
+
+### TCP_NODELAY
+
+Disables Nagle's algorithm, which buffers small packets:
+
+```c
+int flag = 1;
+setsockopt(sock_fd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
+```
+
+### SO_KEEPALIVE
+
+Enables sending of keepalive messages:
+
+```c
+int keepalive = 1;
+setsockopt(sock_fd, SOL_SOCKET, SO_KEEPALIVE, &keepalive, sizeof(keepalive));
+```
+
+### SO_RCVBUF and SO_SNDBUF
+
+Sets the receive and send buffer sizes:
+
+```c
+int rcvbuf = 64 * 1024;  // 64KB
+int sndbuf = 64 * 1024;  // 64KB
+setsockopt(sock_fd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+setsockopt(sock_fd, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+```
+
+## Conclusion
+
+In this section, we've learned how to implement basic TCP client-server communication using sockets in C. TCP sockets provide reliable, connection-oriented communication that is suitable for applications where data integrity is critical.
+
+In the next section, we'll explore UDP sockets, which provide connectionless, message-oriented communication that is faster but less reliable than TCP.
