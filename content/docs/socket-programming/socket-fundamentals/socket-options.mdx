@@ -1,0 +1,407 @@
+---
+title: "Socket Options and Configuration"
+description: "Learn how to configure and optimize socket behavior using socket options in C"
+---
+
+# Socket Options and Configuration
+
+Socket options provide a way to control the behavior of sockets, allowing you to optimize performance, modify default settings, and enable special features. This section covers the most important socket options and how to use them effectively in your applications.
+
+## Setting and Getting Socket Options
+
+The Socket API provides two functions for working with socket options:
+
+### setsockopt()
+
+```c
+int setsockopt(int sockfd, int level, int optname, 
+              const void *optval, socklen_t optlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `level`: Protocol level (SOL_SOCKET, IPPROTO_TCP, IPPROTO_IP, etc.)
+- `optname`: Option name
+- `optval`: Pointer to the option value
+- `optlen`: Size of the option value
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+int option = 1;
+if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option)) < 0) {
+    perror("setsockopt failed");
+    exit(EXIT_FAILURE);
+}
+```
+
+### getsockopt()
+
+```c
+int getsockopt(int sockfd, int level, int optname, 
+              void *optval, socklen_t *optlen);
+```
+
+**Parameters:**
+- `sockfd`: Socket descriptor
+- `level`: Protocol level
+- `optname`: Option name
+- `optval`: Pointer to store the option value
+- `optlen`: Pointer to the size of the option value buffer (updated with actual size)
+
+**Returns:**
+- 0 on success
+- -1 on error
+
+**Example:**
+```c
+int option;
+socklen_t optlen = sizeof(option);
+if (getsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &option, &optlen) < 0) {
+    perror("getsockopt failed");
+    exit(EXIT_FAILURE);
+}
+printf("SO_REUSEADDR is %s\n", option ? "enabled" : "disabled");
+```
+
+## Common Socket Options
+
+Socket options are organized by protocol level. Here are the most commonly used options:
+
+### SOL_SOCKET Level Options
+
+These options apply to all socket types, regardless of the underlying protocol.
+
+#### SO_REUSEADDR
+
+Allows reuse of local addresses and ports. This is particularly useful for server applications that need to restart quickly without waiting for the previous socket to time out.
+
+```c
+int reuse = 1;
+setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+```
+
+#### SO_REUSEPORT
+
+Allows multiple sockets to bind to the same port, enabling load distribution across multiple processes or threads.
+
+```c
+int reuse_port = 1;
+setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &reuse_port, sizeof(reuse_port));
+```
+
+#### SO_KEEPALIVE
+
+Enables periodic transmission of keepalive messages on connected sockets. This helps detect when a connection has been lost without data transfer.
+
+```c
+int keepalive = 1;
+setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &keepalive, sizeof(keepalive));
+```
+
+#### SO_LINGER
+
+Controls how the `close()` function behaves for a connection-oriented socket (TCP). It can be configured to wait for pending data to be transmitted or to discard it.
+
+```c
+struct linger ling;
+ling.l_onoff = 1;    // Enable linger
+ling.l_linger = 10;  // Linger for 10 seconds
+setsockopt(sockfd, SOL_SOCKET, SO_LINGER, &ling, sizeof(ling));
+```
+
+#### SO_RCVBUF and SO_SNDBUF
+
+Set the receive and send buffer sizes. Larger buffers can improve performance for high-throughput applications.
+
+```c
+int rcvbuf = 256 * 1024;  // 256KB receive buffer
+int sndbuf = 256 * 1024;  // 256KB send buffer
+setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+```
+
+#### SO_RCVTIMEO and SO_SNDTIMEO
+
+Set timeouts for receive and send operations. This prevents operations from blocking indefinitely.
+
+```c
+struct timeval tv;
+tv.tv_sec = 5;   // 5 seconds timeout
+tv.tv_usec = 0;
+setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+```
+
+#### SO_BROADCAST
+
+Enables sending broadcast messages (for UDP sockets).
+
+```c
+int broadcast = 1;
+setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast));
+```
+
+#### SO_ERROR
+
+Gets the pending error on the socket and clears it.
+
+```c
+int error;
+socklen_t len = sizeof(error);
+getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &error, &len);
+if (error) {
+    fprintf(stderr, "Socket error: %s\n", strerror(error));
+}
+```
+
+### IPPROTO_TCP Level Options
+
+These options apply specifically to TCP sockets.
+
+#### TCP_NODELAY
+
+Disables Nagle's algorithm, which buffers small packets to reduce network overhead. This can reduce latency for interactive applications but may increase bandwidth usage.
+
+```c
+int nodelay = 1;
+setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &nodelay, sizeof(nodelay));
+```
+
+#### TCP_KEEPIDLE, TCP_KEEPINTVL, and TCP_KEEPCNT
+
+Fine-tune the behavior of TCP keepalive probes.
+
+```c
+int idle = 60;    // Start sending keepalive probes after 60 seconds of idle time
+int interval = 5; // Send a keepalive probe every 5 seconds
+int count = 3;    // Drop connection after 3 failed probes
+
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count));
+```
+
+#### TCP_CORK
+
+Enables TCP corking, which delays sending data until the buffer is full or uncorked. This can improve efficiency for bulk data transfers.
+
+```c
+int cork = 1;
+setsockopt(sockfd, IPPROTO_TCP, TCP_CORK, &cork, sizeof(cork));
+
+// Later, when you want to flush the buffer:
+cork = 0;
+setsockopt(sockfd, IPPROTO_TCP, TCP_CORK, &cork, sizeof(cork));
+```
+
+#### TCP_QUICKACK
+
+Enables or disables quick acknowledgments. When enabled, ACKs are sent immediately rather than delayed.
+
+```c
+int quickack = 1;
+setsockopt(sockfd, IPPROTO_TCP, TCP_QUICKACK, &quickack, sizeof(quickack));
+```
+
+### IPPROTO_IP Level Options
+
+These options apply to IPv4 sockets.
+
+#### IP_TTL
+
+Sets the Time-To-Live (TTL) value for outgoing packets, which limits how many network hops a packet can traverse.
+
+```c
+int ttl = 64;
+setsockopt(sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+```
+
+#### IP_MULTICAST_TTL
+
+Sets the TTL value for multicast packets.
+
+```c
+int mcast_ttl = 32;
+setsockopt(sockfd, IPPROTO_IP, IP_MULTICAST_TTL, &mcast_ttl, sizeof(mcast_ttl));
+```
+
+#### IP_MULTICAST_LOOP
+
+Controls whether multicast packets are looped back to the local socket.
+
+```c
+int mcast_loop = 0;  // Disable loopback
+setsockopt(sockfd, IPPROTO_IP, IP_MULTICAST_LOOP, &mcast_loop, sizeof(mcast_loop));
+```
+
+#### IP_ADD_MEMBERSHIP and IP_DROP_MEMBERSHIP
+
+Join or leave a multicast group.
+
+```c
+struct ip_mreq mreq;
+mreq.imr_multiaddr.s_addr = inet_addr("224.0.0.1");  // Multicast group address
+mreq.imr_interface.s_addr = htonl(INADDR_ANY);       // Local interface
+
+// Join multicast group
+setsockopt(sockfd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+
+// Later, leave the group
+setsockopt(sockfd, IPPROTO_IP, IP_DROP_MEMBERSHIP, &mreq, sizeof(mreq));
+```
+
+## Socket Option Use Cases
+
+### Improving Server Reliability
+
+When developing a server application, you often want to ensure that the server can be restarted quickly after a crash or shutdown. The `SO_REUSEADDR` option is essential for this:
+
+```c
+int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+int reuse = 1;
+setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+```
+
+This allows the server to bind to a port that was recently used, even if it's in the TIME_WAIT state.
+
+### Optimizing for Low Latency
+
+For applications that require low latency, such as online gaming or real-time communication, you can disable Nagle's algorithm:
+
+```c
+int client_fd = socket(AF_INET, SOCK_STREAM, 0);
+int nodelay = 1;
+setsockopt(client_fd, IPPROTO_TCP, TCP_NODELAY, &nodelay, sizeof(nodelay));
+```
+
+This ensures that small packets are sent immediately rather than being buffered.
+
+### Handling Connection Timeouts
+
+To prevent operations from blocking indefinitely, you can set timeouts:
+
+```c
+struct timeval tv;
+tv.tv_sec = 5;   // 5 seconds timeout
+tv.tv_usec = 0;
+setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+```
+
+This is particularly useful for client applications that need to handle network issues gracefully.
+
+### Detecting Dead Connections
+
+TCP keepalive can be used to detect when a connection has been lost without data transfer:
+
+```c
+int keepalive = 1;
+int idle = 60;    // Start sending keepalive probes after 60 seconds of idle time
+int interval = 5; // Send a keepalive probe every 5 seconds
+int count = 3;    // Drop connection after 3 failed probes
+
+setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &keepalive, sizeof(keepalive));
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
+setsockopt(sockfd, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count));
+```
+
+This is useful for long-lived connections that may become inactive for extended periods.
+
+### Optimizing for High Throughput
+
+For applications that transfer large amounts of data, you can increase the buffer sizes:
+
+```c
+int rcvbuf = 1024 * 1024;  // 1MB receive buffer
+int sndbuf = 1024 * 1024;  // 1MB send buffer
+setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+```
+
+Larger buffers can improve performance by reducing the number of system calls needed to transfer data.
+
+### Implementing Multicast
+
+For applications that need to send data to multiple recipients simultaneously, you can use multicast:
+
+```c
+// Create a UDP socket
+int sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+// Set the TTL for multicast packets
+int ttl = 32;
+setsockopt(sock_fd, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
+
+// Join a multicast group
+struct ip_mreq mreq;
+mreq.imr_multiaddr.s_addr = inet_addr("224.0.0.1");  // Multicast group address
+mreq.imr_interface.s_addr = htonl(INADDR_ANY);       // Local interface
+setsockopt(sock_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+
+// Send to the multicast group
+struct sockaddr_in mcast_addr;
+memset(&mcast_addr, 0, sizeof(mcast_addr));
+mcast_addr.sin_family = AF_INET;
+mcast_addr.sin_addr.s_addr = inet_addr("224.0.0.1");
+mcast_addr.sin_port = htons(8080);
+
+sendto(sock_fd, message, strlen(message), 0,
+      (struct sockaddr*)&mcast_addr, sizeof(mcast_addr));
+```
+
+This is useful for applications like video streaming, where the same data needs to be sent to multiple clients.
+
+## Socket Option Caveats and Considerations
+
+### Platform Differences
+
+Socket options can vary between operating systems. Some options may not be available on all platforms, or they may have different names or behaviors.
+
+```c
+#ifdef __linux__
+    // Linux-specific options
+    int quickack = 1;
+    setsockopt(sockfd, IPPROTO_TCP, TCP_QUICKACK, &quickack, sizeof(quickack));
+#endif
+
+#ifdef __APPLE__
+    // macOS-specific options
+    int nodelayack = 1;
+    setsockopt(sockfd, IPPROTO_TCP, TCP_NOOPT, &nodelayack, sizeof(nodelayack));
+#endif
+```
+
+### Buffer Size Limitations
+
+When setting buffer sizes with `SO_RCVBUF` and `SO_SNDBUF`, be aware that the operating system may have limits on the maximum buffer size. The actual buffer size may be different from what you requested.
+
+```c
+int requested_size = 1024 * 1024;  // 1MB
+int actual_size;
+socklen_t size_len = sizeof(actual_size);
+
+setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &requested_size, sizeof(requested_size));
+getsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &actual_size, &size_len);
+
+printf("Requested receive buffer size: %d bytes\n", requested_size);
+printf("Actual receive buffer size: %d bytes\n", actual_size);
+```
+
+### Timing Considerations
+
+Some options, like `SO_LINGER`, can affect the behavior of the `close()` function, potentially causing it to block. Be careful when using these options in time-sensitive applications.
+
+### Security Implications
+
+Some socket options can have security implications. For example, `SO_BROADCAST` allows a socket to send to broadcast addresses, which could be used for denial-of-service attacks if not properly controlled.
+
+## Conclusion
+
+Socket options provide powerful tools for configuring and optimizing socket behavior. By understanding and using these options effectively, you can improve the performance, reliability, and security of your networked applications.
+
+In the next section, we'll explore blocking and non-blocking sockets, which provide different approaches to handling I/O operations in socket programming.
