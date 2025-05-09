@@ -43,7 +43,7 @@ Let's suppose an organization requires 2^14 hosts. In classful addressing, it wo
 
 Nowadays, IANA (Internet Assigned Numbers Authority) uses this technique to provide IP addresses. Whenever any user asks for IP addresses, IANA assigns exactly that many IP addresses to the user.
 
-<img className="max-w-xl mx-auto" src="/images/32-bit-address.jpg" alt="32 Bit Address" />
+<img className="max-w-xl rounded-xl mx-auto" src="/images/32-bit-address.jpg" alt="32 Bit Address" />
 
 ## CIDR Representation
 
@@ -64,7 +64,7 @@ Where `n` is the number of bits that are present in Block ID / Network ID.
 
    **Example**: If the Block size is 2^5 then, Host ID will contain 5 bits and Network will contain 32 – 5 = 27 bits.
 
-   <img className="max-w-xl mx-auto" src="/images/cidr-block.jpg" alt="CIDR Block" />
+   <img className="max-w-xl rounded-xl mx-auto" src="/images/cidr-block.jpg" alt="CIDR Block" />
 
 3. **First IP address of the Block must be evenly divisible by the size of the block**. In simple words, the least significant part should always start with zeroes in Host ID. Since all the least significant bits of Host ID are zero, then we can use it as Block ID part.
 
