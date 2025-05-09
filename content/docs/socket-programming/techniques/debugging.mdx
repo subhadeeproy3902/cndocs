@@ -1,0 +1,864 @@
+---
+title: "Debugging Socket Applications"
+description: "Learn techniques and tools for debugging socket programming issues, from simple logging to advanced network analysis"
+---
+
+# Debugging Socket Applications
+
+Debugging networked applications can be challenging due to their distributed nature, asynchronous behavior, and dependency on external systems. This section covers techniques and tools for effectively debugging socket programming issues, from simple logging to advanced network analysis.
+
+## Common Socket Programming Issues
+
+Before diving into debugging techniques, let's review some common issues in socket programming:
+
+1. **Connection Failures**: Unable to establish a connection between client and server
+2. **Data Transfer Problems**: Data not being sent or received correctly
+3. **Performance Issues**: Slow response times or high resource usage
+4. **Protocol Errors**: Incorrect implementation of communication protocols
+5. **Resource Leaks**: Sockets or memory not being properly released
+6. **Concurrency Issues**: Race conditions or deadlocks in multi-threaded applications
+7. **Network Configuration Problems**: Firewall rules, NAT traversal, or routing issues
+
+## Basic Debugging Techniques
+
+### 1. Logging
+
+Implement comprehensive logging to track the flow of your application and identify issues.
+
+```c
+#include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
+#include <string.h>
+
+typedef enum {
+    LOG_DEBUG,
+    LOG_INFO,
+    LOG_WARNING,
+    LOG_ERROR,
+    LOG_FATAL
+} log_level_t;
+
+const char *log_level_names[] = {
+    "DEBUG",
+    "INFO",
+    "WARNING",
+    "ERROR",
+    "FATAL"
+};
+
+void log_message(log_level_t level, const char *format, ...) {
+    // Get current time
+    time_t now = time(NULL);
+    struct tm *tm_info = localtime(&now);
+    char time_str[20];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", tm_info);
+    
+    // Print log level and timestamp
+    fprintf(stderr, "[%s] [%s] ", log_level_names[level], time_str);
+    
+    // Print the message
+    va_list args;
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
+    
+    fprintf(stderr, "\n");
+    fflush(stderr);
+}
+
+// Usage
+int connect_to_server(const char *host, int port) {
+    log_message(LOG_INFO, "Connecting to %s:%d", host, port);
+    
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        log_message(LOG_ERROR, "Socket creation failed: %s", strerror(errno));
+        return -1;
+    }
+    
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    
+    if (inet_pton(AF_INET, host, &addr.sin_addr) <= 0) {
+        log_message(LOG_ERROR, "Invalid address: %s", strerror(errno));
+        close(sockfd);
+        return -1;
+    }
+    
+    if (connect(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+        log_message(LOG_ERROR, "Connection failed: %s", strerror(errno));
+        close(sockfd);
+        return -1;
+    }
+    
+    log_message(LOG_INFO, "Connected successfully (fd=%d)", sockfd);
+    return sockfd;
+}
+```
+
+### 2. Error Checking
+
+Implement thorough error checking and reporting.
+
+```c
+#define CHECK_ERROR(expr, msg) \
+    do { \
+        if (expr) { \
+            fprintf(stderr, "ERROR: %s (%s:%d): %s\n", \
+                    msg, __FILE__, __LINE__, strerror(errno)); \
+            exit(EXIT_FAILURE); \
+        } \
+    } while (0)
+
+int create_server_socket(const char *ip, int port) {
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    CHECK_ERROR(sockfd < 0, "Socket creation failed");
+    
+    int opt = 1;
+    CHECK_ERROR(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0,
+                "setsockopt failed");
+    
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    
+    if (ip != NULL) {
+        CHECK_ERROR(inet_pton(AF_INET, ip, &addr.sin_addr) <= 0,
+                    "Invalid address");
+    } else {
+        addr.sin_addr.s_addr = INADDR_ANY;
+    }
+    
+    CHECK_ERROR(bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0,
+                "Bind failed");
+    
+    CHECK_ERROR(listen(sockfd, 5) < 0, "Listen failed");
+    
+    return sockfd;
+}
+```
+
+### 3. Debug Printing
+
+Add debug print statements to trace the flow of your application.
+
+```c
+#ifdef DEBUG
+#define DEBUG_PRINT(fmt, ...) \
+    fprintf(stderr, "DEBUG: %s:%d:%s(): " fmt, \
+            __FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#else
+#define DEBUG_PRINT(fmt, ...) /* do nothing */
+#endif
+
+void handle_client(int client_fd) {
+    DEBUG_PRINT("New client connected (fd=%d)\n", client_fd);
+    
+    char buffer[1024];
+    ssize_t bytes_received;
+    
+    while ((bytes_received = recv(client_fd, buffer, sizeof(buffer) - 1, 0)) > 0) {
+        buffer[bytes_received] = '\0';
+        DEBUG_PRINT("Received %zd bytes: %s\n", bytes_received, buffer);
+        
+        // Echo back
+        ssize_t bytes_sent = send(client_fd, buffer, bytes_received, 0);
+        DEBUG_PRINT("Sent %zd bytes\n", bytes_sent);
+    }
+    
+    if (bytes_received == 0) {
+        DEBUG_PRINT("Client disconnected\n");
+    } else {
+        DEBUG_PRINT("recv failed: %s\n", strerror(errno));
+    }
+    
+    close(client_fd);
+}
+```
+
+### 4. Socket State Tracking
+
+Track the state of your sockets to identify issues.
+
+```c
+typedef enum {
+    SOCKET_CREATED,
+    SOCKET_BOUND,
+    SOCKET_LISTENING,
+    SOCKET_CONNECTING,
+    SOCKET_CONNECTED,
+    SOCKET_CLOSED,
+    SOCKET_ERROR
+} socket_state_t;
+
+typedef struct {
+    int fd;
+    socket_state_t state;
+    struct sockaddr_in addr;
+    time_t created_time;
+    time_t last_activity;
+    size_t bytes_sent;
+    size_t bytes_received;
+    char error_message[256];
+} socket_info_t;
+
+// Array to track socket information
+#define MAX_SOCKETS 1024
+socket_info_t socket_info[MAX_SOCKETS];
+
+// Initialize socket tracking
+void init_socket_tracking() {
+    for (int i = 0; i < MAX_SOCKETS; i++) {
+        socket_info[i].fd = -1;
+        socket_info[i].state = SOCKET_CLOSED;
+    }
+}
+
+// Register a new socket
+int register_socket(int sockfd) {
+    for (int i = 0; i < MAX_SOCKETS; i++) {
+        if (socket_info[i].fd == -1) {
+            socket_info[i].fd = sockfd;
+            socket_info[i].state = SOCKET_CREATED;
+            socket_info[i].created_time = time(NULL);
+            socket_info[i].last_activity = time(NULL);
+            socket_info[i].bytes_sent = 0;
+            socket_info[i].bytes_received = 0;
+            socket_info[i].error_message[0] = '\0';
+            return i;
+        }
+    }
+    return -1;  // No free slots
+}
+
+// Update socket state
+void update_socket_state(int index, socket_state_t state) {
+    if (index >= 0 && index < MAX_SOCKETS) {
+        socket_info[index].state = state;
+        socket_info[index].last_activity = time(NULL);
+    }
+}
+
+// Update socket statistics
+void update_socket_stats(int index, size_t bytes_sent, size_t bytes_received) {
+    if (index >= 0 && index < MAX_SOCKETS) {
+        socket_info[index].bytes_sent += bytes_sent;
+        socket_info[index].bytes_received += bytes_received;
+        socket_info[index].last_activity = time(NULL);
+    }
+}
+
+// Set socket error
+void set_socket_error(int index, const char *error) {
+    if (index >= 0 && index < MAX_SOCKETS) {
+        strncpy(socket_info[index].error_message, error, sizeof(socket_info[index].error_message) - 1);
+        socket_info[index].state = SOCKET_ERROR;
+    }
+}
+
+// Unregister a socket
+void unregister_socket(int index) {
+    if (index >= 0 && index < MAX_SOCKETS) {
+        socket_info[index].fd = -1;
+        socket_info[index].state = SOCKET_CLOSED;
+    }
+}
+
+// Print socket information
+void print_socket_info(int index) {
+    if (index >= 0 && index < MAX_SOCKETS && socket_info[index].fd != -1) {
+        const char *state_names[] = {
+            "CREATED", "BOUND", "LISTENING", "CONNECTING",
+            "CONNECTED", "CLOSED", "ERROR"
+        };
+        
+        printf("Socket %d (fd=%d):\n", index, socket_info[index].fd);
+        printf("  State: %s\n", state_names[socket_info[index].state]);
+        printf("  Created: %s", ctime(&socket_info[index].created_time));
+        printf("  Last activity: %s", ctime(&socket_info[index].last_activity));
+        printf("  Bytes sent: %zu\n", socket_info[index].bytes_sent);
+        printf("  Bytes received: %zu\n", socket_info[index].bytes_received);
+        
+        if (socket_info[index].error_message[0] != '\0') {
+            printf("  Error: %s\n", socket_info[index].error_message);
+        }
+    }
+}
+```
+
+## Network Analysis Tools
+
+### 1. netstat
+
+`netstat` is a command-line tool that displays network connections, routing tables, interface statistics, and more.
+
+```bash
+# Display all TCP connections
+netstat -at
+
+# Display listening sockets
+netstat -l
+
+# Display process information
+netstat -p
+
+# Display numeric addresses
+netstat -n
+
+# Combine options
+netstat -antp
+```
+
+Example C code to programmatically check if a port is in use:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+bool is_port_in_use(int port) {
+    char command[64];
+    snprintf(command, sizeof(command), "netstat -an | grep ':%d ' | grep 'LISTEN'", port);
+    
+    FILE *fp = popen(command, "r");
+    if (fp == NULL) {
+        perror("popen failed");
+        return false;
+    }
+    
+    char buffer[1024];
+    bool in_use = false;
+    
+    if (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        in_use = true;
+    }
+    
+    pclose(fp);
+    return in_use;
+}
+```
+
+### 2. tcpdump
+
+`tcpdump` is a powerful command-line packet analyzer that can capture and display network packets.
+
+```bash
+# Capture packets on a specific interface
+tcpdump -i eth0
+
+# Capture packets for a specific host
+tcpdump host 192.168.1.1
+
+# Capture packets for a specific port
+tcpdump port 8080
+
+# Capture TCP packets
+tcpdump tcp
+
+# Save packets to a file
+tcpdump -w capture.pcap
+
+# Read packets from a file
+tcpdump -r capture.pcap
+```
+
+Example C code to programmatically capture packets:
+
+```c
+#include <pcap.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void packet_handler(u_char *user_data, const struct pcap_pkthdr *pkthdr, const u_char *packet) {
+    printf("Packet captured: %d bytes\n", pkthdr->len);
+    // Process packet...
+}
+
+void capture_packets(const char *interface, const char *filter_exp) {
+    char errbuf[PCAP_ERRBUF_SIZE];
+    pcap_t *handle;
+    struct bpf_program fp;
+    bpf_u_int32 net, mask;
+    
+    // Get network address and mask
+    if (pcap_lookupnet(interface, &net, &mask, errbuf) == -1) {
+        fprintf(stderr, "Can't get netmask for device %s: %s\n", interface, errbuf);
+        net = 0;
+        mask = 0;
+    }
+    
+    // Open the device for capturing
+    handle = pcap_open_live(interface, BUFSIZ, 1, 1000, errbuf);
+    if (handle == NULL) {
+        fprintf(stderr, "Couldn't open device %s: %s\n", interface, errbuf);
+        return;
+    }
+    
+    // Compile and apply the filter
+    if (pcap_compile(handle, &fp, filter_exp, 0, net) == -1) {
+        fprintf(stderr, "Couldn't parse filter %s: %s\n", filter_exp, pcap_geterr(handle));
+        return;
+    }
+    
+    if (pcap_setfilter(handle, &fp) == -1) {
+        fprintf(stderr, "Couldn't install filter %s: %s\n", filter_exp, pcap_geterr(handle));
+        return;
+    }
+    
+    // Capture packets
+    pcap_loop(handle, 10, packet_handler, NULL);
+    
+    // Clean up
+    pcap_freecode(&fp);
+    pcap_close(handle);
+}
+```
+
+### 3. Wireshark
+
+Wireshark is a graphical network protocol analyzer that allows you to capture and interactively browse the traffic running on a computer network.
+
+While Wireshark itself is a GUI application, you can use its command-line counterpart, `tshark`, in your debugging scripts:
+
+```bash
+# Capture packets on a specific interface
+tshark -i eth0
+
+# Capture packets with a specific filter
+tshark -i eth0 -f "port 8080"
+
+# Display specific fields
+tshark -i eth0 -T fields -e ip.src -e ip.dst -e tcp.port
+
+# Save to a file
+tshark -i eth0 -w capture.pcapng
+```
+
+## Socket-Specific Debugging Techniques
+
+### 1. Socket Options for Debugging
+
+Use socket options to help with debugging:
+
+```c
+// Enable socket debugging
+int enable_debug(int sockfd) {
+    int option = 1;
+    return setsockopt(sockfd, SOL_SOCKET, SO_DEBUG, &option, sizeof(option));
+}
+
+// Get socket error
+int get_socket_error(int sockfd) {
+    int error = 0;
+    socklen_t len = sizeof(error);
+    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &error, &len) < 0) {
+        return errno;
+    }
+    return error;
+}
+
+// Check if socket is connected
+bool is_socket_connected(int sockfd) {
+    struct sockaddr_in addr;
+    socklen_t len = sizeof(addr);
+    return getpeername(sockfd, (struct sockaddr *)&addr, &len) == 0;
+}
+
+// Get socket type
+int get_socket_type(int sockfd) {
+    int type;
+    socklen_t len = sizeof(type);
+    if (getsockopt(sockfd, SOL_SOCKET, SO_TYPE, &type, &len) < 0) {
+        return -1;
+    }
+    return type;
+}
+```
+
+### 2. Socket Tracing
+
+Implement a wrapper around socket functions to trace all socket operations:
+
+```c
+#include <stdio.h>
+#include <stdarg.h>
+#include <sys/socket.h>
+
+// Original socket functions
+static int (*real_socket)(int, int, int) = NULL;
+static int (*real_bind)(int, const struct sockaddr *, socklen_t) = NULL;
+static int (*real_listen)(int, int) = NULL;
+static int (*real_accept)(int, struct sockaddr *, socklen_t *) = NULL;
+static int (*real_connect)(int, const struct sockaddr *, socklen_t) = NULL;
+static ssize_t (*real_send)(int, const void *, size_t, int) = NULL;
+static ssize_t (*real_recv)(int, void *, size_t, int) = NULL;
+static int (*real_close)(int) = NULL;
+
+// Initialize function pointers
+void init_socket_trace() {
+    real_socket = dlsym(RTLD_NEXT, "socket");
+    real_bind = dlsym(RTLD_NEXT, "bind");
+    real_listen = dlsym(RTLD_NEXT, "listen");
+    real_accept = dlsym(RTLD_NEXT, "accept");
+    real_connect = dlsym(RTLD_NEXT, "connect");
+    real_send = dlsym(RTLD_NEXT, "send");
+    real_recv = dlsym(RTLD_NEXT, "recv");
+    real_close = dlsym(RTLD_NEXT, "close");
+}
+
+// Wrapper functions
+int socket(int domain, int type, int protocol) {
+    int fd = real_socket(domain, type, protocol);
+    fprintf(stderr, "socket(%d, %d, %d) = %d\n", domain, type, protocol, fd);
+    return fd;
+}
+
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen) {
+    int result = real_bind(sockfd, addr, addrlen);
+    fprintf(stderr, "bind(%d, %p, %d) = %d\n", sockfd, addr, addrlen, result);
+    return result;
+}
+
+int listen(int sockfd, int backlog) {
+    int result = real_listen(sockfd, backlog);
+    fprintf(stderr, "listen(%d, %d) = %d\n", sockfd, backlog, result);
+    return result;
+}
+
+// Additional wrapper functions...
+```
+
+To use this tracing library, compile it as a shared library and use `LD_PRELOAD` to load it:
+
+```bash
+gcc -shared -fPIC -o socket_trace.so socket_trace.c -ldl
+LD_PRELOAD=./socket_trace.so ./your_program
+```
+
+### 3. Socket Simulation
+
+Create a socket simulation environment for testing and debugging:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <pthread.h>
+
+// Simulated socket
+typedef struct {
+    int id;
+    bool connected;
+    pthread_mutex_t mutex;
+    char *read_buffer;
+    size_t read_buffer_size;
+    size_t read_buffer_pos;
+    char *write_buffer;
+    size_t write_buffer_size;
+    size_t write_buffer_pos;
+} sim_socket_t;
+
+// Create a simulated socket pair
+void create_sim_socket_pair(sim_socket_t **client, sim_socket_t **server) {
+    *client = malloc(sizeof(sim_socket_t));
+    *server = malloc(sizeof(sim_socket_t));
+    
+    (*client)->id = 1;
+    (*client)->connected = true;
+    pthread_mutex_init(&(*client)->mutex, NULL);
+    (*client)->read_buffer = malloc(4096);
+    (*client)->read_buffer_size = 4096;
+    (*client)->read_buffer_pos = 0;
+    (*client)->write_buffer = malloc(4096);
+    (*client)->write_buffer_size = 4096;
+    (*client)->write_buffer_pos = 0;
+    
+    (*server)->id = 2;
+    (*server)->connected = true;
+    pthread_mutex_init(&(*server)->mutex, NULL);
+    (*server)->read_buffer = (*client)->write_buffer;
+    (*server)->read_buffer_size = (*client)->write_buffer_size;
+    (*server)->read_buffer_pos = 0;
+    (*server)->write_buffer = (*client)->read_buffer;
+    (*server)->write_buffer_size = (*client)->read_buffer_size;
+    (*server)->write_buffer_pos = 0;
+}
+
+// Simulated send
+ssize_t sim_send(sim_socket_t *socket, const void *buffer, size_t length) {
+    pthread_mutex_lock(&socket->mutex);
+    
+    if (!socket->connected) {
+        pthread_mutex_unlock(&socket->mutex);
+        return -1;
+    }
+    
+    size_t available = socket->write_buffer_size - socket->write_buffer_pos;
+    size_t to_write = length < available ? length : available;
+    
+    memcpy(socket->write_buffer + socket->write_buffer_pos, buffer, to_write);
+    socket->write_buffer_pos += to_write;
+    
+    pthread_mutex_unlock(&socket->mutex);
+    return to_write;
+}
+
+// Simulated receive
+ssize_t sim_recv(sim_socket_t *socket, void *buffer, size_t length) {
+    pthread_mutex_lock(&socket->mutex);
+    
+    if (!socket->connected) {
+        pthread_mutex_unlock(&socket->mutex);
+        return -1;
+    }
+    
+    if (socket->read_buffer_pos == 0) {
+        // No data available
+        pthread_mutex_unlock(&socket->mutex);
+        return 0;
+    }
+    
+    size_t to_read = length < socket->read_buffer_pos ? length : socket->read_buffer_pos;
+    
+    memcpy(buffer, socket->read_buffer, to_read);
+    
+    // Move remaining data to the beginning of the buffer
+    memmove(socket->read_buffer, socket->read_buffer + to_read,
+            socket->read_buffer_pos - to_read);
+    socket->read_buffer_pos -= to_read;
+    
+    pthread_mutex_unlock(&socket->mutex);
+    return to_read;
+}
+
+// Close simulated socket
+void sim_close(sim_socket_t *socket) {
+    pthread_mutex_lock(&socket->mutex);
+    socket->connected = false;
+    pthread_mutex_unlock(&socket->mutex);
+}
+
+// Free simulated socket
+void sim_free(sim_socket_t *socket) {
+    pthread_mutex_destroy(&socket->mutex);
+    free(socket);
+}
+```
+
+## Advanced Debugging Techniques
+
+### 1. Fault Injection
+
+Inject faults to test how your application handles errors:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+
+// Fault injection configuration
+typedef struct {
+    bool enable_socket_failure;
+    float socket_failure_rate;
+    bool enable_connect_failure;
+    float connect_failure_rate;
+    bool enable_send_failure;
+    float send_failure_rate;
+    bool enable_recv_failure;
+    float recv_failure_rate;
+    bool enable_partial_send;
+    float partial_send_rate;
+    float partial_send_factor;
+} fault_config_t;
+
+// Global fault configuration
+fault_config_t fault_config = {
+    .enable_socket_failure = false,
+    .socket_failure_rate = 0.1,
+    .enable_connect_failure = false,
+    .connect_failure_rate = 0.2,
+    .enable_send_failure = false,
+    .send_failure_rate = 0.1,
+    .enable_recv_failure = false,
+    .recv_failure_rate = 0.1,
+    .enable_partial_send = false,
+    .partial_send_rate = 0.3,
+    .partial_send_factor = 0.5
+};
+
+// Initialize fault injection
+void init_fault_injection() {
+    srand(time(NULL));
+}
+
+// Check if fault should be injected
+bool should_inject_fault(float rate) {
+    return ((float)rand() / RAND_MAX) < rate;
+}
+
+// Wrapper functions with fault injection
+int socket_with_faults(int domain, int type, int protocol) {
+    if (fault_config.enable_socket_failure && should_inject_fault(fault_config.socket_failure_rate)) {
+        errno = ENOMEM;
+        return -1;
+    }
+    
+    return socket(domain, type, protocol);
+}
+
+int connect_with_faults(int sockfd, const struct sockaddr *addr, socklen_t addrlen) {
+    if (fault_config.enable_connect_failure && should_inject_fault(fault_config.connect_failure_rate)) {
+        errno = ECONNREFUSED;
+        return -1;
+    }
+    
+    return connect(sockfd, addr, addrlen);
+}
+
+ssize_t send_with_faults(int sockfd, const void *buf, size_t len, int flags) {
+    if (fault_config.enable_send_failure && should_inject_fault(fault_config.send_failure_rate)) {
+        errno = ECONNRESET;
+        return -1;
+    }
+    
+    if (fault_config.enable_partial_send && should_inject_fault(fault_config.partial_send_rate)) {
+        size_t partial_len = (size_t)(len * fault_config.partial_send_factor);
+        if (partial_len == 0) partial_len = 1;
+        return send(sockfd, buf, partial_len, flags);
+    }
+    
+    return send(sockfd, buf, len, flags);
+}
+
+ssize_t recv_with_faults(int sockfd, void *buf, size_t len, int flags) {
+    if (fault_config.enable_recv_failure && should_inject_fault(fault_config.recv_failure_rate)) {
+        errno = ECONNRESET;
+        return -1;
+    }
+    
+    return recv(sockfd, buf, len, flags);
+}
+```
+
+### 2. Memory Debugging
+
+Use memory debugging tools to detect memory leaks and other issues:
+
+```c
+// Compile with -DDEBUG_MEMORY
+#ifdef DEBUG_MEMORY
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Memory allocation tracking
+typedef struct mem_block {
+    void *ptr;
+    size_t size;
+    const char *file;
+    int line;
+    struct mem_block *next;
+} mem_block_t;
+
+static mem_block_t *mem_blocks = NULL;
+static size_t total_allocated = 0;
+static size_t allocation_count = 0;
+
+// Override malloc
+void *debug_malloc(size_t size, const char *file, int line) {
+    void *ptr = malloc(size);
+    
+    if (ptr != NULL) {
+        mem_block_t *block = malloc(sizeof(mem_block_t));
+        if (block != NULL) {
+            block->ptr = ptr;
+            block->size = size;
+            block->file = file;
+            block->line = line;
+            block->next = mem_blocks;
+            mem_blocks = block;
+            
+            total_allocated += size;
+            allocation_count++;
+        }
+    }
+    
+    return ptr;
+}
+
+// Override free
+void debug_free(void *ptr, const char *file, int line) {
+    if (ptr == NULL) return;
+    
+    mem_block_t *prev = NULL;
+    mem_block_t *curr = mem_blocks;
+    
+    while (curr != NULL) {
+        if (curr->ptr == ptr) {
+            if (prev == NULL) {
+                mem_blocks = curr->next;
+            } else {
+                prev->next = curr->next;
+            }
+            
+            total_allocated -= curr->size;
+            allocation_count--;
+            
+            free(curr);
+            free(ptr);
+            return;
+        }
+        
+        prev = curr;
+        curr = curr->next;
+    }
+    
+    fprintf(stderr, "WARNING: Attempt to free unallocated pointer %p at %s:%d\n",
+            ptr, file, line);
+}
+
+// Print memory statistics
+void print_memory_stats() {
+    printf("Memory Statistics:\n");
+    printf("  Total allocated: %zu bytes\n", total_allocated);
+    printf("  Allocation count: %zu\n", allocation_count);
+    
+    if (allocation_count > 0) {
+        printf("  Memory leaks detected:\n");
+        
+        mem_block_t *block = mem_blocks;
+        while (block != NULL) {
+            printf("    %p: %zu bytes allocated at %s:%d\n",
+                   block->ptr, block->size, block->file, block->line);
+            block = block->next;
+        }
+    }
+}
+
+#define malloc(size) debug_malloc(size, __FILE__, __LINE__)
+#define free(ptr) debug_free(ptr, __FILE__, __LINE__)
+#endif // DEBUG_MEMORY
+```
+
+## Conclusion
+
+Debugging socket applications requires a combination of techniques and tools. By implementing comprehensive logging, using network analysis tools, and applying specialized debugging techniques, you can effectively identify and resolve issues in your socket code.
+
+Remember that debugging is often an iterative process. Start with simple techniques like logging and error checking, and gradually move to more advanced tools as needed. With practice and the right approach, you can become proficient at debugging even the most complex socket programming issues.
+
+Key takeaways:
+- Implement comprehensive logging to track the flow of your application
+- Use error checking and debug printing to identify issues
+- Track socket state to understand the behavior of your application
+- Leverage network analysis tools like netstat, tcpdump, and Wireshark
+- Apply socket-specific debugging techniques like socket options and tracing
+- Consider advanced techniques like fault injection and memory debugging
+- Be methodical and patient - debugging network issues takes time
