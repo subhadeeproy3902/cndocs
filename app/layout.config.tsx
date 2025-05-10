@@ -12,6 +12,5 @@ export const baseOptions: BaseLayoutProps = {
         </span>
       </div>
     ),
-    transparentMode: "top",
   },
 };
