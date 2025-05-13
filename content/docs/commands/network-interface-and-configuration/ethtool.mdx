@@ -1,0 +1,307 @@
+---
+title: "ethtool"
+description: "A comprehensive guide to viewing and changing Ethernet device settings"
+draft: false
+toc: true
+---
+
+# Ethtool Command in Linux
+
+## Introduction
+
+The `ethtool` command is a powerful utility in Linux used for viewing and modifying the settings of Ethernet network interfaces. It provides system administrators with the ability to control hardware settings, diagnose network issues, and optimize network performance directly from the command line.
+
+<img className="max-w-xl mx-auto" src="/images/ethtool-command.png" alt="Ethernet Network Card" />
+
+This utility is particularly valuable for server environments where network performance is critical, allowing administrators to fine-tune network interface parameters without having to recompile the kernel or modify hardware settings through BIOS.
+
+## Basic Syntax
+
+The basic syntax of the `ethtool` command is:
+
+```bash
+ethtool [OPTIONS] DEVICE
+```
+
+Where:
+- **OPTIONS**: Various flags that determine the operation to perform
+- **DEVICE**: The network interface to operate on (e.g., eth0, ens33, enp0s3)
+
+## Key Capabilities
+
+### 1. Viewing Network Interface Information
+
+The most basic use of `ethtool` is to display the current settings of a network interface:
+
+```bash
+ethtool eth0
+```
+
+This command provides comprehensive information about the interface, including:
+- Supported link modes (speed and duplex settings)
+- Current speed and duplex settings
+- Auto-negotiation status
+- Port type
+- Link status
+
+Example output:
+```
+Settings for eth0:
+        Supported ports: [ TP ]
+        Supported link modes:   10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Supported pause frame use: No
+        Supports auto-negotiation: Yes
+        Supported FEC modes: Not reported
+        Advertised link modes:  10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Advertised pause frame use: No
+        Advertised auto-negotiation: Yes
+        Advertised FEC modes: Not reported
+        Speed: 1000Mb/s
+        Duplex: Full
+        Port: Twisted Pair
+        PHYAD: 1
+        Transceiver: internal
+        Auto-negotiation: on
+        MDI-X: on
+        Supports Wake-on: pumbg
+        Wake-on: d
+        Current message level: 0x00000007 (7)
+                               drv probe link
+        Link detected: yes
+```
+
+### 2. Changing Speed and Duplex Settings
+
+One of the most common uses of `ethtool` is to modify the speed and duplex settings of a network interface:
+
+```bash
+ethtool -s eth0 speed 100 duplex full autoneg off
+```
+
+This command:
+- Sets the speed to 100 Mbps
+- Sets the duplex mode to full
+- Disables auto-negotiation
+
+It's important to note that changing these settings may temporarily disrupt network connectivity, and the interface may need to be restarted for changes to take effect.
+
+### 3. Viewing Driver Information
+
+To display information about the network interface driver:
+
+```bash
+ethtool -i eth0
+```
+
+Example output:
+```
+driver: e1000e
+version: 3.2.6-k
+firmware-version: 0.13-4
+bus-info: 0000:00:19.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no
+```
+
+This information is particularly useful for troubleshooting driver-related issues or when checking compatibility with specific hardware.
+
+### 4. Checking Network Statistics
+
+To view detailed statistics for a network interface:
+
+```bash
+ethtool -S eth0
+```
+
+This command displays a comprehensive set of statistics, including:
+- Packets received/transmitted
+- Bytes received/transmitted
+- Errors
+- Dropped packets
+- Collisions
+
+These statistics are invaluable for diagnosing network performance issues and identifying potential hardware problems.
+
+### 5. Testing Network Interface
+
+The `ethtool` command can perform various tests on a network interface to check for hardware issues:
+
+```bash
+ethtool -t eth0
+```
+
+This runs a series of diagnostic tests on the interface and reports any failures, which can help identify hardware problems before they cause network outages.
+
+## Advanced Features
+
+### 1. Managing Wake-on-LAN Settings
+
+`ethtool` allows you to configure Wake-on-LAN (WoL) settings for supported network interfaces:
+
+```bash
+ethtool -s eth0 wol g
+```
+
+This command enables Wake-on-LAN for magic packet (g). Other options include:
+- `d`: Disable (no wake)
+- `p`: Wake on PHY activity
+- `u`: Wake on unicast messages
+- `m`: Wake on multicast messages
+- `b`: Wake on broadcast messages
+- `a`: Wake on ARP
+- `g`: Wake on magic packet
+
+### 2. Identifying Physical Ports
+
+In systems with multiple network interfaces, it can be challenging to identify which physical port corresponds to which interface name. `ethtool` provides a solution:
+
+```bash
+ethtool -p eth0 5
+```
+
+This command causes the LED on the physical port associated with eth0 to blink for 5 seconds, making it easy to identify the correct port.
+
+### 3. Adjusting Ring Buffer Size
+
+For performance tuning, `ethtool` allows adjustment of the network interface's ring buffer size:
+
+```bash
+ethtool -g eth0      # View current ring buffer settings
+ethtool -G eth0 rx 512 tx 512   # Set ring buffer sizes
+```
+
+Increasing the ring buffer size can help reduce packet loss in high-traffic environments, though it may increase latency slightly.
+
+### 4. Managing Offload Features
+
+Modern network cards support various offload features that can improve performance by handling certain tasks in hardware:
+
+```bash
+ethtool -k eth0      # View current offload settings
+ethtool -K eth0 tso on gso on   # Enable TCP segmentation offload and generic segmentation offload
+```
+
+Enabling appropriate offload features can significantly improve network performance, especially for high-throughput applications.
+
+## Practical Examples
+
+### Example 1: Troubleshooting Link Issues
+
+If a network interface is experiencing connectivity problems, you can use `ethtool` to check the link status:
+
+```bash
+ethtool eth0 | grep "Link detected"
+```
+
+If the output shows "Link detected: no", there may be a physical connection issue. You can then try:
+
+```bash
+ethtool -s eth0 autoneg off speed 100 duplex full
+```
+
+This disables auto-negotiation and sets a specific speed and duplex mode, which can sometimes resolve compatibility issues with older network equipment.
+
+### Example 2: Optimizing for High-Performance Networking
+
+For servers handling high network traffic:
+
+```bash
+# Increase ring buffer sizes
+ethtool -G eth0 rx 4096 tx 4096
+
+# Enable hardware offloading features
+ethtool -K eth0 tso on gso on gro on lro on
+
+# Set interrupt coalescing parameters
+ethtool -C eth0 rx-usecs 100 tx-usecs 100
+```
+
+These settings can significantly improve network throughput and reduce CPU usage for network processing.
+
+### Example 3: Making Settings Persistent
+
+Changes made with `ethtool` are not persistent across reboots. To make them permanent, you need to add the commands to your system's network configuration.
+
+For Ubuntu/Debian systems, add to `/etc/network/interfaces`:
+
+```
+auto eth0
+iface eth0 inet dhcp
+    post-up ethtool -s eth0 speed 1000 duplex full autoneg off
+```
+
+For RHEL/CentOS systems, create a script in `/etc/sysconfig/network-scripts/`:
+
+```bash
+# /etc/sysconfig/network-scripts/ifup-local
+#!/bin/bash
+if [ "$1" = "eth0" ]; then
+    ethtool -s eth0 speed 1000 duplex full autoneg off
+fi
+```
+
+Make the script executable with `chmod +x /etc/sysconfig/network-scripts/ifup-local`.
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-a` | Show pause parameter information |
+| `-c` | Show coalesce parameters |
+| `-C` | Set coalesce parameters |
+| `-g` | Show ring buffer parameters |
+| `-G` | Set ring buffer parameters |
+| `-i` | Show driver information |
+| `-k` | Show offload parameters |
+| `-K` | Set offload parameters |
+| `-p` | Identify the physical port (blink LED) |
+| `-S` | Show network statistics |
+| `-s` | Set various parameters (speed, duplex, etc.) |
+| `-t` | Execute adapter self-test |
+
+## Troubleshooting with Ethtool
+
+### Issue: Link Not Detected
+
+If `ethtool eth0` shows "Link detected: no":
+
+1. Check physical connections (cables, switch ports)
+2. Try forcing speed and duplex settings:
+   ```bash
+   ethtool -s eth0 speed 100 duplex full autoneg off
+   ```
+3. Check for driver issues:
+   ```bash
+   ethtool -i eth0
+   ```
+
+### Issue: Poor Network Performance
+
+If experiencing slow network speeds:
+
+1. Check current link speed:
+   ```bash
+   ethtool eth0 | grep Speed
+   ```
+2. Verify that the interface is operating at the expected speed
+3. Check for errors in statistics:
+   ```bash
+   ethtool -S eth0 | grep -E 'error|drop|collision'
+   ```
+4. Optimize offload settings:
+   ```bash
+   ethtool -K eth0 tso on gso on gro on
+   ```
+
+## Conclusion
+
+The `ethtool` command is an essential tool for Linux system administrators managing network interfaces. It provides comprehensive capabilities for viewing and modifying Ethernet device settings, troubleshooting network issues, and optimizing network performance.
+
+By mastering `ethtool`, administrators can ensure optimal network configuration, diagnose hardware problems, and fine-tune network performance for specific workloads. Whether you're managing a single server or a large data center, `ethtool` is an indispensable utility in your Linux networking toolkit.
