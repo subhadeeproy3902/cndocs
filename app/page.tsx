@@ -7,6 +7,10 @@ import { buttonVariants } from "@/components/ui/button";
 import GradientBlur from "@/components/GradientBlur";
 import { ArrowRight, Github } from "lucide-react";
 import { SparklesText } from "@/components/ui/sparkles-text";
+import FeaturesSection from "@/components/Features";
+import Testimonials from "@/components/testimonials-marquee";
+import Faq2 from "@/components/faq-2";
+import Footer4Col from "@/components/footer";
 
 export default function Home() {
   return (
@@ -205,6 +209,10 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <FeaturesSection />
+      <Testimonials />
+      <Faq2 />
+      <Footer4Col />
     </HomeLayout>
   );
 }
