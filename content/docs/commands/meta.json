@@ -3,5 +3,5 @@
   "description": "Explore networking commands and tools.",
   "icon": "Terminal",
   "root": true,
-  "pages": ["index"]
+  "pages": ["index", "ifconfig"]
 }
