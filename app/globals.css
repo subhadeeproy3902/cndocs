@@ -123,6 +123,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -136,13 +137,58 @@ pre code {
   .animation-delay-1000 {
     animation-delay: 1s;
   }
+
   .animation-delay-2000 {
     animation-delay: 2s;
   }
+
   .animation-delay-3000 {
     animation-delay: 3s;
   }
+
   .animation-delay-4000 {
     animation-delay: 4s;
   }
+}
+
+
+/* animation: {
+        marquee: "marquee var(--duration) linear infinite", 
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite", 
+      }, 
+      keyframes: { 
+        marquee: { 
+          from: { transform: "translateX(0)" }, 
+          to: { transform: "translateX(calc(-100% - var(--gap)))" }, 
+        }, 
+        "marquee-vertical": { 
+          from: { transform: "translateY(0)" }, 
+          to: { transform: "translateY(calc(-100% - var(--gap)))" }, 
+        }, 
+      },  */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+.animation-marquee {
+  animation: marquee var(--duration) linear infinite;
+}
+
+.animation-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
 }

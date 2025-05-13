@@ -2,7 +2,7 @@ export const siteLink =
   process.env.NODE_ENV !== "development"
     ? "https://cn.mvp-subha.me"
     : "http://localhost:3000";
-export const siteName = "MVPBlocks";
+export const siteName = "CNdocs";
 export const launched = true;
 export const siteConfig = {
   name: "CN Docs",

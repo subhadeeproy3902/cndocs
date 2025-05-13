@@ -1,7 +1,0 @@
-{
-  "title": "IV. Advanced Codes",
-  "description": "Explore advanced networking projects.",
-  "icon": "Code",
-  "root": true,
-  "pages": ["index", "message-queues", "unix-sockets"]
-}

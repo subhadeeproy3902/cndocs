@@ -162,7 +162,7 @@ export default function Home() {
                 Getting Started <ArrowRight className="size-4" />
               </Link>
               <a
-                href="https://stackblitz.com/~/github.com/fuma-nama/fumadocs-ui-template"
+                href="https://github.com/subhadeeproy3902/cn-docs"
                 target="_blank"
                 rel="noreferrer noopener"
                 className={cn(

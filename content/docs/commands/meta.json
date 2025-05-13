@@ -1,0 +1,7 @@
+{
+  "title": "III. Networking Commands",
+  "description": "Explore networking commands and tools.",
+  "icon": "Terminal",
+  "root": true,
+  "pages": ["index"]
+}

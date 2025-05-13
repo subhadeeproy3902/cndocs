@@ -25,7 +25,7 @@ export default async function Page(props: {
 }) {
   const params = await props.params;
   const page = source.getPage(params.slug);
-  
+
 
   if (!page) notFound();
   const MDX = page.data.body;
@@ -35,7 +35,7 @@ export default async function Page(props: {
 
   const footer = (
     <a
-      href={`https://github.com/subhadeeproy3902/mvpblocks/blob/main/${path}`}
+      href={`https://github.com/subhadeeproy3902/cndocs/blob/main/${path}`}
       target="_blank"
       rel="noreferrer noopener"
       className={cn(
@@ -53,7 +53,7 @@ export default async function Page(props: {
 
   return (
     <DocsPage
-        breadcrumb={{}} 
+        breadcrumb={{}}
         article={{
           className: "max-w-5xl max-sm:pb-16",
         }}
