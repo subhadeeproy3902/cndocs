@@ -1,0 +1,410 @@
+---
+title: "ssmtp/sendmail"
+description: "A comprehensive guide to sending email from the command line in Linux"
+icon: "envelope"
+draft: false
+toc: true
+---
+
+# ssmtp and sendmail Commands
+
+## Introduction
+
+Sending emails from the command line is a valuable capability for system administrators and developers, particularly for automated notifications, system alerts, and application-generated messages. Linux provides several tools for this purpose, with `ssmtp` and `sendmail` being among the most commonly used.
+
+This guide covers both tools:
+
+1. **ssmtp**: A simple Mail Transfer Agent (MTA) designed to deliver mail from a local system to a mail hub (SMTP server). It's lightweight and ideal for systems that need to send mail but don't need to receive it.
+
+2. **sendmail**: A more comprehensive mail transfer agent that has been a standard part of Unix/Linux systems for decades. The term "sendmail" can refer to both the original Sendmail MTA and the command-line interface that many MTAs provide for compatibility.
+
+Both tools allow you to send emails directly from the command line or from scripts, making them essential for system automation and notification tasks.
+
+## Understanding Mail Transfer Agents (MTAs)
+
+Before diving into specific commands, it's important to understand what an MTA is:
+
+- An MTA is responsible for transferring email messages from one computer to another using SMTP (Simple Mail Transfer Protocol)
+- Full-featured MTAs (like Postfix, Sendmail, or Exim) can both send and receive mail
+- Lightweight MTAs (like ssmtp) typically only send mail, relying on external mail servers for actual delivery
+
+## ssmtp: The Lightweight Solution
+
+### Overview
+
+`ssmtp` is a simple mail transfer agent designed to deliver mail from a local system to a mail hub (SMTP server). It's not a full mail server but rather a relay that forwards mail to a proper mail server for delivery.
+
+Key features of ssmtp:
+- Extremely lightweight and simple to configure
+- No mail queues or daemons to run
+- Perfect for systems that only need to send occasional emails
+- Can use external SMTP servers (like Gmail, Office 365, etc.)
+
+### Installation
+
+#### Debian/Ubuntu-based Systems
+
+```bash
+sudo apt update
+sudo apt install ssmtp
+```
+
+#### Red Hat/CentOS/Fedora Systems
+
+```bash
+# For CentOS/RHEL
+sudo yum install ssmtp
+
+# For Fedora
+sudo dnf install ssmtp
+```
+
+### Configuration
+
+The main configuration file for ssmtp is `/etc/ssmtp/ssmtp.conf`. Here's how to configure it to use a Gmail account as a relay:
+
+```bash
+sudo nano /etc/ssmtp/ssmtp.conf
+```
+
+Add or modify the following lines:
+
+```
+# The mail server (SMTP)
+mailhub=smtp.gmail.com:587
+
+# The address where bounces are sent
+rewriteDomain=gmail.com
+
+# The full hostname
+hostname=your_hostname
+
+# Use SSL/TLS
+UseSTARTTLS=YES
+
+# Authentication
+AuthUser=your_gmail_address@gmail.com
+AuthPass=your_app_password
+AuthMethod=LOGIN
+
+# Email address format
+FromLineOverride=YES
+```
+
+**Note**: For Gmail, you'll need to use an "App Password" rather than your regular password if you have 2-factor authentication enabled.
+
+### Basic Usage
+
+#### Sending a Simple Email
+
+To send a simple email with ssmtp:
+
+```bash
+echo "This is the body of the email" | ssmtp recipient@example.com
+```
+
+This will send an email with no subject. To include a subject and other headers:
+
+```bash
+echo -e "To: recipient@example.com\nFrom: sender@example.com\nSubject: Test Email\n\nThis is the body of the email." | ssmtp recipient@example.com
+```
+
+#### Sending an Email from a File
+
+You can also prepare your email in a file and send it:
+
+```bash
+ssmtp recipient@example.com < email.txt
+```
+
+Where `email.txt` contains:
+
+```
+To: recipient@example.com
+From: sender@example.com
+Subject: Test Email
+
+This is the body of the email.
+```
+
+#### Sending to Multiple Recipients
+
+To send to multiple recipients:
+
+```bash
+echo -e "To: recipient1@example.com, recipient2@example.com\nFrom: sender@example.com\nSubject: Test Email\n\nThis is the body of the email." | ssmtp recipient1@example.com recipient2@example.com
+```
+
+### Advanced Usage
+
+#### Sending Attachments
+
+ssmtp itself doesn't handle attachments directly. For this, you can use the `mutt` command in combination with ssmtp:
+
+```bash
+sudo apt install mutt
+echo "Email body" | mutt -s "Subject" -a /path/to/attachment.pdf -- recipient@example.com
+```
+
+#### Using ssmtp with Scripts
+
+Here's a simple bash script to send an email:
+
+```bash
+#!/bin/bash
+
+TO="recipient@example.com"
+FROM="sender@example.com"
+SUBJECT="Automated Email"
+BODY="This is an automated email sent from a bash script."
+
+echo -e "To: $TO\nFrom: $FROM\nSubject: $SUBJECT\n\n$BODY" | ssmtp $TO
+```
+
+## sendmail: The Traditional Approach
+
+### Overview
+
+The `sendmail` command is a standard interface for sending mail that's implemented by various MTAs, including the original Sendmail MTA, Postfix, Exim, and others. When people refer to "sendmail," they might mean either:
+
+1. The original Sendmail MTA (a full mail server)
+2. The sendmail command-line interface provided by various MTAs for compatibility
+
+In this guide, we focus on the command-line interface, which is available regardless of which MTA is installed.
+
+### Installation
+
+Most Linux distributions come with an MTA that provides the sendmail command. If not, you can install one:
+
+#### Postfix (Recommended Modern MTA)
+
+```bash
+# Debian/Ubuntu
+sudo apt update
+sudo apt install postfix
+
+# Red Hat/CentOS/Fedora
+sudo yum install postfix
+# or
+sudo dnf install postfix
+```
+
+During installation, choose "Internet Site" and enter your domain name when prompted.
+
+#### Original Sendmail
+
+```bash
+# Debian/Ubuntu
+sudo apt update
+sudo apt install sendmail
+
+# Red Hat/CentOS/Fedora
+sudo yum install sendmail
+# or
+sudo dnf install sendmail
+```
+
+### Basic Usage
+
+#### Sending a Simple Email
+
+To send a simple email with sendmail:
+
+```bash
+echo "This is the body of the email" | sendmail recipient@example.com
+```
+
+To include a subject and other headers:
+
+```bash
+echo -e "To: recipient@example.com\nFrom: sender@example.com\nSubject: Test Email\n\nThis is the body of the email." | sendmail -t
+```
+
+The `-t` option tells sendmail to extract recipient addresses from the message headers.
+
+#### Sending an Email from a File
+
+You can prepare your email in a file and send it:
+
+```bash
+sendmail -t < email.txt
+```
+
+Where `email.txt` contains:
+
+```
+To: recipient@example.com
+From: sender@example.com
+Subject: Test Email
+
+This is the body of the email.
+```
+
+#### Sending to Multiple Recipients
+
+To send to multiple recipients:
+
+```bash
+echo -e "To: recipient1@example.com\nCc: recipient2@example.com\nFrom: sender@example.com\nSubject: Test Email\n\nThis is the body of the email." | sendmail -t
+```
+
+### Advanced Usage
+
+#### Sending Attachments
+
+Like ssmtp, sendmail itself doesn't handle attachments directly. You can use `mutt` or `mail` commands:
+
+```bash
+# Using mutt
+echo "Email body" | mutt -s "Subject" -a /path/to/attachment.pdf -- recipient@example.com
+
+# Using mail (mailutils)
+mail -s "Subject" -A /path/to/attachment.pdf recipient@example.com < body.txt
+```
+
+#### Using sendmail with Scripts
+
+Here's a simple bash script to send an email:
+
+```bash
+#!/bin/bash
+
+TO="recipient@example.com"
+FROM="sender@example.com"
+SUBJECT="Automated Email"
+BODY="This is an automated email sent from a bash script."
+
+echo -e "To: $TO\nFrom: $FROM\nSubject: $SUBJECT\n\n$BODY" | sendmail -t
+```
+
+## mailx/mail Command
+
+Both ssmtp and sendmail can be used with the `mail` command (provided by the `mailutils` or `mailx` package) for a more user-friendly interface:
+
+```bash
+# Install mailutils
+sudo apt install mailutils
+# or
+sudo yum install mailx
+
+# Send an email
+echo "This is the body" | mail -s "Subject Line" recipient@example.com
+
+# Send with attachment
+mail -s "Subject Line" -a /path/to/attachment.pdf recipient@example.com < body.txt
+```
+
+## Common Use Cases
+
+### System Notifications
+
+One of the most common uses for command-line email is sending system notifications:
+
+```bash
+# Send disk usage alert
+df -h | mail -s "Disk Usage Report for $(hostname)" admin@example.com
+
+# Send when backup completes
+tar -czf backup.tar.gz /important/data && echo "Backup completed successfully" | mail -s "Backup Status" admin@example.com
+```
+
+### Cron Job Notifications
+
+Cron jobs can be configured to send their output as emails:
+
+```bash
+# In crontab
+MAILTO=admin@example.com
+0 2 * * * /path/to/backup_script.sh
+```
+
+Or you can explicitly send email from within the script:
+
+```bash
+#!/bin/bash
+OUTPUT=$(run_some_command)
+echo "$OUTPUT" | mail -s "Cron Job Result" admin@example.com
+```
+
+### Application Alerts
+
+Applications can send alerts via command-line email:
+
+```bash
+#!/bin/bash
+if [ "$ERROR_DETECTED" = true ]; then
+    echo "Error details: $ERROR_MESSAGE" | mail -s "Application Error Alert" admin@example.com
+fi
+```
+
+## Troubleshooting
+
+### Common Issues with ssmtp
+
+#### Authentication Failed
+
+If you see authentication errors:
+- Check your username and password
+- For Gmail, ensure you're using an App Password if 2FA is enabled
+- Verify that your SMTP server allows relay from your IP address
+
+#### Connection Refused
+
+If connection is refused:
+- Check if the SMTP server is running
+- Verify the port number is correct
+- Check if a firewall is blocking the connection
+
+### Common Issues with sendmail
+
+#### Mail Queue Issues
+
+If emails are stuck in the queue:
+- Check the mail queue: `mailq`
+- Try to force processing: `sudo sendmail -q`
+- Look at mail logs: `sudo tail -f /var/log/mail.log`
+
+#### DNS Issues
+
+If you see DNS-related errors:
+- Verify your system's DNS configuration
+- Check that your hostname resolves correctly
+- Ensure reverse DNS is properly configured
+
+## Security Considerations
+
+### Password Security
+
+- Never store plain-text passwords in scripts
+- Use environment variables or secure credential storage
+- Consider using dedicated service accounts for sending emails
+
+### Email Encryption
+
+- Consider using TLS/SSL for email transmission
+- Be aware that email content is generally not encrypted unless you specifically use encryption tools
+
+### Preventing Spam
+
+- Limit who can use the mail sending capabilities
+- Implement rate limiting for email sending
+- Monitor for unusual email sending patterns
+
+## Comparison: ssmtp vs. sendmail
+
+| Feature | ssmtp | sendmail |
+|---------|-------|----------|
+| Size | Lightweight | Full-featured MTA |
+| Complexity | Simple | Complex |
+| Configuration | Easy | More involved |
+| Mail Queue | No | Yes |
+| Receiving Mail | No | Yes |
+| Best For | Simple forwarding to a smart host | Complete mail handling |
+
+## Conclusion
+
+Command-line email tools like ssmtp and sendmail provide essential functionality for system administrators and developers who need to send automated emails from Linux systems. While ssmtp offers a lightweight solution perfect for simple forwarding to a smart host, sendmail (or a modern alternative like Postfix) provides a more complete mail handling system.
+
+For most modern systems that just need to send occasional emails, ssmtp is often the preferred choice due to its simplicity. However, for systems that need to handle more complex mail operations, a full MTA with the sendmail command interface is more appropriate.
+
+By mastering these command-line email tools, you can effectively implement automated notifications, system alerts, and application-generated messages in your Linux environment.
