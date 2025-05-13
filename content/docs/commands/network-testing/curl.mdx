@@ -1,0 +1,439 @@
+---
+title: "curl"
+description: "A comprehensive guide to transferring data from or to a server using the curl command"
+draft: false
+toc: true
+---
+
+# Curl Command in Linux
+
+## Introduction
+
+The `curl` command is a powerful and versatile command-line tool used for transferring data to or from a server using various protocols. Its name stands for "Client URL," reflecting its primary purpose of working with URLs. Whether you need to download files, test APIs, debug web services, or automate HTTP requests, curl provides a comprehensive set of features that make it an essential tool for developers, system administrators, and network engineers.
+
+Curl supports numerous protocols including HTTP, HTTPS, FTP, FTPS, SCP, SFTP, LDAP, SMTP, POP3, and many more. This flexibility allows it to handle almost any type of data transfer task across the internet or local networks.
+
+<img className="max-w-xl mx-auto" src="/images/curl-command.png" alt="Curl Command Example" />
+
+## Basic Syntax
+
+The basic syntax of the curl command is:
+
+```bash
+curl [options] [URL]
+```
+
+Where:
+- **options**: Various flags that modify the behavior of curl
+- **URL**: The URL to interact with, which can use various protocols (HTTP, HTTPS, FTP, etc.)
+
+## Installation
+
+Curl comes pre-installed on most Linux distributions. To check if it's installed on your system, run:
+
+```bash
+curl --version
+```
+
+If it's not installed, you can install it using your distribution's package manager:
+
+For Debian/Ubuntu:
+```bash
+sudo apt update
+sudo apt install curl
+```
+
+For Red Hat/CentOS/Fedora:
+```bash
+sudo yum install curl
+# or
+sudo dnf install curl
+```
+
+## Basic Usage
+
+### Fetching Web Content
+
+The most basic use of curl is to fetch content from a URL:
+
+```bash
+curl https://example.com
+```
+
+This command retrieves the HTML content of the specified website and displays it in the terminal.
+
+### Saving Output to a File
+
+To save the retrieved content to a file instead of displaying it on the screen:
+
+```bash
+curl -o output.html https://example.com
+```
+
+The `-o` (or `--output`) option specifies the filename to save the content to.
+
+Alternatively, you can use the `-O` (uppercase O) option to save the file with its original name from the URL:
+
+```bash
+curl -O https://example.com/file.zip
+```
+
+### Downloading Multiple Files
+
+You can download multiple files in a single command:
+
+```bash
+curl -O https://example.com/file1.txt -O https://example.com/file2.txt
+```
+
+Or using URL patterns:
+
+```bash
+curl -O https://example.com/file[1-5].txt
+```
+
+This downloads file1.txt, file2.txt, file3.txt, file4.txt, and file5.txt.
+
+## Advanced Usage
+
+### HTTP Methods
+
+By default, curl uses the GET method for HTTP requests. You can specify other HTTP methods using the `-X` option:
+
+#### POST Request
+
+```bash
+curl -X POST https://api.example.com/data
+```
+
+#### PUT Request
+
+```bash
+curl -X PUT https://api.example.com/data/1
+```
+
+#### DELETE Request
+
+```bash
+curl -X DELETE https://api.example.com/data/1
+```
+
+### Sending Data
+
+#### Form Data
+
+To send form data with a POST request:
+
+```bash
+curl -X POST -d "name=John&age=30" https://api.example.com/users
+```
+
+The `-d` (or `--data`) option specifies the data to be sent.
+
+#### JSON Data
+
+To send JSON data:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"name":"John","age":30}' https://api.example.com/users
+```
+
+The `-H` (or `--header`) option adds a header to the request.
+
+### Authentication
+
+#### Basic Authentication
+
+```bash
+curl -u username:password https://api.example.com/secure
+```
+
+The `-u` option specifies the username and password for basic authentication.
+
+#### Bearer Token Authentication
+
+```bash
+curl -H "Authorization: Bearer your_token_here" https://api.example.com/secure
+```
+
+### Following Redirects
+
+By default, curl doesn't follow HTTP redirects. To enable this behavior:
+
+```bash
+curl -L https://example.com/redirecting-url
+```
+
+The `-L` (or `--location`) option tells curl to follow redirects.
+
+### Handling Cookies
+
+#### Saving Cookies
+
+```bash
+curl -c cookies.txt https://example.com/login
+```
+
+The `-c` option saves cookies to the specified file.
+
+#### Using Cookies
+
+```bash
+curl -b cookies.txt https://example.com/profile
+```
+
+The `-b` option uses cookies from the specified file.
+
+### Displaying Headers
+
+To see the HTTP headers in the response:
+
+```bash
+curl -I https://example.com
+```
+
+The `-I` (or `--head`) option performs a HEAD request and shows only the headers.
+
+To see both headers and content:
+
+```bash
+curl -i https://example.com
+```
+
+### Verbose Output
+
+For debugging purposes, you can enable verbose output:
+
+```bash
+curl -v https://example.com
+```
+
+The `-v` (or `--verbose`) option shows detailed information about the request and response.
+
+For even more detailed information:
+
+```bash
+curl --trace output.txt https://example.com
+```
+
+## File Transfer
+
+### Uploading Files
+
+#### FTP Upload
+
+```bash
+curl -T localfile.txt ftp://ftp.example.com/
+```
+
+The `-T` (or `--upload-file`) option uploads a file.
+
+#### HTTP Upload (PUT)
+
+```bash
+curl -T localfile.txt https://example.com/upload
+```
+
+### Resuming Downloads
+
+If a download is interrupted, you can resume it:
+
+```bash
+curl -C - -O https://example.com/largefile.zip
+```
+
+The `-C -` option tells curl to automatically find where to resume the download.
+
+### Limiting Bandwidth
+
+To limit the download or upload speed:
+
+```bash
+curl --limit-rate 100K https://example.com/largefile.zip
+```
+
+This limits the transfer rate to 100 kilobytes per second.
+
+## Practical Examples
+
+### Testing REST APIs
+
+```bash
+# GET request
+curl https://api.example.com/users
+
+# POST request with JSON data
+curl -X POST -H "Content-Type: application/json" -d '{"name":"John","age":30}' https://api.example.com/users
+
+# PUT request to update a resource
+curl -X PUT -H "Content-Type: application/json" -d '{"name":"John","age":31}' https://api.example.com/users/1
+
+# DELETE request
+curl -X DELETE https://api.example.com/users/1
+```
+
+### Checking Website Status
+
+```bash
+curl -I https://example.com
+```
+
+This shows the HTTP status code and headers, which can indicate if a website is up and running.
+
+### Downloading Files with Progress Bar
+
+```bash
+curl -# -O https://example.com/largefile.zip
+```
+
+The `-#` option displays a progress bar instead of the default progress meter.
+
+### Sending Emails
+
+```bash
+curl --url smtp://smtp.example.com --mail-from sender@example.com --mail-rcpt receiver@example.com --upload-file email.txt
+```
+
+This sends an email using the SMTP protocol.
+
+### Dictionary Lookup
+
+```bash
+curl dict://dict.org/d:curl
+```
+
+This looks up the definition of "curl" using the DICT protocol.
+
+## Advanced Features
+
+### Using Proxies
+
+```bash
+curl -x proxy.example.com:8080 https://target-site.com
+```
+
+The `-x` (or `--proxy`) option specifies a proxy server.
+
+### Client Certificates
+
+```bash
+curl --cert client.pem --key key.pem https://secure.example.com
+```
+
+This uses a client certificate for authentication.
+
+### Multiple URLs
+
+```bash
+curl https://site1.com https://site2.com
+```
+
+This fetches content from multiple URLs in sequence.
+
+### Parallel Downloads
+
+With newer versions of curl, you can download multiple URLs in parallel:
+
+```bash
+curl --parallel https://site1.com https://site2.com
+```
+
+### Custom Request Headers
+
+```bash
+curl -H "User-Agent: My Custom Agent" -H "Accept-Language: en-US" https://example.com
+```
+
+This sends custom HTTP headers with the request.
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-o, --output <file>` | Write output to a file instead of stdout |
+| `-O, --remote-name` | Write output to a file named like the remote file |
+| `-T, --upload-file <file>` | Transfer local file to remote URL |
+| `-u, --user <user:password>` | Server user and password |
+| `-v, --verbose` | Make the operation more talkative |
+| `-s, --silent` | Silent mode, don't show progress meter or error messages |
+| `-L, --location` | Follow redirects |
+| `-I, --head` | Show document info only (HTTP headers) |
+| `-X, --request <command>` | Specify request method (GET, POST, PUT, etc.) |
+| `-d, --data <data>` | HTTP POST data |
+| `-H, --header <header>` | Pass custom header to server |
+| `-A, --user-agent <name>` | Send User-Agent `name` to server |
+| `-b, --cookie <data>` | Send cookies from string or file |
+| `-c, --cookie-jar <file>` | Write cookies to file after operation |
+| `-C, --continue-at <offset>` | Resume transfer at specified offset |
+| `--limit-rate <speed>` | Limit transfer speed (bytes per second) |
+| `-x, --proxy <host:port>` | Use proxy on given port |
+| `-#, --progress-bar` | Display transfer progress as a bar |
+
+## Troubleshooting
+
+### Common Errors
+
+#### "Could not resolve host"
+
+This error occurs when curl cannot resolve the domain name:
+
+```
+curl: (6) Could not resolve host: example.com
+```
+
+Solution: Check your internet connection and DNS settings, or try using an IP address instead of a domain name.
+
+#### "Connection refused"
+
+This error occurs when the server actively refuses the connection:
+
+```
+curl: (7) Failed to connect to example.com port 80: Connection refused
+```
+
+Solution: Verify that the server is running and that you're using the correct port.
+
+#### "SSL certificate problem"
+
+This error occurs when there's an issue with the SSL/TLS certificate:
+
+```
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+```
+
+Solution: Use the `-k` (or `--insecure`) option to skip certificate validation (only for testing purposes):
+
+```bash
+curl -k https://example.com
+```
+
+### Debugging Tips
+
+1. Use the `-v` option for verbose output:
+   ```bash
+   curl -v https://example.com
+   ```
+
+2. Use the `--trace` option for even more detailed output:
+   ```bash
+   curl --trace debug.txt https://example.com
+   ```
+
+3. Check for proxy settings that might interfere:
+   ```bash
+   env | grep -i proxy
+   ```
+
+## Security Considerations
+
+1. **Passwords in Command Line**: Avoid using passwords directly in the command line as they may be visible in the process list or command history. Instead, use a netrc file or environment variables.
+
+2. **Certificate Validation**: Avoid using the `-k` (insecure) option in production environments as it bypasses SSL/TLS certificate validation.
+
+3. **Sensitive Data**: Be cautious when sending sensitive data, especially when using unencrypted protocols like HTTP or FTP.
+
+## Conclusion
+
+The curl command is an incredibly versatile tool for transferring data across various protocols. Its rich feature set makes it suitable for a wide range of tasks, from simple file downloads to complex API testing and automation. By mastering curl, you gain a powerful tool for working with web services, APIs, and remote resources directly from the command line.
+
+Whether you're a developer testing APIs, a system administrator automating tasks, or a security professional performing security assessments, curl provides the flexibility and power needed to interact with networked resources efficiently and effectively.
