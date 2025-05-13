@@ -1,0 +1,290 @@
+---
+title: "nmtui"
+description: "A comprehensive guide to NetworkManager Text User Interface"
+draft: false
+toc: true
+---
+
+# NMTUI Command in Linux
+
+## Introduction
+
+The `nmtui` (NetworkManager Text User Interface) command provides a simple, text-based user interface for managing network connections in Linux systems. It serves as an alternative to both the command-line `nmcli` tool and graphical network management interfaces, offering a middle ground that combines ease of use with terminal-based operation.
+
+`nmtui` is particularly valuable in environments where a graphical interface is unavailable or undesirable, such as server installations, minimal desktop environments, or remote SSH sessions. It provides an intuitive, menu-driven interface for common network configuration tasks.
+
+<img className="max-w-xl mx-auto" src="/images/nmtui-command.png" alt="NMTUI Main Interface" />
+
+### What is IP Networking?
+
+IP (Internet Protocol) networking refers to the process of setting up and managing IP addresses to enable communication between devices on a network. Proper IP configuration is essential for effective data exchange and is one of the foundational elements of any operating system. IP networking is used in both modern internet and local area networks (LANs), assigning unique addresses to devices for data transmission.
+
+#### Key Components of IP Networking:
+
+- **IP Address**: A numerical value assigned to each device connected to a network that uses the Internet Protocol for communication. It serves for both host identification and location addressing.
+- **Subnetting**: The practice of dividing an IP network into sub-networks to improve performance and security, making large networks more manageable.
+- **Routing**: The process of directing data between different networks, determining the optimal path for data packets to travel from source to destination.
+- **Protocols**: Rules that govern communication within an IP network, including the Internet Protocol itself, TCP (Transmission Control Protocol), and UDP (User Datagram Protocol).
+
+## Basic Usage
+
+To launch the NetworkManager Text User Interface, simply run:
+
+```bash
+nmtui
+```
+
+This command opens the main menu of the text-based interface, which typically offers the following options:
+
+1. **Edit a connection** - Modify existing network connections or create new ones
+2. **Activate a connection** - Enable or disable network connections
+3. **Set system hostname** - Change the system's hostname
+
+You can navigate through the interface using:
+- Arrow keys to move between options
+- Tab key to move between sections
+- Enter key to select an option
+- Esc key to go back or cancel
+
+## Key Features and Functionality
+
+### 1. Editing Network Connections
+
+The "Edit a connection" option allows you to:
+
+- Create new network connections of various types (Ethernet, Wi-Fi, VPN, etc.)
+- Modify existing connections
+- Delete connections that are no longer needed
+
+When editing a connection, you can configure various parameters including:
+
+- Connection name
+- IP addressing (DHCP or static)
+- DNS servers
+- Gateway
+- Security settings (for wireless connections)
+- Advanced options
+
+### 2. Activating Connections
+
+The "Activate a connection" option displays a list of available connections with their current status. From this screen, you can:
+
+- Activate (connect to) a network
+- Deactivate (disconnect from) a network
+- See which connections are currently active
+
+### 3. Setting System Hostname
+
+The "Set system hostname" option allows you to view and change the system's hostname. This is particularly useful for server environments where proper hostname configuration is important for network identification.
+
+## Configuring IP Networking with NMTUI
+
+Configuring IP networking is crucial for communication between systems in a Linux environment. The following step-by-step guide will help you configure IP networking using the nmtui tool.
+
+### Prerequisites
+
+1. **Linux Environment**: Ensure you're working in a Linux environment with NetworkManager installed.
+2. **Terminal Access**: You need access to a terminal or command-line interface.
+3. **Administrative Privileges**: Most network configuration tasks require root or sudo privileges.
+
+### Step-by-Step IP Configuration Process
+
+#### Step 1: Check NetworkManager Status
+
+Before using nmtui, verify that NetworkManager is running:
+
+```bash
+sudo systemctl status NetworkManager
+```
+
+If NetworkManager is not running, start it with:
+
+```bash
+sudo systemctl start NetworkManager
+```
+
+#### Step 2: Launch NMTUI
+
+Open the NetworkManager Text User Interface by running:
+
+```bash
+sudo nmtui
+```
+
+#### Step 3: Navigate to 'Edit a Connection'
+
+Use the arrow keys to select "Edit a connection" and press Enter.
+
+#### Step 4: Select Network Interface
+
+Choose the network interface you want to configure (e.g., "Wired connection 1" or "Wi-Fi").
+
+<img className="max-w-xl mx-auto" src="/images/nmtui-edit-connection.png" alt="NMTUI Edit Connection Screen" />
+
+#### Step 5: Modify Connection Settings
+
+Select the "Edit" option for your chosen interface and press Enter. This will open the configuration settings.
+
+#### Step 6: Configure IPv4 Settings
+
+Navigate to the "IPv4 CONFIGURATION" option. If it shows "Automatic", select it and change to "Manual" to enable static IP configuration.
+
+<img className="max-w-xl mx-auto" src="/images/nmtui-ip-config.png" alt="NMTUI IPv4 Configuration" />
+
+Select the "Addresses" field and enter your desired IP address with subnet mask (e.g., "192.168.1.100/24").
+
+You can also configure:
+- Gateway
+- DNS servers
+- Search domains
+
+#### Step 7: Save and Activate the Connection
+
+After configuring the settings, select "OK" to save the configuration.
+
+Return to the main menu, select "Activate a connection", then:
+1. First deactivate the connection
+2. Then activate it again to apply the new settings
+
+#### Step 8: Verify Configuration
+
+Exit nmtui and verify your configuration with:
+
+```bash
+ifconfig
+```
+
+or
+
+```bash
+ip addr show
+```
+
+## Practical Examples
+
+### Example 1: Creating a New Ethernet Connection
+
+1. Launch `nmtui` by typing the command in the terminal
+2. Select "Edit a connection"
+3. Choose "Add"
+4. Select "Ethernet" as the connection type
+5. Fill in the required details:
+   - Profile name (e.g., "Office Network")
+   - Device (e.g., eth0)
+   - IPv4 configuration (DHCP or Manual)
+   - If Manual, enter IP address, gateway, and DNS servers
+6. Select "OK" to save the connection
+
+### Example 2: Configuring a Wi-Fi Connection
+
+1. Launch `nmtui`
+2. Select "Edit a connection"
+3. Choose "Add"
+4. Select "Wi-Fi" as the connection type
+5. Fill in the required details:
+   - Profile name (e.g., "Home Wi-Fi")
+   - SSID (network name)
+   - Security (e.g., WPA & WPA2 Personal)
+   - Password
+6. Select "OK" to save the connection
+
+### Example 3: Changing the System Hostname
+
+1. Launch `nmtui`
+2. Select "Set system hostname"
+3. Enter the new hostname
+4. Select "OK" to apply the change
+
+## Advanced Configuration
+
+### Configuring Network Bonding
+
+Network bonding (combining multiple network interfaces into a single logical interface) can be configured through `nmtui`:
+
+1. Launch `nmtui`
+2. Select "Edit a connection"
+3. Choose "Add"
+4. Select "Bond" as the connection type
+5. Configure the bond settings:
+   - Profile name
+   - Bond interfaces (select the interfaces to include in the bond)
+   - Bond mode (e.g., active-backup, balance-rr)
+   - Other bond-specific options
+6. Select "OK" to save the configuration
+
+### Setting Up VLANs
+
+Virtual LANs (VLANs) can also be configured:
+
+1. Launch `nmtui`
+2. Select "Edit a connection"
+3. Choose "Add"
+4. Select "VLAN" as the connection type
+5. Configure the VLAN settings:
+   - Profile name
+   - Parent interface
+   - VLAN ID
+   - IP configuration
+6. Select "OK" to save the configuration
+
+## Advantages of NMTUI
+
+1. **User-Friendly Interface**: Provides a more intuitive interface than command-line tools like `nmcli` while still operating in a text environment.
+
+2. **Accessibility**: Works in environments without graphical interfaces, such as server installations or SSH sessions.
+
+3. **Comprehensive**: Covers most common network configuration tasks without requiring knowledge of specific command syntax.
+
+4. **Lightweight**: Requires minimal system resources compared to graphical network management tools.
+
+5. **Consistent**: Provides a consistent interface across different Linux distributions that use NetworkManager.
+
+## Limitations
+
+1. **Limited Advanced Features**: Some advanced NetworkManager features may only be accessible through `nmcli` or configuration files.
+
+2. **Terminal Constraints**: The interface is limited by terminal capabilities and may not be as visually informative as graphical tools.
+
+3. **Dependency on NetworkManager**: Only works on systems that use NetworkManager for network configuration.
+
+## Integration with Other NetworkManager Tools
+
+`nmtui` works alongside other NetworkManager tools:
+
+- **nmcli**: Command-line interface for NetworkManager, offering more advanced features and scripting capabilities.
+- **nm-connection-editor**: Graphical connection editor for desktop environments.
+- **Network settings in desktop environments**: GNOME, KDE, and other desktop environments provide their own NetworkManager interfaces.
+
+Changes made with any of these tools are reflected across all interfaces, as they all interact with the same NetworkManager service.
+
+## Troubleshooting
+
+If you encounter issues with `nmtui`:
+
+1. **Command Not Found**: Ensure NetworkManager is installed on your system:
+   ```bash
+   sudo apt install network-manager   # Debian/Ubuntu
+   sudo dnf install NetworkManager    # Fedora/RHEL
+   ```
+
+2. **Interface Not Showing**: Make sure NetworkManager is running:
+   ```bash
+   sudo systemctl status NetworkManager
+   ```
+
+3. **Changes Not Applied**: Restart NetworkManager:
+   ```bash
+   sudo systemctl restart NetworkManager
+   ```
+
+4. **Display Issues**: If the interface appears corrupted, try using a different terminal or adjusting terminal size.
+
+## Conclusion
+
+The `nmtui` command provides a user-friendly, text-based interface for managing network connections in Linux. It bridges the gap between complex command-line tools and graphical interfaces, making network configuration accessible in terminal-only environments.
+
+Configuring IP networking is essential for communication and data exchange among systems in a Linux environment. The nmtui tool simplifies this process with its intuitive interface, making it accessible even to users who are not comfortable with traditional command-line tools. The step-by-step approach to IP configuration—from checking NetworkManager status to verifying the final configuration—ensures a smooth and error-free setup.
+
+Whether you're managing servers, working in minimal desktop environments, or simply prefer terminal-based tools, `nmtui` offers an efficient way to handle common network configuration tasks without requiring extensive knowledge of NetworkManager's command-line syntax. Its menu-driven approach guides users through various network configuration options, streamlining the process of editing, activating, or deactivating network connections.
+
+For Linux administrators and users who need to configure network settings in environments without graphical interfaces, nmtui remains an invaluable tool that combines simplicity with powerful functionality.
