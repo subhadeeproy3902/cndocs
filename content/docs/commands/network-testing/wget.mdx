@@ -1,0 +1,443 @@
+---
+title: "wget"
+description: "A comprehensive guide to downloading files from the web using the wget command"
+draft: false
+toc: true
+---
+
+# Wget Command in Linux
+
+## Introduction
+
+The `wget` command is a powerful and versatile non-interactive network downloader used in Linux and Unix-like operating systems. Its name is derived from "World Wide Web" and "get," reflecting its primary purpose of retrieving content from the web. Unlike web browsers that require user interaction, wget can work in the background, making it ideal for downloading large files, mirroring websites, or automating download tasks.
+
+Wget supports various protocols including HTTP, HTTPS, and FTP, and can navigate through websites following links to create local copies of remote content. It's particularly valuable for its robustness over unstable network connections, as it can automatically retry downloads and resume interrupted transfers where supported.
+
+<img className="max-w-xl mx-auto" src="/images/wget-command.png" alt="Wget Command Progress Meter" />
+
+## Basic Syntax
+
+The basic syntax of the wget command is:
+
+```bash
+wget [options] [URL]
+```
+
+Where:
+- **options**: Various flags that modify the behavior of wget
+- **URL**: The web address of the file or resource to download
+
+## Installation
+
+Wget comes pre-installed on most Linux distributions. To check if it's installed on your system, run:
+
+```bash
+wget --version
+```
+
+If it's not installed, you can install it using your distribution's package manager:
+
+For Debian/Ubuntu:
+```bash
+sudo apt update
+sudo apt install wget
+```
+
+For Red Hat/CentOS/Fedora:
+```bash
+sudo yum install wget
+# or
+sudo dnf install wget
+```
+
+## Basic Usage
+
+### Downloading a Single File
+
+To download a file from a URL:
+
+```bash
+wget https://example.com/file.zip
+```
+
+This command downloads the file and saves it in the current directory with the same filename as in the URL.
+
+### Specifying Output Filename
+
+To save the downloaded file with a different name:
+
+```bash
+wget -O custom_name.zip https://example.com/file.zip
+```
+
+The `-O` (uppercase O) option specifies the output filename.
+
+### Downloading in the Background
+
+To run wget in the background, allowing you to continue using the terminal:
+
+```bash
+wget -b https://example.com/large_file.zip
+```
+
+The `-b` option sends the process to the background. Output messages are redirected to a log file named `wget-log`.
+
+## Advanced Usage
+
+### Resuming Interrupted Downloads
+
+If a download is interrupted, you can resume it from where it left off:
+
+```bash
+wget -c https://example.com/large_file.zip
+```
+
+The `-c` option tells wget to continue a partially downloaded file.
+
+### Setting Retry Attempts
+
+To specify the number of retry attempts for failed downloads:
+
+```bash
+wget --tries=10 https://example.com/file.zip
+```
+
+This sets wget to try up to 10 times before giving up. Use `0` or `inf` for infinite retrying.
+
+### Limiting Download Speed
+
+To restrict the download speed (useful to avoid consuming all available bandwidth):
+
+```bash
+wget --limit-rate=100k https://example.com/large_file.zip
+```
+
+This limits the download speed to 100 kilobytes per second.
+
+### Setting Wait Time Between Retrievals
+
+To add a delay between file retrievals (useful when downloading multiple files):
+
+```bash
+wget -w 2 https://example.com/file1.zip https://example.com/file2.zip
+```
+
+The `-w` option sets a wait time of 2 seconds between downloads.
+
+### Downloading Multiple Files
+
+To download multiple files in a single command:
+
+```bash
+wget https://example.com/file1.zip https://example.com/file2.zip
+```
+
+### Downloading from a List of URLs
+
+To download files from a list stored in a text file:
+
+```bash
+wget -i url_list.txt
+```
+
+The `-i` option reads URLs from the specified file.
+
+## Website Mirroring
+
+### Basic Website Mirroring
+
+To create a local copy of a website:
+
+```bash
+wget --mirror https://example.com/
+```
+
+The `--mirror` option is a shorthand for `-r -N -l inf --no-remove-listing`.
+
+### Recursive Download with Depth Limit
+
+To download a website recursively with a specified depth:
+
+```bash
+wget -r -l 2 https://example.com/
+```
+
+The `-r` option enables recursive retrieval, and `-l 2` limits the recursion depth to 2 levels.
+
+### Converting Links for Offline Viewing
+
+To make the downloaded website viewable offline:
+
+```bash
+wget -r -k https://example.com/
+```
+
+The `-k` option converts links in downloaded HTML files to make them suitable for local viewing.
+
+### Complete Website Mirroring
+
+For a complete website mirror with all necessary options:
+
+```bash
+wget -m -p -k -E https://example.com/
+```
+
+This combines several options:
+- `-m` (mirror): shorthand for `-r -N -l inf --no-remove-listing`
+- `-p` (page requisites): get all images and other elements needed to display the page
+- `-k` (convert links): make links work locally
+- `-E` (adjust extension): add .html extension to HTML files if needed
+
+## Authentication
+
+### Basic Authentication
+
+To download content from a site requiring basic authentication:
+
+```bash
+wget --user=username --password=password https://example.com/protected/file.zip
+```
+
+### Using .netrc File for Authentication
+
+For more secure authentication, you can use a .netrc file:
+
+1. Create a .netrc file in your home directory:
+   ```
+   machine example.com
+   login username
+   password your_password
+   ```
+
+2. Set appropriate permissions:
+   ```bash
+   chmod 600 ~/.netrc
+   ```
+
+3. Use wget with the netrc option:
+   ```bash
+   wget --netrc https://example.com/protected/file.zip
+   ```
+
+## Working with Proxies
+
+### Using a Proxy Server
+
+To download through a proxy server:
+
+```bash
+wget -e use_proxy=yes -e http_proxy=http://proxy_server:port https://example.com/file.zip
+```
+
+### Setting Proxy in Environment Variables
+
+You can also set proxy settings as environment variables:
+
+```bash
+export http_proxy=http://proxy_server:port
+export https_proxy=http://proxy_server:port
+wget https://example.com/file.zip
+```
+
+## Logging and Output Control
+
+### Redirecting Output to a Log File
+
+To save wget's output messages to a specific log file:
+
+```bash
+wget -o download.log https://example.com/file.zip
+```
+
+The `-o` (lowercase o) option specifies the log file.
+
+### Appending to an Existing Log
+
+To append output to an existing log file instead of overwriting it:
+
+```bash
+wget -a download.log https://example.com/file.zip
+```
+
+The `-a` option appends to the specified log file.
+
+### Quiet Mode
+
+To suppress wget's output completely:
+
+```bash
+wget -q https://example.com/file.zip
+```
+
+The `-q` option enables quiet mode.
+
+### Verbose Mode
+
+For detailed information about the download process:
+
+```bash
+wget -v https://example.com/file.zip
+```
+
+The `-v` option enables verbose output.
+
+### Debug Mode
+
+For even more detailed information:
+
+```bash
+wget -d https://example.com/file.zip
+```
+
+The `-d` option enables debug output.
+
+## Handling Cookies
+
+### Saving Cookies
+
+To save cookies from a website:
+
+```bash
+wget --save-cookies cookies.txt https://example.com/login
+```
+
+### Using Saved Cookies
+
+To use previously saved cookies:
+
+```bash
+wget --load-cookies cookies.txt https://example.com/protected-area
+```
+
+## Practical Examples
+
+### Example 1: Downloading a File in the Background with Limited Speed
+
+```bash
+wget -b --limit-rate=200k -c https://example.com/large_file.iso
+```
+
+This downloads a file in the background, limits the download speed to 200 KB/s, and enables resume capability.
+
+### Example 2: Mirroring a Website for Offline Viewing
+
+```bash
+wget -m -p -k -E -e robots=off https://example.com/docs/
+```
+
+This creates a complete mirror of the documentation section of a website, including all necessary resources for offline viewing, and ignores the robots.txt restrictions.
+
+### Example 3: Downloading Files Matching a Pattern
+
+```bash
+wget -r -A "*.pdf" https://example.com/papers/
+```
+
+This recursively downloads all PDF files from the specified URL.
+
+### Example 4: Downloading with Retry and Wait Time
+
+```bash
+wget --tries=5 -w 10 --random-wait https://example.com/file.zip
+```
+
+This sets wget to try up to 5 times, wait 10 seconds between retries, and add a random factor to the wait time.
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-b, --background` | Go to background immediately after startup |
+| `-c, --continue` | Resume getting a partially-downloaded file |
+| `-i, --input-file=FILE` | Download URLs found in FILE |
+| `-O, --output-document=FILE` | Write documents to FILE |
+| `-o, --output-file=FILE` | Log messages to FILE |
+| `-a, --append-output=FILE` | Append messages to FILE |
+| `-q, --quiet` | Turn off wget's output |
+| `-v, --verbose` | Be verbose (this is the default) |
+| `-d, --debug` | Print debug output |
+| `-r, --recursive` | Specify recursive download |
+| `-l, --level=NUMBER` | Maximum recursion depth (inf or 0 for infinite) |
+| `-k, --convert-links` | Make links in downloaded HTML or CSS point to local files |
+| `-p, --page-requisites` | Get all images, etc. needed to display HTML page |
+| `-m, --mirror` | Shortcut for -N -r -l inf --no-remove-listing |
+| `-E, --adjust-extension` | Save HTML/CSS documents with proper extensions |
+| `--limit-rate=RATE` | Limit download rate to RATE |
+| `-w, --wait=SECONDS` | Wait SECONDS between retrievals |
+| `--random-wait` | Wait from 0.5*WAIT to 1.5*WAIT seconds between retrievals |
+| `--tries=NUMBER` | Set number of retries to NUMBER (0 unlimits) |
+| `--user=USER` | Set both FTP and HTTP user to USER |
+| `--password=PASS` | Set both FTP and HTTP password to PASS |
+| `--no-check-certificate` | Don't validate the server's certificate |
+| `-A, --accept=LIST` | Comma-separated list of accepted extensions |
+| `-R, --reject=LIST` | Comma-separated list of rejected extensions |
+| `-e, --execute=COMMAND` | Execute a `.wgetrc`-style command |
+
+## Troubleshooting
+
+### Common Errors
+
+#### "No such file or directory"
+
+This error occurs when wget can't write to the specified output file:
+
+```
+Cannot write to 'output.file' (No such file or directory).
+```
+
+Solution: Check if the directory exists and if you have write permissions.
+
+#### "Connection refused"
+
+This error occurs when the server actively refuses the connection:
+
+```
+Connecting to example.com|93.184.216.34|:80... failed: Connection refused.
+```
+
+Solution: Verify that the URL is correct and the server is running.
+
+#### "SSL certificate problem"
+
+This error occurs when there's an issue with the SSL/TLS certificate:
+
+```
+ERROR: The certificate of 'example.com' is not trusted.
+```
+
+Solution: Use the `--no-check-certificate` option (only for testing purposes):
+
+```bash
+wget --no-check-certificate https://example.com/file.zip
+```
+
+### Debugging Tips
+
+1. Use the `-d` option for detailed debug information:
+   ```bash
+   wget -d https://example.com/file.zip
+   ```
+
+2. Check the server's response headers:
+   ```bash
+   wget --server-response https://example.com/file.zip
+   ```
+
+3. Verify your proxy settings if you're behind a proxy:
+   ```bash
+   env | grep -i proxy
+   ```
+
+## Security Considerations
+
+1. **Password Security**: Avoid using the `--password` option in command-line arguments as it may be visible in process listings. Use the `.netrc` file or environment variables instead.
+
+2. **Certificate Validation**: Be cautious when using `--no-check-certificate` as it bypasses SSL/TLS certificate validation, potentially exposing you to man-in-the-middle attacks.
+
+3. **Website Scraping Ethics**: Respect the `robots.txt` file of websites unless you have permission to ignore it. Use the `-e robots=off` option responsibly.
+
+## Conclusion
+
+The wget command is an essential tool for downloading files and mirroring websites in Linux. Its non-interactive nature, robustness over unstable connections, and extensive feature set make it invaluable for system administrators, developers, and regular users alike. Whether you need to download a single file, mirror an entire website, or automate download tasks, wget provides the flexibility and reliability required for efficient file retrieval from the web.
+
+By mastering wget's various options and capabilities, you can streamline your download workflows and handle even the most complex file retrieval tasks with ease.
