@@ -3,5 +3,5 @@
   "description": "Explore networking commands and tools.",
   "icon": "Terminal",
   "root": true,
-  "pages": ["index", "network-interface-and-configuration", "dns-resolution", "network-testing", "network-stats", "route-and-firewall", "others"]
+  "pages": ["index", "network-interface-and-configuration", "dns-resolution", "network-testing", "network-stats", "route-and-firewall", "ssh-command", "others", "file-transfer-commands"]
 }

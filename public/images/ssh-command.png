@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <meta name='robots' content='noindex, follow' />
+
+	<!-- This site is optimized with the Yoast SEO Premium plugin v24.4 (Yoast SEO v24.4) - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Tutorial not found - Hostinger Tutorials</title>
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Tutorial not found - Hostinger Tutorials" />
+	<meta property="og:site_name" content="Hostinger Tutorials" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.hostinger.com/tutorials/#website","url":"https://www.hostinger.com/tutorials/","name":"Hostinger Tutorials","description":"","publisher":{"@id":"https://www.hostinger.com/tutorials/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.hostinger.com/tutorials/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://www.hostinger.com/tutorials/#organization","name":"Hostinger","url":"https://www.hostinger.com/tutorials/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.hostinger.com/tutorials/#/schema/logo/image/","url":"https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/hostinger-logo.png","contentUrl":"https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/hostinger-logo.png","width":700,"height":700,"caption":"Hostinger"},"image":{"@id":"https://www.hostinger.com/tutorials/#/schema/logo/image/"}}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+<link rel='dns-prefetch' href='//facebook.net' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Hostinger Tutorials &raquo; Feed" href="https://www.hostinger.com/tutorials/feed" />
+<link rel="alternate" type="application/rss+xml" title="Hostinger Tutorials &raquo; Comments Feed" href="https://www.hostinger.com/tutorials/comments/feed" />
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='https://www.hostinger.com/tutorials/wp-includes/css/dist/block-library/style.min.css?ver=6.6.1' type='text/css' media='all' />
+<style id='safe-svg-svg-icon-style-inline-css' type='text/css'>
+.safe-svg-cover{text-align:center}.safe-svg-cover .safe-svg-inside{display:inline-block;max-width:100%}.safe-svg-cover svg{height:100%;max-height:100%;max-width:100%;width:100%}
+
+</style>
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='ez-toc-css' href='https://www.hostinger.com/tutorials/wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css?ver=2.0.67.1' type='text/css' media='all' />
+<style id='ez-toc-inline-css' type='text/css'>
+div#ez-toc-container .ez-toc-title {font-size: 120%;}div#ez-toc-container .ez-toc-title {font-weight: 500;}div#ez-toc-container ul li {font-size: 100%;}div#ez-toc-container ul li {font-weight: 500;}div#ez-toc-container nav ul ul li {font-size: 90%;}div#ez-toc-container {background: #fff;border: 1px solid #ffffff;}div#ez-toc-container p.ez-toc-title , #ez-toc-container .ez_toc_custom_title_icon , #ez-toc-container .ez_toc_custom_toc_icon {color: #999;}div#ez-toc-container ul.ez-toc-list a {color: #6747c7;}div#ez-toc-container ul.ez-toc-list a:hover {color: #472d94;}div#ez-toc-container ul.ez-toc-list a:visited {color: #472d94;}
+</style>
+<link rel='stylesheet' id='understrap-styles-css' href='https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/css/theme.css?ver=1.0.0.1747146075' type='text/css' media='all' />
+<script type="text/javascript" id="yoast-seo-base-site-url_js-js-extra">
+/* <![CDATA[ */
+var yoastSeoBaseSiteUrl = {"base_url":"https:\/\/www.hostinger.com\/tutorials"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/resources/js/yoast-seo-base-site-url.js?ver=6.6.1" id="yoast-seo-base-site-url_js-js"></script>
+<script type="text/javascript" id="amplitude_js-js-extra">
+/* <![CDATA[ */
+var amplitude_js = {"base_url":"https:\/\/www.hostinger.com\/tutorials","analytics_url":"https:\/\/frontend-event-api.hostinger.com\/2\/httpapi","api_key":"82eb9b6dc70a29221070ce868d61e7d4","domain":"www.hostinger.com","reseller_id":"5"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/js/amplitude.min.js?id=3077cabe07d0328ee651e15800284465&amp;ver=6.6.1" id="amplitude_js-js"></script>
+<script type="text/javascript" id="wp-sentry-browser-js-extra">
+/* <![CDATA[ */
+var wp_sentry = {"wpBrowserTracingOptions":{"enableInp":"true","tracesSampleRate":0.005},"tracesSampleRate":"0.005","environment":"production","release":"1.0.0","context":{"tags":{"wordpress":"6.6.1","language":"en-US"}},"dsn":"https:\/\/ea950a2781aaf72ec88710a99c0a0288@o215831.ingest.us.sentry.io\/4507249196924928"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/wp-sentry-integration/public/wp-sentry-browser-tracing.min.js?ver=7.17.4" id="wp-sentry-browser-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/stop-user-enumeration/frontend/js/frontend.js?ver=1.6" id="stop-user-enumeration-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.hostinger.com/tutorials/wp-json/" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.hostinger.com/tutorials/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.6.1" />
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KL4FQVG');</script>
+<script type="text/javascript" src="https://a.omappapi.com/app/js/api.min.js" data-account="79832" data-user="71036" async></script>
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:2445382,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script><!-- Markup (JSON-LD) structured in schema.org ver.4.8.1 START -->
+<!-- Markup (JSON-LD) structured in schema.org END -->
+            <link rel="alternate" hreflang="x-default"
+                  href="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+            <link rel="alternate" hreflang="en-us" href="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+            <link rel="alternate" hreflang="en-gb" href="https://www.hostinger.com/uk/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+            <link rel="alternate" hreflang="en-in" href="https://www.hostinger.in/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+            <link rel="alternate" hreflang="en-my" href="https://www.hostinger.my/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+            <link rel="alternate" hreflang="en-ph" href="https://www.hostinger.ph/tutorials/wp-content/uploads/sites/2/2017/07/ssh-client-server-setup.webp"/>
+                    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let anchorTags = document.querySelectorAll('.ez-toc-link');
+                anchorTags.forEach(function(element) {
+                    element.text = element.text.replace(':','');
+                });
+            }, false);
+        </script>
+        <link rel="icon" href="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/cropped-hostinger-fav-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/cropped-hostinger-fav-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/cropped-hostinger-fav-180x180.png" />
+<meta name="msapplication-TileImage" content="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2017/04/cropped-hostinger-fav-270x270.png" />
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript></head>
+<body class="error404 wp-embed-responsive">
+
+<div id="navigation" data-translations="{&quot;homeUrl&quot;:&quot;https:\/\/www.hostinger.com&quot;,&quot;goBackTitle&quot;:&quot;Back&quot;,&quot;getStarted&quot;:&quot;Get Started&quot;,&quot;logIn&quot;:&quot;Log in&quot;,&quot;new&quot;:&quot;New&quot;,&quot;loginLink&quot;:&quot;https:\/\/auth.hostinger.com\/login&quot;,&quot;loginLinkTitle&quot;:&quot;Log in&quot;,&quot;language&quot;:&quot;us&quot;,&quot;localeMenuTitle&quot;:&quot;Choose your country&quot;,&quot;inputPlaceHolder&quot;:&quot;Search for a country&quot;,&quot;themePath&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift&quot;}">
+    <Navigation
+            navigation-items="[{&quot;name&quot;:&quot;pricing&quot;,&quot;slug&quot;:&quot;components.navigation.menuItems.pricing&quot;,&quot;isExpandable&quot;:false,&quot;link&quot;:&quot;pricing&quot;},{&quot;name&quot;:&quot;services&quot;,&quot;slug&quot;:&quot;components.navigation.menuItems.services&quot;,&quot;isExpandable&quot;:true},{&quot;name&quot;:&quot;explore&quot;,&quot;slug&quot;:&quot;components.navigation.menuItems.explore&quot;,&quot;isExpandable&quot;:true},{&quot;name&quot;:&quot;support&quot;,&quot;slug&quot;:&quot;components.navigation.menuItems.support&quot;,&quot;isExpandable&quot;:true},{&quot;name&quot;:&quot;Horizons&quot;,&quot;slug&quot;:&quot;components.navigation.menuItems.horizons&quot;,&quot;isExpandable&quot;:false,&quot;link&quot;:&quot;horizons&quot;}]"
+            dropdown-items="{&quot;services&quot;:[{&quot;column&quot;:[{&quot;groupName&quot;:&quot;Hosting&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.wordpress&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.wordpress&quot;,&quot;badge&quot;:&quot;components.navigation.menuItem.badge.aiPowered&quot;,&quot;pageName&quot;:&quot;wordpress-hosting&quot;,&quot;icon&quot;:&quot;brand-wordpress-24&quot;,&quot;name&quot;:&quot;wordpress-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.woocommerce&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.woocommerce&quot;,&quot;pageName&quot;:&quot;woocommerce-hosting&quot;,&quot;icon&quot;:&quot;woo-24&quot;,&quot;name&quot;:&quot;woocommerce-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.webHosting&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.webHosting&quot;,&quot;pageName&quot;:&quot;web-hosting&quot;,&quot;icon&quot;:&quot;browser-window-24&quot;,&quot;name&quot;:&quot;web-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.cloudHosting&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.cloudHosting&quot;,&quot;pageName&quot;:&quot;cloud-hosting&quot;,&quot;icon&quot;:&quot;cloud-24&quot;,&quot;name&quot;:&quot;cloud-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.agencyHosting&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.agencyHosting&quot;,&quot;pageName&quot;:&quot;hostinger-pro&quot;,&quot;icon&quot;:&quot;layers-24&quot;,&quot;name&quot;:&quot;pro-hosting&quot;}]}]},{&quot;column&quot;:[{&quot;groupName&quot;:&quot;Websites&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.websiteBuilder&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.websiteBuilder&quot;,&quot;badge&quot;:&quot;components.navigation.menuItem.badge.aiPowered&quot;,&quot;pageName&quot;:&quot;website-builder&quot;,&quot;icon&quot;:&quot;wb-24&quot;,&quot;name&quot;:&quot;website-builder&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.horizons&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.horizons&quot;,&quot;badge&quot;:&quot;components.navigation.menuItem.badge.aiPowered&quot;,&quot;pageName&quot;:&quot;horizons&quot;,&quot;icon&quot;:&quot;horizons-24&quot;,&quot;name&quot;:&quot;horizons&quot;}]},{&quot;groupName&quot;:&quot;VPS&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.vpsHosting&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.vpsHosting&quot;,&quot;pageName&quot;:&quot;vps-hosting&quot;,&quot;icon&quot;:&quot;database-24&quot;,&quot;name&quot;:&quot;vps-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.n8nHosting&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.n8nHosting&quot;,&quot;pageName&quot;:&quot;vps-templates-n8n-hosting&quot;,&quot;icon&quot;:&quot;n8n-24&quot;,&quot;name&quot;:&quot;vps-templates-n8n-hosting&quot;}]}]},{&quot;column&quot;:[{&quot;groupName&quot;:&quot;Domains&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.domains&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.domains&quot;,&quot;badge&quot;:&quot;components.navigation.menuItem.badge.aiPowered&quot;,&quot;pageName&quot;:&quot;domain-name-search&quot;,&quot;icon&quot;:&quot;globe-24&quot;,&quot;name&quot;:&quot;domain-name-search&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.domainTransfer&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.domainTransfer&quot;,&quot;pageName&quot;:&quot;transfer-domain&quot;,&quot;icon&quot;:&quot;arrow-right-left-24&quot;,&quot;name&quot;:&quot;domain-transfer&quot;}]},{&quot;groupName&quot;:&quot;Email&quot;,&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.email&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.email&quot;,&quot;pageName&quot;:&quot;email-hosting&quot;,&quot;icon&quot;:&quot;envelope-24&quot;,&quot;name&quot;:&quot;email-hosting&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.googleWorkspace&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.googleWorkspace&quot;,&quot;pageName&quot;:&quot;google-workspace&quot;,&quot;icon&quot;:&quot;brand-google-24&quot;,&quot;name&quot;:&quot;google-workspace&quot;}]},{&quot;highlightedLink&quot;:{&quot;title&quot;:&quot;components.navigation.menuItem.title.migrateWebsite&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.migrateWebsite&quot;,&quot;pageName&quot;:&quot;website-migration&quot;,&quot;icon&quot;:&quot;arrow-up-right-24&quot;,&quot;name&quot;:&quot;website-migration&quot;}}]}],&quot;explore&quot;:[{&quot;column&quot;:[{&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.blog&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.blog&quot;,&quot;link&quot;:&quot;\/blog&quot;,&quot;icon&quot;:&quot;edit-24&quot;,&quot;name&quot;:&quot;blogs&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.featuresAndTools&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.featuresAndTools&quot;,&quot;link&quot;:&quot;https:\/\/roadmap.hostinger.com\/&quot;,&quot;icon&quot;:&quot;sliders-24&quot;,&quot;name&quot;:&quot;roadmap&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.aboutUs&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.aboutUs&quot;,&quot;pageName&quot;:&quot;about&quot;,&quot;icon&quot;:&quot;rocket-24&quot;,&quot;name&quot;:&quot;about-us&quot;}]}]},{&quot;column&quot;:[{&quot;imageLink&quot;:{&quot;title&quot;:&quot;components.navigation.menuItem.title.clientStories&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.clientStories&quot;,&quot;link&quot;:&quot;global.blog.clientStories&quot;,&quot;image&quot;:{&quot;src&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/navigation\/1.avif&quot;,&quot;alt&quot;:&quot;howToMakeWebsite&quot;},&quot;icon&quot;:&quot;arrow-up-right-24&quot;,&quot;name&quot;:&quot;client-stories-blog&quot;}}]}],&quot;support&quot;:[{&quot;column&quot;:[{&quot;items&quot;:[{&quot;title&quot;:&quot;components.navigation.menuItem.title.knowledgeBase&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.knowledgeBase&quot;,&quot;link&quot;:&quot;https:\/\/support.hostinger.com\/en&quot;,&quot;icon&quot;:&quot;book-open-24&quot;,&quot;name&quot;:&quot;knowledge-base&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.tutorials&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.tutorials&quot;,&quot;link&quot;:&quot;\/tutorials&quot;,&quot;icon&quot;:&quot;glasses-24&quot;,&quot;name&quot;:&quot;tutorials&quot;},{&quot;title&quot;:&quot;components.navigation.menuItem.title.contacts&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.contacts&quot;,&quot;pageName&quot;:&quot;contacts&quot;,&quot;icon&quot;:&quot;support-24&quot;,&quot;name&quot;:&quot;contacts&quot;,&quot;link&quot;:&quot;\/contacts&quot;}]}]},{&quot;column&quot;:[{&quot;imageLink&quot;:{&quot;title&quot;:&quot;components.navigation.menuItem.title.howToMakeWebsite&quot;,&quot;description&quot;:&quot;components.navigation.menuItem.description.howToMakeWebsite&quot;,&quot;link&quot;:&quot;global.tutorials.howToMakeASite&quot;,&quot;image&quot;:{&quot;src&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/navigation\/2.avif&quot;,&quot;alt&quot;:&quot;howToMakeWebsite&quot;},&quot;icon&quot;:&quot;arrow-up-right-24&quot;,&quot;name&quot;:&quot;how-to-make-website&quot;}}]}]}"
+            locale="us"
+    ></Navigation>
+</div>
+
+
+    <div class="h-submenu">
+        <div class="h-submenu__wrapper">
+            <div class="h-submenu__dropdown" id="submenu-dropdown" onclick="toggleSubmenu()">
+                <i class="h-submenu__dropdown-icon material-icons">keyboard_arrow_down</i>
+                <span class="h-submenu__dropdown-text">Categories</span>
+            </div>
+            <ul class="h-submenu__navigation">
+                <li class="h-submenu__navigation-item">
+                    <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/" data-wpel-link="internal" rel="follow">All Tutorials</a>
+                </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/wordpress" data-wpel-link="internal" rel="follow">WordPress</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/vps" data-wpel-link="internal" rel="follow">VPS</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/website-development" data-wpel-link="internal" rel="follow">Website development</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/ecommerce" data-wpel-link="internal" rel="follow">Ecommerce</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/hostinger-horizons" data-wpel-link="internal" rel="follow">Hostinger Horizons</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="/tutorials/how-to-make-a-website" data-wpel-link="internal" rel="follow">How to make a website</a>
+                    </li>
+                            </ul>
+            <i onclick="toggleSearch()" class="h-submenu__search-open material-icons">
+                search
+            </i>
+        </div>
+        <div class="h-submenu__search">
+            <form method="get" action="https://www.hostinger.com/tutorials/"
+                  role="search" class="w-100 mb-0"
+            >
+                <input
+                        class="label text-content-grey w-100 border-0"
+                        id="s" name="s" type="text"
+                        placeholder="Type your keyword (vps, wordpress hosting, domain)"
+                        value=""
+                />
+            </form>
+            <i onclick="toggleSearch()" class="material-icons h-submenu__search-close">
+                close
+            </i>
+        </div>
+    </div>
+    <script>
+    function toggleSearch() {
+        jQuery('.h-submenu__search').fadeToggle().css('display', 'flex')
+    }
+
+    function toggleSubmenu() {
+        jQuery('.h-submenu__dropdown').toggleClass('h-submenu__dropdown--active')
+        jQuery('.h-submenu__navigation').slideToggle('h-submenu__dropdown--active')
+    }
+</script>
+    <div class="h-submenu">
+        <div class="h-submenu__wrapper">
+            <div class="h-submenu__dropdown" id="submenu-dropdown" onclick="toggleSubmenu()">
+                <i class="h-submenu__dropdown-icon material-icons">keyboard_arrow_down</i>
+                <span class="h-submenu__dropdown-text">Categories</span>
+            </div>
+            <ul class="h-submenu__navigation">
+                <li class="h-submenu__navigation-item">
+                    <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/" data-wpel-link="internal" rel="follow">All Tutorials</a>
+                </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/wordpress" data-wpel-link="internal" rel="follow">WordPress</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/vps" data-wpel-link="internal" rel="follow">VPS</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/website-development" data-wpel-link="internal" rel="follow">Website development</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/ecommerce" data-wpel-link="internal" rel="follow">Ecommerce</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="https://www.hostinger.com/tutorials/hostinger-horizons" data-wpel-link="internal" rel="follow">Hostinger Horizons</a>
+                    </li>
+                                    <li class="h-submenu__navigation-item">
+                        <a class="h-submenu__navigation-link" href="/tutorials/how-to-make-a-website" data-wpel-link="internal" rel="follow">How to make a website</a>
+                    </li>
+                            </ul>
+            <i onclick="toggleSearch()" class="h-submenu__search-open material-icons">
+                search
+            </i>
+        </div>
+        <div class="h-submenu__search">
+            <form method="get" action="https://www.hostinger.com/tutorials/"
+                  role="search" class="w-100 mb-0"
+            >
+                <input
+                        class="label text-content-grey w-100 border-0"
+                        id="s" name="s" type="text"
+                        placeholder="Type your keyword (vps, wordpress hosting, domain)"
+                        value=""
+                />
+            </form>
+            <i onclick="toggleSearch()" class="material-icons h-submenu__search-close">
+                close
+            </i>
+        </div>
+    </div>
+    <script>
+    function toggleSearch() {
+        jQuery('.h-submenu__search').fadeToggle().css('display', 'flex')
+    }
+
+    function toggleSubmenu() {
+        jQuery('.h-submenu__dropdown').toggleClass('h-submenu__dropdown--active')
+        jQuery('.h-submenu__navigation').slideToggle('h-submenu__dropdown--active')
+    }
+</script><div class="pricing-header-2020 h-auto mb-50 pt-120 pt-130-sm pt-200-md pb-60 pb-150-sm d-flex flex-column justify-content-lg-between">
+  <div class="container">
+    <div class="d-flex flex-column align-items-center row pl-15 pr-15">
+      <div class="text-centercol-lg-8">
+        <h1 class="mb-15 mb-20-lg mb-30-xxl fs-52-lg fs-46-md text-center text-white">Oops, you found our 404 page</h1>
+        <p class="subtitle pl-60-lg pr-60-lg text-center text-white">This is not a fault, just an accident that was not intentional. However, we doubt that this is the page you're looking for and we apologize profusely for it.</p>
+        <div class="d-flex justify-content-center mt-25 mt-30-sm mt-40-xxl">
+          <a class="hb hb--danger hb--255 hb--h50" data-offset="30" href="https://www.hostinger.com/tutorials" data-wpel-link="internal" rel="follow">Go to homepage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+        <div class="container">
+            <h2 class="text-center text-sm-start text-lg-start fw-700 h-mb-2 text-capitalize">
+                Most Popular Tutorials            </h2>
+            <p class="text-h-light-gray pb-50 text-center text-sm-start">New to Hostinger Tutorials? Start with our most-viewed guides and resources.</p>
+            
+
+<div class="row three-post-section">
+    
+<div class="content-item d-flex flex-column col-md-4 h-mb-2" id="post-25289">
+    <div class="col-12 h-p-0 height-20rem d-contents">
+                    <a class="height-inherit" href="/tutorials/website-design-inspiration" data-wpel-link="internal" rel="follow">
+                <img width="640" height="373" src="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/website-design-inspiration-1024x596.png" class="object-fit-cover border-radius-10px wp-post-image" alt="15+ Best Website Design Examples in 2025 for Inspiration + What Makes a Good Web Design" decoding="async" fetchpriority="high" srcset="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/website-design-inspiration.png 1024w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/website-design-inspiration-300x175.png 300w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/website-design-inspiration-150x87.png 150w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/website-design-inspiration-768x447.png 768w" sizes="(max-width: 640px) 100vw, 640px" />            </a>
+            </div>
+    <div class="d-flex flex-column h-pt-2 h-pb-3">
+        <div class="d-flex justify-content-sm-between justify-content-center h-mb-1">
+            <p class="label text-h-meteorite-dark fw-800 fs-14 related-posts__date-category">
+                16 Aug •
+                                            <a class="text-h-meteorite-dark text-uppercase fw-800 fs-14 links-hover" href="https://www.hostinger.com/tutorials/website-development" data-wpel-link="internal" rel="follow">
+                            Website development                        </a>
+                        <span class="related-posts__separator">•</span>
+                                            <a class="text-h-meteorite-dark text-uppercase fw-800 fs-14 links-hover" href="https://www.hostinger.com/tutorials/website-development/production" data-wpel-link="internal" rel="follow">
+                            Production                        </a>
+                        <span class="related-posts__separator">•</span>
+                                </p>
+        </div>
+        <h5 class="text-center text-sm-start pb-10">
+            <a href="/tutorials/website-design-inspiration" data-wpel-link="internal" rel="follow">
+                15+ Best Website Design Examples in 2025 for Inspiration + What Makes a Good Web Design            </a>
+        </h5>
+      <p class="text-content-grey text-center text-sm-start">
+          A well-designed website can captivate visitors, convey your brand&#8217;s message, and establish credibility. It also improves the user journey,...      </p>
+          </div>
+</div>
+<div class="content-item d-flex flex-column col-md-4 h-mb-2" id="post-13805">
+    <div class="col-12 h-p-0 height-20rem d-contents">
+                    <a class="height-inherit" href="/tutorials/fix-dns_probe_finished_nxdomain" data-wpel-link="internal" rel="follow">
+                <img width="640" height="281" src="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-1024x449.jpg" class="object-fit-cover border-radius-10px wp-post-image" alt="DNS_PROBE_FINISHED_NXDOMAIN: what it is and 9 ways to fix it" decoding="async" srcset="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1.jpg 1024w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-300x132.jpg 300w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-150x66.jpg 150w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-768x337.jpg 768w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-1536x674.jpg 1536w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/08/fix-dns_probe_finished_nxdomain-1-2048x899.jpg 2048w" sizes="(max-width: 640px) 100vw, 640px" />            </a>
+            </div>
+    <div class="d-flex flex-column h-pt-2 h-pb-3">
+        <div class="d-flex justify-content-sm-between justify-content-center h-mb-1">
+            <p class="label text-h-meteorite-dark fw-800 fs-14 related-posts__date-category">
+                25 Aug •
+                                            <a class="text-h-meteorite-dark text-uppercase fw-800 fs-14 links-hover" href="https://www.hostinger.com/tutorials/dns" data-wpel-link="internal" rel="follow">
+                            DNS                        </a>
+                        <span class="related-posts__separator">•</span>
+                                </p>
+        </div>
+        <h5 class="text-center text-sm-start pb-10">
+            <a href="/tutorials/fix-dns_probe_finished_nxdomain" data-wpel-link="internal" rel="follow">
+                DNS_PROBE_FINISHED_NXDOMAIN: what it is and 9 ways to fix it            </a>
+        </h5>
+      <p class="text-content-grey text-center text-sm-start">
+          DNS_PROBE_FINISHED_NXDOMAIN error can occur for several reasons: On Google Chrome, you will see a message saying This site can’t be reached if you...      </p>
+          </div>
+</div>
+<div class="content-item d-flex flex-column col-md-4 h-mb-2" id="post-10410">
+    <div class="col-12 h-p-0 height-20rem d-contents">
+                    <a class="height-inherit" href="/tutorials/make-money-online" data-wpel-link="internal" rel="follow">
+                <img width="640" height="360" src="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2022/02/make-money-online-2-1024x576.png" class="object-fit-cover border-radius-10px wp-post-image" alt="25 Ways to Make Money Online in 2025" decoding="async" srcset="https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2022/02/make-money-online-2.png 1024w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2022/02/make-money-online-2-300x169.png 300w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2022/02/make-money-online-2-150x84.png 150w, https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2022/02/make-money-online-2-768x432.png 768w" sizes="(max-width: 640px) 100vw, 640px" />            </a>
+            </div>
+    <div class="d-flex flex-column h-pt-2 h-pb-3">
+        <div class="d-flex justify-content-sm-between justify-content-center h-mb-1">
+            <p class="label text-h-meteorite-dark fw-800 fs-14 related-posts__date-category">
+                14 Feb •
+                                            <a class="text-h-meteorite-dark text-uppercase fw-800 fs-14 links-hover" href="https://www.hostinger.com/tutorials/ecommerce" data-wpel-link="internal" rel="follow">
+                            Ecommerce                        </a>
+                        <span class="related-posts__separator">•</span>
+                                </p>
+        </div>
+        <h5 class="text-center text-sm-start pb-10">
+            <a href="/tutorials/make-money-online" data-wpel-link="internal" rel="follow">
+                25 Ways to Make Money Online in 2025            </a>
+        </h5>
+      <p class="text-content-grey text-center text-sm-start">
+          Making money online is easier than ever – from selling products to offering services, the opportunities are endless. But with so many options,...      </p>
+          </div>
+</div></div>                  </div>
+    <div class="container bg-ghost-white p-50 mb-50">
+  <h2 class="h1-style pb-50">All Categories</h2>
+  <div class="row col-12">
+      <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/affiliate-academy" alt="View all posts in Affiliate academy" data-wpel-link="internal" rel="follow">Affiliate academy</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/blogging" alt="View all posts in Blogging" data-wpel-link="internal" rel="follow">Blogging</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/css" alt="View all posts in CSS" data-wpel-link="internal" rel="follow">CSS</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/dns" alt="View all posts in DNS" data-wpel-link="internal" rel="follow">DNS</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/ecommerce" alt="View all posts in Ecommerce" data-wpel-link="internal" rel="follow">Ecommerce</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/email" alt="View all posts in Email" data-wpel-link="internal" rel="follow">Email</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/errors" alt="View all posts in Errors" data-wpel-link="internal" rel="follow">Errors</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/ftp" alt="View all posts in FTP" data-wpel-link="internal" rel="follow">FTP</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/git" alt="View all posts in GIT" data-wpel-link="internal" rel="follow">GIT</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/glossary" alt="View all posts in Glossary" data-wpel-link="internal" rel="follow">Glossary</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/hostinger" alt="View all posts in Hostinger" data-wpel-link="internal" rel="follow">Hostinger</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/hostinger-horizons" alt="View all posts in Hostinger Horizons" data-wpel-link="internal" rel="follow">Hostinger Horizons</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/htaccess" alt="View all posts in htaccess" data-wpel-link="internal" rel="follow">htaccess</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/html" alt="View all posts in HTML" data-wpel-link="internal" rel="follow">HTML</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/marketing" alt="View all posts in Marketing" data-wpel-link="internal" rel="follow">Marketing</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/mysql" alt="View all posts in MySQL" data-wpel-link="internal" rel="follow">MySQL</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/other" alt="View all posts in Other" data-wpel-link="internal" rel="follow">Other</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/php" alt="View all posts in PHP" data-wpel-link="internal" rel="follow">PHP</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/ssh" alt="View all posts in SSH" data-wpel-link="internal" rel="follow">SSH</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/ssl" alt="View all posts in SSL" data-wpel-link="internal" rel="follow">SSL</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/uncategorized" alt="View all posts in Uncategorized" data-wpel-link="internal" rel="follow">Uncategorized</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/video" alt="View all posts in Video" data-wpel-link="internal" rel="follow">Video</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/vps" alt="View all posts in VPS" data-wpel-link="internal" rel="follow">VPS</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/web-pro" alt="View all posts in Web pro" data-wpel-link="internal" rel="follow">Web pro</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/webinar" alt="View all posts in Webinar" data-wpel-link="internal" rel="follow">Webinar</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/website-development" alt="View all posts in Website development" data-wpel-link="internal" rel="follow">Website development</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div> <div class="col-12 col-sm-6 col-md-4 pl-0 pb-15 fs-18 text-h-primary"><a href="https://www.hostinger.com/tutorials/wordpress" alt="View all posts in WordPress" data-wpel-link="internal" rel="follow">WordPress</a> <img class="pl-10" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/icons/arrow-right.svg"/></div>   </div>
+</div>
+<footer id="footer">
+    <div id="footer-new" class="footer-new">
+                <Footer-new
+                :menu-items="{
+  &quot;hosting&quot;: {
+    &quot;category&quot;: &quot;Hosting&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;\/horizons&quot;,
+        &quot;title&quot;: &quot;Horizons&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;isNewBadge&quot;: true,
+        &quot;newBadge&quot;: &quot;NEW&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;\/web-hosting&quot;,
+        &quot;title&quot;: &quot;Web Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;\/vps-hosting&quot;,
+        &quot;title&quot;: &quot;VPS Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 2
+      },
+      {
+        &quot;pattern&quot;: &quot;\/minecraft-server-hosting&quot;,
+        &quot;title&quot;: &quot;Minecraft Server Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 3
+      },
+      {
+        &quot;pattern&quot;: &quot;\/cyberpanel-vps-hosting&quot;,
+        &quot;title&quot;: &quot;CyberPanel VPS Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 4
+      },
+      {
+        &quot;pattern&quot;: &quot;\/cloud-hosting&quot;,
+        &quot;title&quot;: &quot;Cloud Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 5
+      },
+      {
+        &quot;pattern&quot;: &quot;\/wordpress-hosting&quot;,
+        &quot;title&quot;: &quot;Hosting for WordPress&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 6
+      },
+      {
+        &quot;pattern&quot;: &quot;\/email-hosting&quot;,
+        &quot;title&quot;: &quot;Email Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 7
+      },
+      {
+        &quot;pattern&quot;: &quot;\/cms-hosting&quot;,
+        &quot;title&quot;: &quot;CMS Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 8
+      },
+      {
+        &quot;pattern&quot;: &quot;\/ecommerce-hosting&quot;,
+        &quot;title&quot;: &quot;Ecommerce Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 9
+      },
+      {
+        &quot;pattern&quot;: &quot;\/cpanel-hosting&quot;,
+        &quot;title&quot;: &quot;cPanel Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 10
+      },
+      {
+        &quot;pattern&quot;: &quot;\/online-store&quot;,
+        &quot;title&quot;: &quot;Online Stores&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 12
+      },
+      {
+        &quot;pattern&quot;: &quot;\/website-builder&quot;,
+        &quot;title&quot;: &quot;Website Builder&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 13
+      },
+      {
+        &quot;pattern&quot;: &quot;\/buy-hosting&quot;,
+        &quot;title&quot;: &quot;Buy Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 14
+      },
+      {
+        &quot;pattern&quot;: &quot;\/agency-hosting&quot;,
+        &quot;title&quot;: &quot;Web Hosting for Agencies&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 15
+      },
+      {
+        &quot;pattern&quot;: &quot;\/cheap-web-hosting&quot;,
+        &quot;title&quot;: &quot;Cheap Web Hosting&quot;,
+        &quot;category&quot;: &quot;Hosting&quot;,
+        &quot;priority&quot;: 16
+      }
+    ]
+  },
+  &quot;domains&quot;: {
+    &quot;category&quot;: &quot;Domains&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;\/domain-checker&quot;,
+        &quot;title&quot;: &quot;Domain Checker&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;\/transfer-domain&quot;,
+        &quot;title&quot;: &quot;Domain Transfer&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 2
+      },
+      {
+        &quot;pattern&quot;: &quot;\/free-domain&quot;,
+        &quot;title&quot;: &quot;Free Domain&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 3
+      },
+      {
+        &quot;pattern&quot;: &quot;\/free-xyz-domain&quot;,
+        &quot;title&quot;: &quot;XYZ Domain&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 4
+      },
+      {
+        &quot;pattern&quot;: &quot;\/99-cent-domain&quot;,
+        &quot;title&quot;: &quot;99 Cent Domains&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 5
+      },
+      {
+        &quot;pattern&quot;: &quot;\/buy-cheap-ssl-certificate&quot;,
+        &quot;title&quot;: &quot;Cheap SSL Certificate&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 6
+      },
+      {
+        &quot;pattern&quot;: &quot;\/buy-domain&quot;,
+        &quot;title&quot;: &quot;Buy Domain Name&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 7
+      },
+      {
+        &quot;pattern&quot;: &quot;\/whois&quot;,
+        &quot;title&quot;: &quot;WHOIS Checker&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 8
+      },
+      {
+        &quot;pattern&quot;: &quot;\/free-ssl-certificate&quot;,
+        &quot;title&quot;: &quot;Free SSL Certificate&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 9
+      },
+      {
+        &quot;pattern&quot;: &quot;\/domain-name-search&quot;,
+        &quot;title&quot;: &quot;Domain Name Search&quot;,
+        &quot;category&quot;: &quot;Domains&quot;,
+        &quot;priority&quot;: 10
+      }
+    ]
+  },
+  &quot;information&quot;: {
+    &quot;category&quot;: &quot;Information&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;https:\/\/stats.hostinger.com&quot;,
+        &quot;title&quot;: &quot;Server Status&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;\/affiliates&quot;,
+        &quot;title&quot;: &quot;Affiliate Program&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 2
+      },
+      {
+        &quot;pattern&quot;: &quot;\/payments&quot;,
+        &quot;title&quot;: &quot;Payment Methods&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 3
+      },
+      {
+        &quot;pattern&quot;: &quot;\/wall-of-fame&quot;,
+        &quot;title&quot;: &quot;Wall of Fame&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 4
+      },
+      {
+        &quot;pattern&quot;: &quot;\/reviews&quot;,
+        &quot;title&quot;: &quot;Reviews&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 5
+      },
+      {
+        &quot;pattern&quot;: &quot;\/pricing&quot;,
+        &quot;title&quot;: &quot;Pricing&quot;,
+        &quot;category&quot;: &quot;Information&quot;,
+        &quot;priority&quot;: 6
+      }
+    ]
+  },
+  &quot;legal&quot;: {
+    &quot;category&quot;: &quot;Legal&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;\/privacy-policy&quot;,
+        &quot;title&quot;: &quot;Privacy Policy&quot;,
+        &quot;category&quot;: &quot;Legal&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;\/universal-terms-of-service-agreement&quot;,
+        &quot;title&quot;: &quot;Terms of Service&quot;,
+        &quot;category&quot;: &quot;Legal&quot;,
+        &quot;priority&quot;: 2
+      }
+    ]
+  },
+  &quot;company&quot;: {
+    &quot;category&quot;: &quot;Company&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;\/about&quot;,
+        &quot;title&quot;: &quot;About Hostinger&quot;,
+        &quot;category&quot;: &quot;Company&quot;,
+        &quot;priority&quot;: 2
+      },
+      {
+        &quot;pattern&quot;: &quot;\/technology&quot;,
+        &quot;title&quot;: &quot;Our Technology&quot;,
+        &quot;category&quot;: &quot;Company&quot;,
+        &quot;priority&quot;: 3
+      },
+      {
+        &quot;pattern&quot;: &quot;\/career&quot;,
+        &quot;title&quot;: &quot;Career&quot;,
+        &quot;category&quot;: &quot;Company&quot;,
+        &quot;priority&quot;: 4
+      },
+      {
+        &quot;pattern&quot;: &quot;\/contacts&quot;,
+        &quot;title&quot;: &quot;Contact Us&quot;,
+        &quot;category&quot;: &quot;Company&quot;,
+        &quot;priority&quot;: 5
+      },
+      {
+        &quot;pattern&quot;: &quot;https:\/\/www.hostinger.com\/blog\/&quot;,
+        &quot;title&quot;: &quot;Blog&quot;,
+        &quot;category&quot;: &quot;Company&quot;,
+        &quot;priority&quot;: 6
+      }
+    ]
+  },
+  &quot;help&quot;: {
+    &quot;category&quot;: &quot;Help&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;pattern&quot;: &quot;https:\/\/www.hostinger.com\/tutorials\/&quot;,
+        &quot;title&quot;: &quot;Tutorials&quot;,
+        &quot;category&quot;: &quot;Help&quot;,
+        &quot;priority&quot;: 1
+      },
+      {
+        &quot;pattern&quot;: &quot;https:\/\/support.hostinger.com\/en\/&quot;,
+        &quot;title&quot;: &quot;Knowledge Base&quot;,
+        &quot;category&quot;: &quot;Help&quot;,
+        &quot;priority&quot;: 2
+      },
+      {
+        &quot;pattern&quot;: &quot;\/report-abuse&quot;,
+        &quot;title&quot;: &quot;Report Abuse&quot;,
+        &quot;category&quot;: &quot;Help&quot;,
+        &quot;priority&quot;: 3
+      }
+    ]
+  }
+}"
+                :payment-methods="[&quot;visa&quot;,&quot;mastercard&quot;,&quot;amex&quot;,&quot;discover&quot;,&quot;jcb&quot;,&quot;maestro&quot;,&quot;dinersclub&quot;]"
+                payment-url="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/images/payments/2020/"
+                payment-path="/payments"
+                payment-btn="And More"
+                about="We are a web hosting provider on a mission to bring success to everyone who goes online. We do it by constantly improving server technology, providing professional support, and making the web hosting experience seamless."
+                :social-links="[{&quot;id&quot;:&quot;social_linkedin&quot;,&quot;url&quot;:&quot;https:\/\/www.linkedin.com\/company\/hostinger&quot;,&quot;img&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/social-icons\/footer\/ic-linked-in.svg&quot;,&quot;alt&quot;:&quot;Linked-in logo&quot;},{&quot;id&quot;:&quot;social_facebook&quot;,&quot;url&quot;:&quot;https:\/\/www.facebook.com\/Hostinger&quot;,&quot;img&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/social-icons\/footer\/ic-facebook.svg&quot;,&quot;alt&quot;:&quot;Facebook logo&quot;},{&quot;id&quot;:&quot;social_instagram&quot;,&quot;url&quot;:&quot;https:\/\/www.instagram.com\/hostinger_global\/&quot;,&quot;img&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/social-icons\/footer\/ic-instagram.svg&quot;,&quot;alt&quot;:&quot;Instagram logo&quot;},{&quot;id&quot;:&quot;social_twitter&quot;,&quot;url&quot;:&quot;https:\/\/x.com\/Hostinger&quot;,&quot;img&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/social-icons\/footer\/ic-twitter.svg&quot;,&quot;alt&quot;:&quot;X logo&quot;},{&quot;id&quot;:&quot;social_youtube&quot;,&quot;url&quot;:&quot;https:\/\/www.youtube.com\/HostingerAcademy?sub_confirmation=1&quot;,&quot;img&quot;:&quot;https:\/\/www.hostinger.com\/tutorials\/wp-content\/themes\/tutorialsthemeuplift\/public\/images\/social-icons\/footer\/ic-youtube.svg&quot;,&quot;alt&quot;:&quot;Youtube logo&quot;}]"
+                copyright="© 2004-2025 hostinger.com - Premium Web Hosting, Cloud, VPS & Domain Registration Services."
+                no-vat-txt="Prices are listed without VAT"
+        >
+        </Footer-new>
+    </div>
+</footer>
+
+<div id="ai-chatbot">
+    <Chatbot locale="en"></Chatbot>
+</div>
+
+<div id="gdpr-consent">
+    <gdpr-banner-bottom :strings="{&quot;banner&quot;:{&quot;body&quot;:{&quot;firstHeading&quot;:&quot;We Care About Your Privacy&quot;,&quot;firstBody&quot;:&quot;We use cookies, to ensure that we give you the best experience on our website, to enable essential services and functionality on our site and to collect data on how visitors interact with our site and services. By clicking Accept, you agree to our use of all the cookies for advertising, analytics and support. For more information, please read our &lt;a id=&#039;hgr-cookie_consent-cookie_policy_btn&#039; class=&#039;link fs-14 fs-15-sm cursor-pointer&#039; target=&#039;_blank&#039; ref=&#039;someLink&#039; rel=&#039;noopener noreferrer nofollow&#039; href=&#039;\/legal\/cookie-policy&#039;&gt;Cookie Policy&lt;\/a&gt;.&quot;},&quot;acceptBtn&quot;:&quot;Accept&quot;,&quot;settingsBtn&quot;:&quot;Settings&quot;,&quot;declineBtn&quot;:&quot;Decline&quot;},&quot;popup&quot;:{&quot;header&quot;:{&quot;title&quot;:&quot;Cookies settings&quot;,&quot;body&quot;:&quot;You may accept all cookies or choose specific categories, such as statistics or marketing. Mandatory cookies are always active since these cookies enable core functionality such as security, network management and provide you with access to features such as your profile and purchases, member-only resources, and other areas of the website. You may disable these by changing your browser settings, but this may affect how the website functions. For more information, please read our &lt;a id=&#039;hgr-cookie_consent-settings-cookie_policy_btn&#039; class=&#039;link fs-14&#039; target=&#039;_blank&#039; rel=&#039;noopener noreferrer nofollow&#039; href=&#039;\/legal\/cookie-policy&#039;&gt;Cookie Policy&lt;\/a&gt;.&quot;,&quot;btn&quot;:&quot;Accept all&quot;},&quot;cookies&quot;:[{&quot;title&quot;:&quot;Mandatory cookies&quot;,&quot;body&quot;:&quot;They are necessary to ensure the proper functioning of the website.&quot;,&quot;btn&quot;:&quot;Always active&quot;},{&quot;title&quot;:&quot;Statistics cookies&quot;,&quot;body&quot;:&quot;They are important for us to improve the website&#039;s functionality and structure, based on how the website is using data.&quot;,&quot;cookieName&quot;:&quot;statistics&quot;},{&quot;title&quot;:&quot;Marketing cookies&quot;,&quot;body&quot;:&quot;They are used to collect information to provide advertising or content for a particular browser by creating different target groups.&quot;,&quot;cookieName&quot;:&quot;advertising&quot;}],&quot;buttonTxt&quot;:&quot;Accept Selected&quot;}}">
+</div>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KL4FQVG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(d,u,ac){var s=d.createElement('script');s.type='text/javascript';s.src='https://a.omappapi.com/app/js/api.min.js';s.async=true;s.dataset.user=u;s.dataset.account=ac;d.getElementsByTagName('head')[0].appendChild(s);})(document,71036,79832);</script>
+<script  type="text/javascript">/* <![CDATA[ */!function(e,n){var r={"selectors":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"options":{"indent":2,"ampersandCleanup":true,"linehover":true,"rawcodeDbclick":false,"textOverflow":"break","linenumbers":false,"theme":"classic","language":"generic","retainCssClasses":false,"collapse":false,"toolbarOuter":"","toolbarTop":"{BTN_RAW}{BTN_COPY}{BTN_WINDOW}{BTN_WEBSITE}","toolbarBottom":""},"resources":["https:\/\/www.hostinger.com\/tutorials\/wp-content\/plugins\/enlighter\/cache\/X2_enlighterjs.min.css?7MjTIEnBBzODdvz","https:\/\/www.hostinger.com\/tutorials\/wp-content\/plugins\/enlighter\/resources\/enlighterjs\/enlighterjs.min.js"]},o=document.getElementsByTagName("head")[0],t=n&&(n.error||n.log)||function(){};e.EnlighterJSINIT=function(){!function(e,n){var r=0,l=null;function c(o){l=o,++r==e.length&&(!0,n(l))}e.forEach(function(e){switch(e.match(/\.([a-z]+)(?:[#?].*)?$/)[1]){case"js":var n=document.createElement("script");n.onload=function(){c(null)},n.onerror=c,n.src=e,n.async=!0,o.appendChild(n);break;case"css":var r=document.createElement("link");r.onload=function(){c(null)},r.onerror=c,r.rel="stylesheet",r.type="text/css",r.href=e,r.media="all",o.appendChild(r);break;default:t("Error: invalid file extension",e)}})}(r.resources,function(e){e?t("Error: failed to dynamically load EnlighterJS resources!",e):"undefined"!=typeof EnlighterJS?EnlighterJS.init(r.selectors.block,r.selectors.inline,r.options):t("Error: EnlighterJS resources not loaded yet!")})},(document.querySelector(r.selectors.block)||document.querySelector(r.selectors.inline))&&e.EnlighterJSINIT()}(window,console); /* ]]> */</script><script  type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/resources/js/web-font-loader.js?ver=6.6.1" id="fontloader_js-js"></script>
+<script type="text/javascript" id="chatbot-js-extra">
+/* <![CDATA[ */
+var wp_is_chatbot_available = {"status":"false"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/js/chatbot.js?id=44e8a1911fdb50c5809d927650150397" id="chatbot-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/js/navigation.js?id=9725a3f081ad43514b148100d687fa8d" id="navigation-js"></script>
+<script type="text/javascript" id="eafl-public-js-extra">
+/* <![CDATA[ */
+var eafl_public = {"home_url":"https:\/\/www.hostinger.com\/tutorials\/","ajax_url":"https:\/\/www.hostinger.com\/tutorials\/wp-admin\/admin-ajax.php","nonce":"e758b4b8f0"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/easy-affiliate-links/dist/public.js?ver=3.7.4" id="eafl-public-js"></script>
+<script type="text/javascript" id="ez-toc-scroll-scriptjs-js-extra">
+/* <![CDATA[ */
+var eztoc_smooth_local = {"scroll_offset":"100","add_request_uri":""};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/easy-table-of-contents/assets/js/smooth_scroll.min.js?ver=2.0.67.1" id="ez-toc-scroll-scriptjs-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/easy-table-of-contents/vendor/js-cookie/js.cookie.min.js?ver=2.2.1" id="ez-toc-js-cookie-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/easy-table-of-contents/vendor/sticky-kit/jquery.sticky-kit.min.js?ver=1.9.2" id="ez-toc-jquery-sticky-kit-js"></script>
+<script type="text/javascript" id="ez-toc-js-js-extra">
+/* <![CDATA[ */
+var ezTOC = {"smooth_scroll":"1","scroll_offset":"100","fallbackIcon":"<span class=\"\"><span class=\"eztoc-hide\" style=\"display:none;\">Toggle<\/span><span class=\"ez-toc-icon-toggle-span\"><svg style=\"fill: #999;color:#999\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"list-377408\" width=\"20px\" height=\"20px\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M6 6H4v2h2V6zm14 0H8v2h12V6zM4 11h2v2H4v-2zm16 0H8v2h12v-2zM4 16h2v2H4v-2zm16 0H8v2h12v-2z\" fill=\"currentColor\"><\/path><\/svg><svg style=\"fill: #999;color:#999\" class=\"arrow-unsorted-368013\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"10px\" height=\"10px\" viewBox=\"0 0 24 24\" version=\"1.2\" baseProfile=\"tiny\"><path d=\"M18.2 9.3l-6.2-6.3-6.2 6.3c-.2.2-.3.4-.3.7s.1.5.3.7c.2.2.4.3.7.3h11c.3 0 .5-.1.7-.3.2-.2.3-.5.3-.7s-.1-.5-.3-.7zM5.8 14.7l6.2 6.3 6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7c-.2-.2-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3-.2.2-.3.5-.3.7s.1.5.3.7z\"\/><\/svg><\/span><\/span>"};
+/* ]]> */
+</script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/plugins/easy-table-of-contents/assets/js/front.min.js?ver=2.0.67.1-1718773264" id="ez-toc-js-js"></script>
+<script   type="text/javascript" src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/js/theme.min.js?ver=1.0.0.1747146075" id="understrap-scripts-js"></script>
+<script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.hostinger.com/tutorials/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script>
+<script src="https://www.hostinger.com/tutorials/wp-content/themes/tutorialsthemeuplift/public/js/vueapp.js?id=f47020b77aa46b97da8e69eec593a6c9"></script>
+
+</body>
+</html>
+<!--
+Performance optimized by Redis Object Cache. Learn more: https://wprediscache.com
+
+Retrieved 3364 objects (2 MB) from Redis using Predis (v2.1.2).
+-->
