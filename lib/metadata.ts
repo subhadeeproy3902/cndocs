@@ -68,6 +68,6 @@ export const baseUrl =
     : new URL(`https://${process.env.VERCEL_URL}`);
 
 export const metadataImage = createMetadataImage({
-  imageRoute: "/api/dynamic-og",
+  imageRoute: "/api/og",
   source,
 });

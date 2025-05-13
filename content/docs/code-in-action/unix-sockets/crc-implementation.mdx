@@ -1,0 +1,359 @@
+---
+title: "CRC Implementation with Unix File Sockets"
+description: "Learn how to implement a client-server application for CRC calculation using Unix file sockets"
+---
+
+# CRC Implementation with Unix File Sockets
+
+This guide demonstrates how to implement a client-server application that calculates Cyclic Redundancy Check (CRC) codewords using Unix file sockets for communication. The client takes a data word and divisor from the user and sends them to the server. The server calculates the CRC codeword and returns it back to the client.
+
+## What is CRC?
+
+[Cyclic Redundancy Check (CRC)](https://www.geeksforgeeks.org/modulo-2-binary-division/) is an error-detecting code commonly used in digital networks and storage devices to detect accidental changes to raw data. It works by treating the message as a polynomial and performing polynomial division with a predetermined generator polynomial. The remainder of this division becomes the CRC.
+
+CRC is widely used in:
+- Ethernet frames
+- ZIP files
+- HDLC frames
+- PPP frames
+- Bluetooth packets
+- Storage devices
+
+## System Architecture
+
+Our implementation consists of two main components:
+
+1. **Client**: Takes user input (data word and divisor) and sends it to the server
+2. **Server**: Receives the data, calculates the CRC, and sends the result back to the client
+
+```
++----------------+                  +----------------+
+|     Client     |                  |     Server     |
+|                |                  |                |
+| 1. Takes input |                  | 1. Receives    |
+|    - Data word |  Unix Socket     |    data        |
+|    - Divisor   | <------------->  |                |
+|                |                  | 2. Calculates  |
+| 2. Displays    |                  |    CRC         |
+|    results     |                  |                |
++----------------+                  +----------------+
+```
+
+## Communication Protocol
+
+The client and server communicate using a simple message structure:
+
+```c
+struct message {
+    char word[MAX];    // For data word (from client) or codeword (from server)
+    char divisor[MAX]; // For divisor (from client) or remainder (from server)
+};
+```
+
+When the server responds, it repurposes these fields:
+- `word` contains the complete codeword (original data + CRC bits)
+- `divisor` contains just the remainder (CRC bits)
+
+## Server Implementation
+
+The server creates a Unix domain socket, binds it to a file path, and listens for client connections. When a client connects, the server receives the data word and divisor, calculates the CRC, and sends the result back.
+
+Here's the core of the server implementation:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/socket.h>
+#include <math.h>
+
+#define MAX 100
+
+struct message {
+    char word[MAX];
+    char divisor[MAX];
+};
+
+char cw[MAX], rm[MAX];
+
+// Function to convert decimal to binary
+void toBin(long long int num, char *bin) {
+    int i = 0;
+    while (num) {
+        if (num & 1)
+            bin[i++] = '1';
+        else
+            bin[i++] = '0';
+        num = num >> 1;
+    }
+    bin[i] = '\0';
+
+    // Reverse the binary string
+    int j = 0, k = i - 1;
+    while (j < k) {
+        char temp = bin[j];
+        bin[j] = bin[k];
+        bin[k] = temp;
+        j++;
+        k--;
+    }
+}
+
+// Function to convert binary to decimal
+long long int toDec(const char *bin) {
+    long long int num = 0;
+    int len = strlen(bin);
+    for (int i = 0; i < len; i++) {
+        if (bin[i] == '1')
+            num += 1 << (len - i - 1);
+    }
+    return num;
+}
+
+// CRC calculation function
+void CRC(const char *dataword, const char *generator) {
+    int l_gen = strlen(generator);
+    long long int gen = toDec(generator);
+
+    long long int dword = toDec(dataword);
+
+    // Append zeros to the dataword (multiply by x^(length of generator - 1))
+    long long int dividend = dword << (l_gen - 1);
+
+    // Perform polynomial division
+    int shft = (int)(ceil(log2(dividend + 1)) - l_gen);
+    long long int rem;
+
+    while ((dividend >= gen) || (shft >= 0)) {
+        rem = (dividend >> shft) ^ gen;
+        dividend = (dividend & ((1LL << shft) - 1)) | (rem << shft);
+        shft = (int)(ceil(log2(dividend + 1)) - l_gen);
+    }
+
+    // Create the codeword (original data + remainder)
+    long long int codeword = (dword << (l_gen - 1)) | dividend;
+    
+    // Convert results to binary strings
+    char bin_codeword[100];
+    toBin(codeword, bin_codeword);
+    
+    // Extract the remainder part
+    char bin_dividend[100];
+    strcpy(bin_dividend, bin_codeword + strlen(dataword));
+    
+    printf("Remainder: %s\n", bin_dividend);
+    printf("Codeword : %s\n", bin_codeword);
+    
+    // Store results for sending back to client
+    strcpy(cw, bin_codeword);
+    strcpy(rm, bin_dividend);
+}
+
+void main() {
+    int server_fd, client_fd;
+    int server_len, client_len;
+    struct sockaddr_un server_address, client_address;
+    struct message data;
+    
+    // Remove any existing socket file
+    unlink("server");
+    
+    // Create socket
+    server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    server_address.sun_family = AF_UNIX;
+    strcpy(server_address.sun_path, "server");
+    server_len = sizeof(server_address);
+    
+    // Bind socket
+    bind(server_fd, (struct sockaddr *)&server_address, server_len);
+    
+    // Listen for connections
+    listen(server_fd, 5);
+    printf("Server Running\n\n");
+
+    // Accept client connection
+    client_len = sizeof(client_address);
+    client_fd = accept(server_fd, (struct sockaddr *)&client_address, &client_len);
+
+    // Main processing loop
+    while(1) {
+        printf("Waiting..\n");
+        sleep(1);
+        
+        // Read data from client
+        read(client_fd, (void *)&data, sizeof(data));
+        printf("Server received from client\n");
+        
+        // Check for termination command
+        if(strcmp(data.word, "end") == 0) {
+            close(client_fd);
+            break;
+        } else {
+            printf("Data word : %s\n", data.word);
+            printf("Divisor : %s\n", data.divisor);
+        }
+        
+        // Calculate CRC
+        CRC(data.word, data.divisor);
+        
+        // Prepare response
+        strcpy(data.word, cw);
+        strcpy(data.divisor, rm);
+
+        printf("Sending back codeword : %s\n", data.word);
+        printf("Sending back remainder : %s\n", data.divisor);
+
+        // Send response to client
+        write(client_fd, (void *)&data, sizeof(data));
+    }
+    
+    // Clean up
+    close(server_fd);
+}
+```
+
+## Client Implementation
+
+The client creates a Unix domain socket, connects to the server, takes user input, sends it to the server, and displays the results.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/socket.h>
+
+#define MAX 100
+
+struct message {
+    char word[MAX];
+    char divisor[MAX];
+};
+
+void main() {
+    int sockfd, result, len;
+    struct message data;
+    
+    // Create socket
+    struct sockaddr_un address;
+    sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    address.sun_family = AF_UNIX;
+    strcpy(address.sun_path, "server");
+    len = sizeof(address);
+
+    printf("Client Running\n\n");
+
+    // Connect to server
+    result = connect(sockfd, (struct sockaddr *)&address, len);
+    if(result == -1) {
+        printf("Cannot connect to the server\n");
+        exit(1);
+    }
+
+    // Main processing loop
+    while(1) {
+        // Get user input
+        printf("Enter the data word : ");
+        scanf("%[^\n]", data.word);
+        getchar();
+        printf("Enter the divisor : ");
+        scanf("%[^\n]", data.divisor);
+        getchar();
+
+        printf("Sending data to the server \n");
+        
+        // Check for termination command
+        if(strcmp(data.word, "end") == 0) {
+            write(sockfd, (void *)&data, sizeof(data));
+            break;
+        } else {
+            // Send data to server
+            write(sockfd, (void *)&data, sizeof(data));
+        }
+        
+        printf("Waiting for the server\n");
+        sleep(1);
+        
+        // Receive response from server
+        read(sockfd, (void *)&data, sizeof(data));
+        printf("Received from the server (Codeword) : %s\n\n", data.word);
+        printf("Received from the server (Remainder) : %s\n\n", data.divisor);
+    }
+    
+    // Clean up
+    close(sockfd);
+}
+```
+
+## CRC Algorithm Explanation
+
+The CRC calculation in our implementation follows these steps:
+
+1. **Convert to Decimal**: Convert binary strings to decimal for easier manipulation
+2. **Append Zeros**: Append zeros to the data word (equal to divisor length - 1)
+3. **Polynomial Division**: Perform binary polynomial division using XOR operations
+4. **Generate Codeword**: Combine the original data with the remainder to form the codeword
+
+The key part of the algorithm is the polynomial division:
+
+```c
+// Perform polynomial division
+int shft = (int)(ceil(log2(dividend + 1)) - l_gen);
+long long int rem;
+
+while ((dividend >= gen) || (shft >= 0)) {
+    rem = (dividend >> shft) ^ gen;
+    dividend = (dividend & ((1LL << shft) - 1)) | (rem << shft);
+    shft = (int)(ceil(log2(dividend + 1)) - l_gen);
+}
+```
+
+This implements the binary polynomial division algorithm, where:
+- `dividend` is the data word with appended zeros
+- `gen` is the generator polynomial (divisor)
+- `rem` holds the intermediate remainder
+- `shft` determines the current bit position for division
+
+## Running the Application
+
+To run the application:
+
+1. Compile the server and client:
+   ```bash
+   gcc -o server server.c -lm
+   gcc -o client client.c
+   ```
+
+2. Start the server:
+   ```bash
+   ./server
+   ```
+
+3. In another terminal, start the client:
+   ```bash
+   ./client
+   ```
+
+4. Enter binary data word and divisor when prompted.
+
+5. To terminate, enter "end" as the data word.
+
+## Example Output
+
+<img className="rounded-xl" src="/images/unix-file-sockets/2.png" alt="" />
+
+## Conclusion
+
+This implementation demonstrates how to use Unix file sockets for inter-process communication in a client-server application. The CRC calculation provides a practical example of error detection coding that's widely used in network protocols and data storage systems.
+
+The use of Unix domain sockets makes this implementation efficient for local inter-process communication, as it avoids the overhead of network protocol stacks while still providing a socket-based programming interface.
+
