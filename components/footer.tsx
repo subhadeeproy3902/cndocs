@@ -14,7 +14,11 @@ import {
 import Link from "next/link";
 
 const socialLinks = [
-  { icon: Github, label: "GitHub", href: "https://github.com/subhadeeproy3902/cndocs" },
+  {
+    icon: Github,
+    label: "GitHub",
+    href: "https://github.com/subhadeeproy3902/cndocs",
+  },
   { icon: Twitter, label: "Twitter", href: "https://twitter.com/mvp_Subha" },
   { icon: Linkedin, label: "LinkedIn", href: "#" },
 ];
@@ -28,42 +32,60 @@ const documentationLinks = [
 
 const resourceLinks = [
   { text: "Network Topologies", href: "/docs/fundamentals/network-topologies" },
-  { text: "Socket API Reference", href: "/docs/socket-programming/socket-fundamentals" },
+  {
+    text: "Socket API Reference",
+    href: "/docs/socket-programming/socket-fundamentals",
+  },
   { text: "IPC Mechanisms", href: "/docs/socket-programming/ipc" },
-  { text: "Security Best Practices", href: "/docs/socket-programming/socket-fundamentals/best-practices" },
+  {
+    text: "Security Best Practices",
+    href: "/docs/socket-programming/socket-fundamentals/best-practices",
+  },
 ];
 
 const helpfulLinks = [
   { text: "FAQs", href: "#faq" },
-  { text: "GitHub Issues", href: "https://github.com/subhadeeproy3902/cndocs/issues" },
-  { text: "Contribute", href: "https://github.com/subhadeeproy3902/cndocs/blob/main/README.md", hasIndicator: true },
+  {
+    text: "GitHub Issues",
+    href: "https://github.com/subhadeeproy3902/cndocs/issues",
+  },
+  {
+    text: "Contribute",
+    href: "https://github.com/subhadeeproy3902/cndocs/blob/main/README.md",
+    hasIndicator: true,
+  },
 ];
 
 const contactInfo = [
   { icon: Mail, text: "contact@cndocs.dev" },
-  { icon: Github, text: "subhadeeproy3902", href: "https://github.com/subhadeeproy3902" },
+  {
+    icon: Github,
+    text: "subhadeeproy3902",
+    href: "https://github.com/subhadeeproy3902",
+  },
   { icon: MapPin, text: "Kolkata, India", isAddress: true },
 ];
 
 export default function Footer4Col() {
   return (
-    <footer className="mt-16 w-full place-self-end rounded-t-xl bg-secondary dark:bg-secondary/20">
+    <footer className="mt-16 overflow-x-hidden w-full place-self-end rounded-t-xl bg-secondary dark:bg-secondary/20">
       <div className="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
-            <div className="flex justify-center gap-2 text-primary sm:justify-start">
+            <div className="flex gap-2 text-primary justify-start">
               <img src="/logo.webp" alt="Cndocs Logo" className="size-8" />
               <span className="bg-primary from-foreground via-green-200 to-primary bg-clip-text text-2xl font-semibold text-transparent dark:bg-gradient-to-b">
                 Cndocs
               </span>
             </div>
 
-            <p className="mt-6 max-w-md text-center leading-relaxed text-foreground/50 sm:max-w-xs sm:text-left">
-              Comprehensive documentation for computer networking and socket programming.
-              Learn, build, and master networking concepts with practical examples.
+            <p className="mt-6 max-w-md leading-relaxed text-foreground/50 sm:max-w-xs sm:text-left">
+              Comprehensive documentation for computer networking and socket
+              programming. Learn, build, and master networking concepts with
+              practical examples.
             </p>
 
-            <ul className="mt-8 flex justify-center gap-6 sm:justify-start md:gap-8">
+            <ul className="mt-8 flex gap-6 justify-start md:gap-8">
               {socialLinks.map(({ icon: Icon, label, href }) => (
                 <li key={label}>
                   <Link
@@ -80,8 +102,8 @@ export default function Footer4Col() {
             </ul>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:col-span-2">
-            <div className="text-center sm:text-left">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
+            <div className=" sm:text-left">
               <p className="text-lg font-medium flex items-center gap-2">
                 <BookOpen className="size-5 text-primary" />
                 Documentation
@@ -101,7 +123,7 @@ export default function Footer4Col() {
               </ul>
             </div>
 
-            <div className="text-center sm:text-left">
+            <div className=" sm:text-left">
               <p className="text-lg font-medium flex items-center gap-2">
                 <Code className="size-5 text-primary" />
                 Resources
@@ -121,7 +143,7 @@ export default function Footer4Col() {
               </ul>
             </div>
 
-            <div className="text-center sm:text-left">
+            <div className=" sm:text-left">
               <p className="text-lg font-medium flex items-center gap-2">
                 <Shield className="size-5 text-primary" />
                 Support
@@ -134,11 +156,15 @@ export default function Footer4Col() {
                       href={href}
                       className={`${
                         hasIndicator
-                          ? "group flex justify-center gap-1.5 sm:justify-start"
+                          ? "group flex gap-1.5 justify-start"
                           : "text-secondary-foreground/70 transition hover:text-primary"
                       }`}
                       target={href.startsWith("http") ? "_blank" : undefined}
-                      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      rel={
+                        href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                     >
                       <span className="text-secondary-foreground/70 transition group-hover:text-primary">
                         {text}
@@ -158,12 +184,12 @@ export default function Footer4Col() {
         </div>
 
         <div className="mt-8 border-t pt-6">
-          <div className="text-center sm:flex sm:justify-between sm:text-left">
-            <p className="text-sm text-secondary-foreground/70">
-              <span className="block sm:inline">All rights reserved.</span>
+          <div className="flex justify-between text-left">
+            <p className="text-sm text-secondary-foreground/70 w-fit">
+              <span className="block sm:inline w-fit">All rights reserved.</span>
             </p>
 
-            <p className="text-secondary-foreground/70 mt-4 text-sm transition sm:order-first sm:mt-0">
+            <p className="text-secondary-foreground/70 text-sm transition sm:order-first sm:mt-0">
               &copy; {new Date().getFullYear()} CNdocs
             </p>
           </div>

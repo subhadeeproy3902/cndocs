@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 import { baseOptions } from "../layout.config";
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { RootProvider } from "fumadocs-ui/provider";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
+    <RootProvider>
       <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
         <div className="absolute left-1/2 top-0 ml-[-30rem] h-[27rem] w-[85rem] dark:[mask-image:linear-gradient(white,transparent)]">
           <div className="absolute inset-0 bg-gradient-to-r from-[#36b44b] to-[#75ff91] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#3ac25c]/30 dark:to-[#7cfc84]/30 dark:opacity-100">
@@ -103,6 +105,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       >
         {children}
       </DocsLayout>
+      </RootProvider>
     </>
   );
 }

@@ -168,7 +168,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="container relative py-10 overflow-x-hidden">
+    <section className="container overflow-x-hidden relative py-10 overflow-x-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

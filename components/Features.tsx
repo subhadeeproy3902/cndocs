@@ -23,13 +23,15 @@ import {
 
 export default function FeaturesSection() {
   return (
-    <section className="relative px-4 mt-16 py-16 md:py-32">
+    <section className="relative overflow-x-hidden px-4 sm:mt-16 pt-0 pb-16 sm:pt-16 md:py-32">
       {/* Background gradient blurs */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-green-500/20 via-emerald-500/10 to-transparent rounded-full blur-[100px] opacity-50 -z-10" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-lime-500/20 via-green-500/10 to-transparent rounded-full blur-[80px] opacity-40 -z-10" />
 
       {/* Section Heading */}
-      <div className="text-center mb-16 pt-8">
+      <div className="relative text-center mb-16 pt-14 overflow-hidden">
+        <div className="absolute -top-10 left-1/2 h-16 w-44 -translate-x-1/2 select-none rounded-full bg-primary opacity-40 blur-3xl"></div>
+        <div className="absolute left-1/2 top-0 h-px w-3/5 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/50 to-transparent transition-all ease-in-out"></div>
         <h2 className="text-4xl md:text-5xl mb-4">
           Features
         </h2>

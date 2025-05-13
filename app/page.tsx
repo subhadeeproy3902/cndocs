@@ -11,10 +11,12 @@ import FeaturesSection from "@/components/Features";
 import Testimonials from "@/components/testimonials-marquee";
 import Faq2 from "@/components/faq-2";
 import Footer4Col from "@/components/footer";
+import { NavbarDemo } from "@/components/navbar";
 
 export default function Home() {
   return (
-    <HomeLayout {...baseOptions}>
+    <>
+      <NavbarDemo />
       <GradientBlur />
       <div
         className="absolute inset-x-0 top-[360px] h-[250px]"
@@ -38,7 +40,7 @@ export default function Home() {
         }}
       ></div>
 
-      <main className="container relative max-w-[1100px] px-2 py-4 lg:py-8 mt-4">
+      <main className="container relative max-w-[1100px] px-2 py-4 lg:py-8 mt-20 min-h-screen sm:min-h-1">
         <div className="relative">
           <div className="relative flex flex-col border border-green-500/10 bg-fd-background/70 backdrop-blur-md px-4 pt-12 max-md:text-center md:px-12 md:pt-16 rounded-xl shadow-xl shadow-green-500/5 items-start justify-start">
             <div
@@ -213,6 +215,6 @@ export default function Home() {
       <Testimonials />
       <Faq2 />
       <Footer4Col />
-    </HomeLayout>
+    </>
   );
 }

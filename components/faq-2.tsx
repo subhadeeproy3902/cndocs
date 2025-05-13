@@ -97,7 +97,7 @@ export default function Faq2() {
   };
 
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-background overflow-x-hidden">
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         <div className="flex flex-col items-center mb-12">
           <Badge
