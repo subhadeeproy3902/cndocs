@@ -1,0 +1,199 @@
+---
+title: "hostname"
+description: "A comprehensive guide to viewing and setting system hostnames in Linux"
+draft: false
+toc: true
+---
+
+# Hostname Command in Linux
+
+## Introduction
+
+The `hostname` command in Linux is a fundamental networking utility used to view or set a system's hostname. A hostname is a label assigned to a device connected to a computer network, serving as a unique identifier within that network. This documentation provides a comprehensive overview of the `hostname` command, its options, and practical applications.
+
+<img className="max-w-xl mx-auto" src="/images/hostname-command.png" alt="Hostname Command Output" />
+
+## Basic Usage
+
+In its simplest form, the `hostname` command displays the current hostname of the system:
+
+```bash
+hostname
+```
+
+This will output the system's current hostname without any additional information.
+
+## Command Options
+
+The `hostname` command offers several options to display different aspects of the system's hostname configuration:
+
+### Display Options
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-a` | Display the alias name of the host (if any) | `hostname -a` |
+| `-A` | Display all FQDNs (Fully Qualified Domain Names) of the host | `hostname -A` |
+| `-d` | Display the DNS domain name | `hostname -d` |
+| `-f` | Display the FQDN (Fully Qualified Domain Name) | `hostname -f` |
+| `-i` | Display the IP address(es) of the host | `hostname -i` |
+| `-I` | Display all network addresses of the host | `hostname -I` |
+| `-s` | Display the short hostname (the portion before the first dot) | `hostname -s` |
+| `-V` | Display version information | `hostname -V` |
+
+### Setting the Hostname
+
+The `hostname` command can also be used to set the system's hostname, though this typically requires administrative privileges:
+
+```bash
+sudo hostname new-hostname
+```
+
+This will set the system's hostname to "new-hostname" temporarily (until the next reboot).
+
+To set the hostname permanently, you need to modify the appropriate configuration file:
+
+```bash
+sudo nano /etc/hostname
+```
+
+Replace the existing hostname with your desired hostname and save the file.
+
+## Detailed Examples
+
+### Example 1: Displaying the Current Hostname
+
+```bash
+hostname
+```
+
+Output:
+```
+ubuntu-server
+```
+
+### Example 2: Displaying the Fully Qualified Domain Name
+
+```bash
+hostname -f
+```
+
+Output:
+```
+ubuntu-server.example.com
+```
+
+### Example 3: Displaying All IP Addresses
+
+```bash
+hostname -I
+```
+
+Output:
+```
+192.168.1.100 10.0.0.5 2001:db8::1
+```
+
+This shows all configured IP addresses on all network interfaces.
+
+### Example 4: Setting a Temporary Hostname
+
+```bash
+sudo hostname temporary-host
+```
+
+This changes the hostname to "temporary-host" until the next system reboot.
+
+## Advanced Usage
+
+### Permanent Hostname Configuration
+
+To make hostname changes permanent across reboots, you need to modify the system configuration files. The exact method varies depending on the Linux distribution:
+
+#### For Debian/Ubuntu-based Systems:
+
+1. Edit the hostname file:
+   ```bash
+   sudo nano /etc/hostname
+   ```
+   
+2. Update the hosts file to reflect the change:
+   ```bash
+   sudo nano /etc/hosts
+   ```
+   
+3. Reboot the system or use the `hostnamectl` command:
+   ```bash
+   sudo hostnamectl set-hostname new-hostname
+   ```
+
+#### For Red Hat/CentOS/Fedora Systems:
+
+1. Edit the hostname file:
+   ```bash
+   sudo nano /etc/hostname
+   ```
+   
+2. Update the hosts file:
+   ```bash
+   sudo nano /etc/hosts
+   ```
+   
+3. Use the `hostnamectl` command:
+   ```bash
+   sudo hostnamectl set-hostname new-hostname
+   ```
+
+### Hostname Types
+
+Modern Linux systems distinguish between three types of hostnames:
+
+1. **Static hostname**: The traditional hostname stored in `/etc/hostname`
+2. **Transient hostname**: The hostname that can be changed by DHCP or mDNS
+3. **Pretty hostname**: A free-form UTF8 hostname for presentation to the user
+
+The `hostname` command primarily deals with the static and transient hostnames.
+
+## Integration with Other Commands
+
+The `hostname` command is often used in scripts and in combination with other commands:
+
+### In Shell Scripts
+
+```bash
+#!/bin/bash
+current_host=$(hostname)
+echo "Running backup script on $current_host"
+```
+
+### With SSH Configuration
+
+In SSH configuration files, you can use hostname information to create host-specific settings:
+
+```
+Host $(hostname)
+    IdentityFile ~/.ssh/local_key
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Denied**: If you receive a "permission denied" error when trying to change the hostname, you likely need to use `sudo` or have root privileges.
+
+2. **Changes Not Persisting**: If hostname changes don't persist after a reboot, ensure you've modified the correct configuration files for your distribution.
+
+3. **Hostname Resolution Problems**: If you experience hostname resolution issues, check your `/etc/hosts` file to ensure it contains the correct mappings.
+
+## Best Practices
+
+1. **Use Meaningful Names**: Choose hostnames that are descriptive and indicate the purpose of the system.
+
+2. **Follow Naming Conventions**: Adhere to RFC 1178 guidelines for hostname selection.
+
+3. **Consistency**: Maintain consistency in your hostname scheme across your network.
+
+4. **Documentation**: Document hostname changes, especially in production environments.
+
+## Conclusion
+
+The `hostname` command is a simple yet essential tool for Linux system administration and network configuration. Understanding how to view and set hostnames properly is fundamental for effective system management, especially in networked environments. Whether you're managing a single system or a large network of servers, mastering the `hostname` command and related configuration is a valuable skill for any Linux administrator.
