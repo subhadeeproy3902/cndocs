@@ -1,0 +1,266 @@
+---
+title: "nmcli"
+description: "A comprehensive guide to NetworkManager command-line interface"
+draft: false
+toc: true
+---
+
+# NMCLI Command in Linux
+
+## Introduction
+
+The `nmcli` (NetworkManager Command-Line Interface) is a powerful command-line tool for controlling NetworkManager and managing network connections in Linux systems. It provides a comprehensive interface for viewing, configuring, and troubleshooting network settings without requiring a graphical user interface.
+
+NetworkManager is a daemon that manages network connections and devices, automatically connecting to available networks based on user preferences. The `nmcli` command serves as the primary command-line interface to interact with NetworkManager, making it essential for server administrators, network engineers, and users working in terminal environments.
+
+## Basic Syntax
+
+The general syntax for the `nmcli` command is:
+
+```bash
+nmcli [OPTIONS] OBJECT { COMMAND | help }
+```
+
+Where:
+- **OPTIONS**: Additional parameters that modify the behavior of `nmcli`
+- **OBJECT**: The target of the operation (e.g., connection, device, etc.)
+- **COMMAND**: The action to be performed on the specified object
+- **help**: Displays help information for the specified object
+
+## Main Objects in NMCLI
+
+The `nmcli` command works with several objects, each representing a different aspect of network configuration:
+
+| Object | Description | Shorthand |
+|--------|-------------|-----------|
+| `general` | NetworkManager's general status and operations | `g` |
+| `networking` | Overall networking control | `n` |
+| `radio` | NetworkManager radio switches | `r` |
+| `connection` | NetworkManager's connections | `c` |
+| `device` | Network devices managed by NetworkManager | `d` |
+| `agent` | NetworkManager secret agent or polkit agent | - |
+| `monitor` | Monitor NetworkManager changes | - |
+
+## Practical Examples
+
+### 1. Viewing Network Connections
+
+To list all available network connections on your system:
+
+```bash
+nmcli connection show
+```
+
+This command displays details such as connection name, UUID, type, and device.
+
+<img className="max-w-xl mx-auto" src="/images/nmcli-command.png" alt="NMCLI Connection Show Output" />
+
+For a specific connection:
+
+```bash
+nmcli connection show "connection_name"
+```
+
+### 2. Checking Device Status
+
+To view the status of all network devices:
+
+```bash
+nmcli device status
+```
+
+This command shows whether each device is connected or disconnected, along with the device type and connection it's associated with.
+
+For detailed information about a specific device:
+
+```bash
+nmcli device show eth0
+```
+
+Replace `eth0` with your actual device name.
+
+### 3. Managing Network Connections
+
+#### Creating a New Connection
+
+To create a new Ethernet connection:
+
+```bash
+nmcli connection add type ethernet ifname eth0 con-name "My Ethernet Connection"
+```
+
+To create a new Wi-Fi connection:
+
+```bash
+nmcli connection add type wifi ifname wlan0 con-name "My WiFi" ssid "NetworkName"
+```
+
+#### Connecting to a Network
+
+To connect to a saved network:
+
+```bash
+nmcli connection up "connection_name"
+```
+
+To connect to a new Wi-Fi network:
+
+```bash
+nmcli device wifi connect "SSID" password "password"
+```
+
+#### Disconnecting from a Network
+
+```bash
+nmcli connection down "connection_name"
+```
+
+### 4. Modifying Connection Settings
+
+To modify connection settings:
+
+```bash
+nmcli connection modify "connection_name" setting.property value
+```
+
+For example, to set a static IP address:
+
+```bash
+nmcli connection modify "My Ethernet Connection" ipv4.addresses "192.168.1.100/24" ipv4.gateway "192.168.1.1" ipv4.method manual
+```
+
+To set DNS servers:
+
+```bash
+nmcli connection modify "My Ethernet Connection" ipv4.dns "8.8.8.8 8.8.4.4"
+```
+
+### 5. Managing Wi-Fi Networks
+
+To scan for available Wi-Fi networks:
+
+```bash
+nmcli device wifi list
+```
+
+To connect to a Wi-Fi network:
+
+```bash
+nmcli device wifi connect "SSID" password "password"
+```
+
+## Advanced Usage
+
+### 1. Creating a Bridge Connection
+
+```bash
+nmcli connection add type bridge con-name "Bridge Connection" ifname br0
+nmcli connection add type ethernet slave-type bridge con-name "Bridge Port 1" ifname eth0 master br0
+```
+
+### 2. Setting Up a VPN Connection
+
+```bash
+nmcli connection add type vpn con-name "My VPN" vpn-type openvpn -- ifname tun0 vpn.data "file=/path/to/config.ovpn"
+```
+
+### 3. Creating a Bond Connection
+
+```bash
+nmcli connection add type bond con-name "Bond Connection" ifname bond0 bond.options "mode=active-backup,miimon=100"
+nmcli connection add type ethernet slave-type bond con-name "Bond Port 1" ifname eth0 master bond0
+nmcli connection add type ethernet slave-type bond con-name "Bond Port 2" ifname eth1 master bond0
+```
+
+## Command Options
+
+The `nmcli` command supports several options to modify its behavior:
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-t, --terse` | Terse output suitable for script processing | `nmcli -t device status` |
+| `-p, --pretty` | Pretty output for better human readability | `nmcli -p device status` |
+| `-m, --mode` | Output mode: tabular or multiline | `nmcli -m tabular device status` |
+| `-f, --fields` | Specify fields to display | `nmcli -f DEVICE,STATE device status` |
+| `-e, --escape` | Escape column separators in values | `nmcli -e yes device status` |
+| `-v, --version` | Show version information | `nmcli -v` |
+| `-h, --help` | Show help information | `nmcli -h` |
+
+### Examples of Options
+
+#### Terse Output
+
+```bash
+nmcli -t device status
+```
+
+This produces output with fields separated by colons, suitable for parsing in scripts.
+
+#### Pretty Output
+
+```bash
+nmcli -p device status
+```
+
+This formats the output in a more human-readable way with proper alignment and borders.
+
+#### Specific Fields
+
+```bash
+nmcli -f DEVICE,STATE,CONNECTION device status
+```
+
+This displays only the specified fields (device name, state, and connection).
+
+## Troubleshooting Network Issues
+
+### 1. Checking NetworkManager Status
+
+```bash
+nmcli general status
+```
+
+### 2. Restarting NetworkManager
+
+```bash
+sudo systemctl restart NetworkManager
+```
+
+### 3. Reloading a Connection
+
+```bash
+nmcli connection reload
+```
+
+### 4. Monitoring Network Changes
+
+```bash
+nmcli monitor
+```
+
+This command continuously monitors and displays NetworkManager activity.
+
+## Best Practices
+
+1. **Use Connection Names**: Always use descriptive connection names for easier management.
+
+2. **Check Before Modifying**: Always check the current settings before making modifications:
+   ```bash
+   nmcli connection show "connection_name"
+   ```
+
+3. **Save Changes**: After modifying a connection, remember to bring it down and up again to apply changes:
+   ```bash
+   nmcli connection down "connection_name"
+   nmcli connection up "connection_name"
+   ```
+
+4. **Use Tab Completion**: The `nmcli` command supports tab completion, which can help you discover available options and commands.
+
+5. **Script Automation**: Use the terse output mode (`-t`) when incorporating `nmcli` commands in scripts for easier parsing.
+
+## Conclusion
+
+The `nmcli` command is an essential tool for managing network connections in Linux environments. Its comprehensive feature set allows for complete control over NetworkManager from the command line, making it invaluable for server administration, automation, and troubleshooting network issues.
+
+Whether you're configuring a simple home network or managing complex enterprise networking environments, mastering `nmcli` provides you with the flexibility and power needed to efficiently manage network connections in Linux systems.
