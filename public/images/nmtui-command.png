@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Page not found &#x2d; LinuxConfig</title><style id="perfmatters-used-css">.footer-widgets-container{padding:40px;}.inside-footer-widgets{display:flex;}.inside-footer-widgets>div{flex:1 1 0;}.site-footer .footer-widgets-container .inner-padding{padding:0 0 0 40px;}.site-footer .footer-widgets-container .inside-footer-widgets{margin-left:-40px;}.site-footer:not(.footer-bar-active) .copyright-bar{margin:0 auto;}@media (max-width:768px){.inside-footer-widgets{flex-direction:column;}.inside-footer-widgets>div:not(:last-child){margin-bottom:40px;}.site-footer .footer-widgets .footer-widgets-container .inside-footer-widgets{margin:0;}.site-footer .footer-widgets .footer-widgets-container .inner-padding{padding:0;}}blockquote,body,dd,dl,dt,fieldset,figure,h1,h2,h3,h4,h5,h6,hr,html,iframe,legend,li,ol,p,pre,textarea,ul{margin:0;padding:0;border:0;}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}main{display:block;}html{box-sizing:border-box;}*,::after,::before{box-sizing:inherit;}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;margin:0;}[type=search]{-webkit-appearance:textfield;outline-offset:-2px;}[type=search]::-webkit-search-decoration{-webkit-appearance:none;}::-moz-focus-inner{border-style:none;padding:0;}:-moz-focusring{outline:1px dotted ButtonText;}body,button,input,select,textarea{font-family:-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-weight:400;text-transform:none;font-size:17px;line-height:1.5;}p{margin-bottom:1.5em;}h1,h2,h3,h4,h5,h6{font-family:inherit;font-size:100%;font-style:inherit;font-weight:inherit;}h1{font-size:42px;margin-bottom:20px;line-height:1.2em;font-weight:400;text-transform:none;}h2{font-size:35px;margin-bottom:20px;line-height:1.2em;font-weight:400;text-transform:none;}h3{font-size:29px;margin-bottom:20px;line-height:1.2em;font-weight:400;text-transform:none;}ol,ul{margin:0 0 1.5em 3em;}ul{list-style:disc;}li>ol,li>ul{margin-bottom:0;margin-left:1.5em;}img{height:auto;max-width:100%;}button,input[type=button],input[type=reset],input[type=submit]{background:#55555e;color:#fff;border:1px solid transparent;cursor:pointer;-webkit-appearance:button;padding:10px 20px;}input[type=email],input[type=number],input[type=password],input[type=search],input[type=tel],input[type=text],input[type=url],select,textarea{border:1px solid;border-radius:0;padding:10px 15px;max-width:100%;}a,button,input{transition:color .1s ease-in-out,background-color .1s ease-in-out;}a{text-decoration:none;}.screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute !important;width:1px;word-wrap:normal !important;}.screen-reader-text:focus{background-color:#f1f1f1;border-radius:3px;box-shadow:0 0 2px 2px rgba(0,0,0,.6);clip:auto !important;clip-path:none;color:#21759b;display:block;font-size:.875rem;font-weight:700;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000;}#primary[tabindex="-1"]:focus{outline:0;}.main-navigation{z-index:100;padding:0;clear:both;display:block;}.main-navigation a{display:block;text-decoration:none;font-weight:400;text-transform:none;font-size:15px;}.main-navigation ul{list-style:none;margin:0;padding-left:0;}.main-navigation .main-nav ul li a{padding-left:20px;padding-right:20px;line-height:60px;}.inside-navigation{position:relative;}.main-navigation .inside-navigation{display:flex;align-items:center;flex-wrap:wrap;justify-content:space-between;}.main-navigation .main-nav>ul{display:flex;flex-wrap:wrap;align-items:center;}.main-navigation li{position:relative;}.main-navigation .menu-bar-items{display:flex;align-items:center;font-size:15px;}.main-navigation .menu-bar-items a{color:inherit;}.main-navigation .menu-bar-item{position:relative;}.main-navigation .menu-bar-item.search-item{z-index:20;}.main-navigation .menu-bar-item>a{padding-left:20px;padding-right:20px;line-height:60px;}.main-navigation ul ul{display:block;box-shadow:1px 1px 0 rgba(0,0,0,.1);float:left;position:absolute;left:-99999px;opacity:0;z-index:99999;width:200px;text-align:left;top:auto;transition:opacity 80ms linear;transition-delay:0s;pointer-events:none;height:0;overflow:hidden;}.main-navigation ul ul a{display:block;}.main-navigation ul ul li{width:100%;}.main-navigation .main-nav ul ul li a{line-height:normal;padding:10px 20px;font-size:14px;}.main-navigation .main-nav ul li.menu-item-has-children>a{padding-right:0;position:relative;}.main-navigation:not(.toggled) ul li.sfHover>ul,.main-navigation:not(.toggled) ul li:hover>ul{left:auto;opacity:1;transition-delay:150ms;pointer-events:auto;height:auto;overflow:visible;}.main-navigation:not(.toggled) ul ul li.sfHover>ul,.main-navigation:not(.toggled) ul ul li:hover>ul{left:100%;top:0;}.nav-float-right .main-navigation ul ul ul{top:0;}.menu-item-has-children .dropdown-menu-toggle{display:inline-block;height:100%;clear:both;padding-right:20px;padding-left:10px;}.menu-item-has-children ul .dropdown-menu-toggle{padding-top:10px;padding-bottom:10px;margin-top:-10px;}.sidebar .menu-item-has-children .dropdown-menu-toggle,nav ul ul .menu-item-has-children .dropdown-menu-toggle{float:right;}.site-header{position:relative;}.inside-header{padding:20px 40px;}.site-logo{display:inline-block;max-width:100%;}.site-header .header-image{vertical-align:middle;}.inside-header{display:flex;align-items:center;}.header-widget{margin-left:auto;}.header-widget p:last-child{margin-bottom:0;}.nav-float-right .header-widget{margin-left:20px;}.nav-float-right #site-navigation{margin-left:auto;}.entry-header .gp-icon,.posted-on .updated{display:none;}.entry-content:not(:first-child),.entry-summary:not(:first-child),.page-content:not(:first-child){margin-top:2em;}.entry-header,.site-content{word-wrap:break-word;}.entry-title{margin-bottom:0;}.entry-content>p:last-child,.entry-summary>p:last-child,.page-content>p:last-child,.read-more-container,.taxonomy-description p:last-child{margin-bottom:0;}.footer-widgets .widget :last-child,.sidebar .widget :last-child{margin-bottom:0;}.widget-title{margin-bottom:30px;font-size:20px;line-height:1.5;font-weight:400;text-transform:none;}.widget ol,.widget ul{margin:0;}.widget .search-field{width:100%;}.widget .search-form{display:flex;}.widget .search-form button.search-submit{font-size:15px;}.footer-widgets .widget{margin-bottom:30px;}.footer-widgets .widget:last-child,.sidebar .widget:last-child{margin-bottom:0;}.widget ul li{list-style-type:none;position:relative;margin-bottom:.5em;}.widget ul li ul{margin-left:1em;margin-top:.5em;}.site-content{display:flex;}.grid-container{margin-left:auto;margin-right:auto;max-width:1200px;}.page-header,.sidebar .widget,.site-main>*{margin-bottom:20px;}.one-container .site-content{padding:40px;}.one-container .site-main>:last-child,.separate-containers .site-main>:last-child{margin-bottom:0;}.inside-site-info{display:flex;align-items:center;justify-content:center;padding:20px 40px;}.site-info{text-align:center;font-size:15px;}.gp-icon{display:inline-flex;align-self:center;}.gp-icon svg{height:1em;width:1em;top:.125em;position:relative;fill:currentColor;}.close-search .icon-search svg:first-child,.icon-menu-bars svg:nth-child(2),.icon-search svg:nth-child(2),.toggled .icon-menu-bars svg:first-child{display:none;}.container.grid-container{width:auto;}.menu-toggle,.mobile-bar-items,.sidebar-nav-mobile{display:none;}.menu-toggle{padding:0 20px;line-height:60px;margin:0;font-weight:400;text-transform:none;font-size:15px;cursor:pointer;}.menu-toggle .mobile-menu{padding-left:3px;}.menu-toggle .gp-icon+.mobile-menu{padding-left:9px;}.menu-toggle .mobile-menu:empty{display:none;}button.menu-toggle{background-color:transparent;flex-grow:1;border:0;text-align:center;}button.menu-toggle:active,button.menu-toggle:focus,button.menu-toggle:hover{background-color:transparent;}.has-menu-bar-items button.menu-toggle{flex-grow:0;}.mobile-menu-control-wrapper{display:none;margin-left:auto;align-items:center;}@media (max-width:768px){a,body,button,input,select,textarea{transition:all 0s ease-in-out;}.inside-header{flex-direction:column;text-align:center;}.site-header .header-widget{margin-top:1.5em;margin-left:auto;margin-right:auto;text-align:center;}.site-content{flex-direction:column;}.container .site-content .content-area{width:auto;}#main{margin-left:0;margin-right:0;}body:not(.no-sidebar) #main{margin-bottom:0;}}.generate-columns-container:not(.masonry-container){display:flex;flex-wrap:wrap;align-items:stretch;}@keyframes spin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}@media (max-width:767px){.generate-columns-activated .generate-columns-container{margin-left:0;margin-right:0;}.generate-columns-container .generate-columns,.generate-columns-container>*{padding-left:0;}}.secondary-navigation{z-index:99;padding:0;}.secondary-navigation .inside-navigation{display:flex;align-items:center;flex-wrap:wrap;justify-content:space-between;}.secondary-navigation ul{list-style:none;margin:0;padding-left:0;}.secondary-navigation li{position:relative;}.secondary-navigation a{display:block;text-decoration:none;}.secondary-navigation ul ul{display:block;box-shadow:0 1px 1px rgba(0,0,0,.1);float:left;position:absolute;left:-99999px;opacity:0;z-index:99999;width:200px;text-align:left;top:auto;transition:opacity 80ms linear;transition-delay:0s;pointer-events:none;height:0;overflow:hidden;}.secondary-navigation ul ul li{width:100%;}.secondary-navigation ul ul li a{line-height:normal;font-size:90%;}.secondary-navigation .main-nav>ul{display:flex;flex-wrap:wrap;}.secondary-navigation .main-nav ul ul li a{line-height:normal;font-size:12px;padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;}.secondary-navigation .main-nav ul li.menu-item-has-children>a{padding-right:0;position:relative;}.secondary-navigation .main-nav ul li a{font-family:inherit;font-weight:400;text-transform:none;font-size:13px;padding-left:20px;padding-right:20px;line-height:40px;}.secondary-navigation .menu-toggle{font-family:inherit;font-weight:400;text-transform:none;font-size:13px;padding-left:20px;padding-right:20px;line-height:40px;margin:0;}.secondary-navigation .menu-item-has-children .dropdown-menu-toggle{padding-right:20px;}.secondary-navigation .menu-item-has-children ul .dropdown-menu-toggle{padding-top:10px;padding-bottom:10px;margin-top:-10px;}.secondary-navigation .menu-bar-item{position:relative;}.secondary-navigation .menu-bar-item.search-item{z-index:20;}.secondary-navigation .menu-bar-item>a{font-family:inherit;font-weight:400;text-transform:none;font-size:13px;padding-left:20px;padding-right:20px;line-height:40px;}.dropdown-hover .secondary-navigation:not(.toggled) ul li.sfHover>ul,.dropdown-hover .secondary-navigation:not(.toggled) ul li:hover>ul{left:auto;opacity:1;transition-delay:150ms;pointer-events:auto;height:auto;overflow:visible;}.dropdown-hover .secondary-navigation:not(.toggled) ul ul li.sfHover>ul,.dropdown-hover .secondary-navigation:not(.toggled) ul ul li:hover>ul{left:100%;top:0;}.secondary-navigation.has-menu-bar-items .menu-toggle,.secondary-navigation.has-top-bar .menu-toggle{flex-grow:0;}@media (max-width:768px){.secondary-navigation .menu-toggle{display:block;}.secondary-navigation ul,.secondary-navigation:not(.toggled) .main-nav>ul{display:none;}.secondary-navigation.has-menu-bar-items .inside-navigation,.secondary-navigation.has-top-bar .inside-navigation{justify-content:space-between;}}button.slideout-exit:hover{background-color:transparent;}.slideout-navigation button.slideout-exit{background:0 0;width:100%;text-align:left;padding-top:20px;padding-bottom:20px;box-sizing:border-box;border:0;}.slideout-navigation .main-nav,.slideout-navigation .slideout-widget:not(:last-child){margin-bottom:40px;}.slideout-navigation:not(.do-overlay) .main-nav{width:100%;box-sizing:border-box;}.slideout-navigation .slideout-menu{display:block;}#generate-slideout-menu{z-index:100001;}#generate-slideout-menu .slideout-menu li{float:none;width:100%;clear:both;text-align:left;}#generate-slideout-menu.do-overlay li{text-align:center;}#generate-slideout-menu.main-navigation ul ul{display:none;}#generate-slideout-menu .slideout-menu li.sfHover>ul,#generate-slideout-menu .slideout-menu li:hover>ul{display:none;}#generate-slideout-menu.main-navigation .main-nav ul ul{position:relative;top:0;left:0;width:100%;}.slide-opened .slideout-exit:not(.has-svg-icon):before,.slideout-navigation button.slideout-exit:not(.has-svg-icon):before{content:"";font-family:"GP Premium";line-height:1em;width:1.28571429em;text-align:center;display:inline-block;}.slideout-navigation .menu-item-has-children .dropdown-menu-toggle{float:right;}.slideout-navigation.do-overlay{transform:none;transition:opacity .2s,visibility .2s;width:100%;visibility:hidden;opacity:0;text-align:center;left:0;right:0;pointer-events:none;}.slideout-navigation.do-overlay .inside-navigation{display:flex;flex-direction:column;padding:10% 10% 0;max-width:700px;}.slideout-navigation.do-overlay .inside-navigation .main-nav,.slideout-navigation.do-overlay .inside-navigation .slideout-widget{margin-left:auto;margin-right:auto;min-width:250px;}.slideout-navigation.do-overlay .slideout-exit{position:fixed;right:0;top:0;width:auto;font-size:25px;}.slideout-navigation.do-overlay .slideout-menu li a{display:inline-block;}.slideout-navigation.do-overlay .slideout-menu li{margin-bottom:5px;}#generate-slideout-menu.do-overlay .slideout-menu li,.slideout-navigation.do-overlay .inside-navigation{text-align:center;}.slideout-navigation.do-overlay .menu-item-has-children .dropdown-menu-toggle{border-left:1px solid rgba(0,0,0,.07);padding:0 10px;margin:0 0 0 10px;}.slideout-navigation.do-overlay ul ul{box-shadow:0 0 0;}.slideout-navigation .sub-menu .dropdown-menu-toggle .gp-icon svg{transform:rotate(0);}@media (max-width:768px){.slideout-navigation.do-overlay .slideout-exit{position:static;text-align:center;}}</style>
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://linuxconfig.org/#/schema/WebSite","url":"https://linuxconfig.org/","name":"LinuxConfig","description":"LinuxConfig.org","inLanguage":"en-US","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://linuxconfig.org/search/{search_term_string}"},"query-input":"required name=search_term_string"},"publisher":{"@type":"Organization","@id":"https://linuxconfig.org/#/schema/Organization","name":"LinuxConfig","url":"https://linuxconfig.org/","logo":{"@type":"ImageObject","url":"https://linuxconfig.org/wp-content/uploads/2024/04/logo-lx.avif","contentUrl":"https://linuxconfig.org/wp-content/uploads/2024/04/logo-lx.avif","width":250,"height":70,"inLanguage":"en-US","caption":"Linux HowTo and configuration tutorials","contentSize":"3049"}}},{"@type":"WebPage","name":"Page not found &#x2d; LinuxConfig","inLanguage":"en-US","isPartOf":{"@id":"https://linuxconfig.org/#/schema/WebSite"},"breadcrumb":{"@type":"BreadcrumbList","@id":"https://linuxconfig.org/#/schema/BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":"https://linuxconfig.org/","name":"LinuxConfig"},{"@type":"ListItem","position":2,"name":"Page not found"}]}}]}</script>
+
+
+<link rel="alternate" type="application/rss+xml" title="LinuxConfig &raquo; Feed" href="https://linuxconfig.org/feed" />
+<link rel="alternate" type="application/rss+xml" title="LinuxConfig &raquo; Comments Feed" href="https://linuxconfig.org/comments/feed" />
+<script type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/linuxconfig.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.8"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\ud83d\udd25","\ud83d\udc26\u200b\ud83d\udd25")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel="stylesheet" id="crp-style-text-only-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/plugins/contextual-related-posts/css/text-only.min.css?ver=4.0.1"></link>
+<link rel="stylesheet" id="generate-widget-areas-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/themes/generatepress/assets/css/components/widget-areas.min.css?ver=3.5.0"></link>
+<link rel="stylesheet" id="generate-style-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/themes/generatepress/assets/css/main.min.css?ver=3.5.0"></link>
+<style id='generate-style-inline-css'>
+.generate-columns {margin-bottom: 40px;padding-left: 40px;}.generate-columns-container {margin-left: -40px;}.page-header {margin-bottom: 40px;margin-left: 40px}.generate-columns-container > .paging-navigation {margin-left: 40px;}
+body{background-color:#ffffff;color:#444444;}a{color:#444444;}a:visited{color:#444444;}a:hover, a:focus, a:active{color:#e0314f;}.grid-container{max-width:1300px;}.wp-block-group__inner-container{max-width:1300px;margin-left:auto;margin-right:auto;}@media (max-width: 1111px) and (min-width: 1041px){.inside-header{display:flex;flex-direction:column;align-items:center;}.site-logo, .site-branding{margin-bottom:1.5em;}#site-navigation{margin:0 auto;}.header-widget{margin-top:1.5em;}}.site-header .header-image{width:250px;}.generate-back-to-top{font-size:20px;border-radius:3px;position:fixed;bottom:30px;right:30px;line-height:40px;width:40px;text-align:center;z-index:10;transition:opacity 300ms ease-in-out;opacity:0.1;transform:translateY(1000px);}.generate-back-to-top__show{opacity:1;transform:translateY(0);}.navigation-search{position:absolute;left:-99999px;pointer-events:none;visibility:hidden;z-index:20;width:100%;top:0;transition:opacity 100ms ease-in-out;opacity:0;}.navigation-search.nav-search-active{left:0;right:0;pointer-events:auto;visibility:visible;opacity:1;}.navigation-search input[type="search"]{outline:0;border:0;vertical-align:bottom;line-height:1;opacity:0.9;width:100%;z-index:20;border-radius:0;-webkit-appearance:none;height:60px;}.navigation-search input::-ms-clear{display:none;width:0;height:0;}.navigation-search input::-ms-reveal{display:none;width:0;height:0;}.navigation-search input::-webkit-search-decoration, .navigation-search input::-webkit-search-cancel-button, .navigation-search input::-webkit-search-results-button, .navigation-search input::-webkit-search-results-decoration{display:none;}.gen-sidebar-nav .navigation-search{top:auto;bottom:0;}:root{--contrast:#222222;--contrast-2:#575760;--contrast-3:#b2b2be;--base:#f0f0f0;--base-2:#f7f8f9;--base-3:#ffffff;--accent:#1e73be;}:root .has-contrast-color{color:var(--contrast);}:root .has-contrast-background-color{background-color:var(--contrast);}:root .has-contrast-2-color{color:var(--contrast-2);}:root .has-contrast-2-background-color{background-color:var(--contrast-2);}:root .has-contrast-3-color{color:var(--contrast-3);}:root .has-contrast-3-background-color{background-color:var(--contrast-3);}:root .has-base-color{color:var(--base);}:root .has-base-background-color{background-color:var(--base);}:root .has-base-2-color{color:var(--base-2);}:root .has-base-2-background-color{background-color:var(--base-2);}:root .has-base-3-color{color:var(--base-3);}:root .has-base-3-background-color{background-color:var(--base-3);}:root .has-accent-color{color:var(--accent);}:root .has-accent-background-color{background-color:var(--accent);}body, button, input, select, textarea{font-family:"Source Serif Pro", serif;font-size:18px;}body{line-height:1.6;}.entry-content > [class*="wp-block-"]:not(:last-child):not(.wp-block-heading){margin-bottom:1.5em;}.main-title{font-weight:normal;font-size:20px;}.site-description{font-size:16px;}.main-navigation a, .menu-toggle{font-weight:500;}.main-navigation .main-nav ul ul li a{font-size:14px;}.sidebar .widget, .footer-widgets .widget{font-size:16px;}button:not(.menu-toggle),html input[type="button"],input[type="reset"],input[type="submit"],.button,.wp-block-button .wp-block-button__link{font-weight:500;font-size:18px;}h1{font-family:"Oswald", sans-serif;font-size:40px;line-height:1.3em;}h2{font-family:"Oswald", sans-serif;font-size:28px;line-height:1.4em;}h3{font-family:"Oswald", sans-serif;font-size:22px;line-height:1.4em;}h4{font-family:"Oswald", sans-serif;font-size:22px;line-height:1.4em;}h5{text-transform:uppercase;font-size:inherit;}.site-info{font-size:14px;}@media (max-width:768px){.main-title{font-size:22px;}h1{font-size:36px;}h2{font-size:26px;}}.top-bar{background-color:#020202;color:#ffffff;}.top-bar a{color:#ffffff;}.top-bar a:hover{color:#f1c40f;}.site-header{background-color:#ffffff;color:#444444;}.site-header a{color:#444444;}.site-header a:hover{color:#e0314f;}.main-title a,.main-title a:hover{color:#444444;}.site-description{color:#666666;}.main-navigation .main-nav ul li a, .main-navigation .menu-toggle, .main-navigation .menu-bar-items{color:#444444;}.main-navigation .main-nav ul li:not([class*="current-menu-"]):hover > a, .main-navigation .main-nav ul li:not([class*="current-menu-"]):focus > a, .main-navigation .main-nav ul li.sfHover:not([class*="current-menu-"]) > a, .main-navigation .menu-bar-item:hover > a, .main-navigation .menu-bar-item.sfHover > a{color:#666666;}button.menu-toggle:hover,button.menu-toggle:focus{color:#444444;}.main-navigation .main-nav ul li[class*="current-menu-"] > a{color:#444444;}.navigation-search input[type="search"],.navigation-search input[type="search"]:active, .navigation-search input[type="search"]:focus, .main-navigation .main-nav ul li.search-item.active > a, .main-navigation .menu-bar-items .search-item.active > a{color:#222222;background-color:#fafafa;opacity:1;}.main-navigation ul ul{background-color:#fafafa;}.main-navigation .main-nav ul ul li a{color:#222222;}.main-navigation .main-nav ul ul li:not([class*="current-menu-"]):hover > a,.main-navigation .main-nav ul ul li:not([class*="current-menu-"]):focus > a, .main-navigation .main-nav ul ul li.sfHover:not([class*="current-menu-"]) > a{color:#666666;background-color:#fafafa;}.main-navigation .main-nav ul ul li[class*="current-menu-"] > a{color:#222222;background-color:#fafafa;}.separate-containers .inside-article, .separate-containers .comments-area, .separate-containers .page-header, .one-container .container, .separate-containers .paging-navigation, .inside-page-header{color:#444444;background-color:#ffffff;}.inside-article a,.paging-navigation a,.comments-area a,.page-header a{color:#3498db;}.inside-article a:hover,.paging-navigation a:hover,.comments-area a:hover,.page-header a:hover{color:#e0314f;}.entry-header h1,.page-header h1{color:#444444;}.entry-title a{color:#444444;}.entry-title a:hover{color:#e0314f;}.entry-meta{color:#666666;}.entry-meta a{color:#666666;}.entry-meta a:hover{color:#666666;}h1{color:#444444;}h2{color:#444444;}h3{color:#444444;}h4{color:#444444;}h5{color:#444444;}.sidebar .widget{color:#444444;background-color:#ffffff;}.sidebar .widget a{color:#444444;}.sidebar .widget a:hover{color:#e0314f;}.sidebar .widget .widget-title{color:#444444;}.footer-widgets{color:#444444;background-color:#fafafa;}.footer-widgets a{color:#444444;}.footer-widgets a:hover{color:#e0314f;}.footer-widgets .widget-title{color:#444444;}.site-info{color:#444444;background-color:#ffffff;}.site-info a{color:#444444;}.site-info a:hover{color:#e0314f;}.footer-bar .widget_nav_menu .current-menu-item a{color:#e0314f;}input[type="text"],input[type="email"],input[type="url"],input[type="password"],input[type="search"],input[type="tel"],input[type="number"],textarea,select{color:#222222;background-color:#ffffff;}input[type="text"]:focus,input[type="email"]:focus,input[type="url"]:focus,input[type="password"]:focus,input[type="search"]:focus,input[type="tel"]:focus,input[type="number"]:focus,textarea:focus,select:focus{color:#222222;background-color:#ffffff;}button,html input[type="button"],input[type="reset"],input[type="submit"],a.button,a.wp-block-button__link:not(.has-background){color:#ffffff;background-color:#e0314f;}button:hover,html input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,a.button:hover,button:focus,html input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,a.button:focus,a.wp-block-button__link:not(.has-background):active,a.wp-block-button__link:not(.has-background):focus,a.wp-block-button__link:not(.has-background):hover{color:#ffffff;background-color:#444444;}a.generate-back-to-top{background-color:#e0314f;color:#ffffff;}a.generate-back-to-top:hover,a.generate-back-to-top:focus{background-color:rgba(224,49,79,0.8);color:#ffffff;}:root{--gp-search-modal-bg-color:var(--base-3);--gp-search-modal-text-color:var(--contrast);--gp-search-modal-overlay-bg-color:rgba(0,0,0,0.2);}@media (max-width: 1040px){.main-navigation .menu-bar-item:hover > a, .main-navigation .menu-bar-item.sfHover > a{background:none;color:#444444;}}.inside-top-bar{padding:2px 10px 3px 10px;}.inside-header{padding:30px 20px 30px 20px;}.nav-below-header .main-navigation .inside-navigation.grid-container, .nav-above-header .main-navigation .inside-navigation.grid-container{padding:0px;}.separate-containers .inside-article, .separate-containers .comments-area, .separate-containers .page-header, .separate-containers .paging-navigation, .one-container .site-content, .inside-page-header{padding:80px 20px 80px 20px;}.site-main .wp-block-group__inner-container{padding:80px 20px 80px 20px;}.separate-containers .paging-navigation{padding-top:20px;padding-bottom:20px;}.entry-content .alignwide, body:not(.no-sidebar) .entry-content .alignfull{margin-left:-20px;width:calc(100% + 40px);max-width:calc(100% + 40px);}.one-container.right-sidebar .site-main,.one-container.both-right .site-main{margin-right:20px;}.one-container.left-sidebar .site-main,.one-container.both-left .site-main{margin-left:20px;}.one-container.both-sidebars .site-main{margin:0px 20px 0px 20px;}.sidebar .widget, .page-header, .widget-area .main-navigation, .site-main > *{margin-bottom:40px;}.separate-containers .site-main{margin:40px;}.both-right .inside-left-sidebar,.both-left .inside-left-sidebar{margin-right:20px;}.both-right .inside-right-sidebar,.both-left .inside-right-sidebar{margin-left:20px;}.one-container.archive .post:not(:last-child):not(.is-loop-template-item), .one-container.blog .post:not(:last-child):not(.is-loop-template-item){padding-bottom:80px;}.separate-containers .featured-image{margin-top:40px;}.separate-containers .inside-right-sidebar, .separate-containers .inside-left-sidebar{margin-top:40px;margin-bottom:40px;}.main-navigation .main-nav ul li a,.menu-toggle,.main-navigation .menu-bar-item > a{line-height:30px;}.navigation-search input[type="search"]{height:30px;}.rtl .menu-item-has-children .dropdown-menu-toggle{padding-left:20px;}.rtl .main-navigation .main-nav ul li.menu-item-has-children > a{padding-right:20px;}.widget-area .widget{padding:20px;}.footer-widgets-container{padding:20px 20px 20px 50px;}.inside-site-info{padding:20px;}@media (max-width:768px){.separate-containers .inside-article, .separate-containers .comments-area, .separate-containers .page-header, .separate-containers .paging-navigation, .one-container .site-content, .inside-page-header{padding:80px 20px 80px 20px;}.site-main .wp-block-group__inner-container{padding:80px 20px 80px 20px;}.inside-header{padding-top:0px;}.footer-widgets-container{padding-top:20px;padding-right:30px;padding-bottom:20px;padding-left:30px;}.inside-site-info{padding-right:10px;padding-left:10px;}.entry-content .alignwide, body:not(.no-sidebar) .entry-content .alignfull{margin-left:-20px;width:calc(100% + 40px);max-width:calc(100% + 40px);}.one-container .site-main .paging-navigation{margin-bottom:40px;}}/* End cached CSS */.is-right-sidebar{width:25%;}.is-left-sidebar{width:25%;}.site-content .content-area{width:100%;}@media (max-width: 1040px){.main-navigation .menu-toggle,.sidebar-nav-mobile:not(#sticky-placeholder){display:block;}.main-navigation ul,.gen-sidebar-nav,.main-navigation:not(.slideout-navigation):not(.toggled) .main-nav > ul,.has-inline-mobile-toggle #site-navigation .inside-navigation > *:not(.navigation-search):not(.main-nav){display:none;}.nav-align-right .inside-navigation,.nav-align-center .inside-navigation{justify-content:space-between;}.has-inline-mobile-toggle .mobile-menu-control-wrapper{display:flex;flex-wrap:wrap;}.has-inline-mobile-toggle .inside-header{flex-direction:row;text-align:left;flex-wrap:wrap;}.has-inline-mobile-toggle .header-widget,.has-inline-mobile-toggle #site-navigation{flex-basis:100%;}.nav-float-left .has-inline-mobile-toggle #site-navigation{order:10;}}
+.dynamic-author-image-rounded{border-radius:100%;}.dynamic-featured-image, .dynamic-author-image{vertical-align:middle;}.one-container.blog .dynamic-content-template:not(:last-child), .one-container.archive .dynamic-content-template:not(:last-child){padding-bottom:0px;}.dynamic-entry-excerpt > p:last-child{margin-bottom:0px;}
+@media (max-width: 1024px){.main-navigation:not(.slideout-navigation) a, .main-navigation .menu-toggle, .main-navigation .menu-bar-items{font-size:22px;}.main-navigation:not(.slideout-navigation) .main-nav ul ul li a{font-size:19px;}.main-title, .navigation-branding .main-title{font-size:22px;}}@media (max-width: 1040px){.main-navigation:not(.slideout-navigation) a, .main-navigation .menu-toggle, .main-navigation .menu-bar-items{font-size:22px;}.main-navigation:not(.slideout-navigation) .main-nav ul ul li a{font-size:19px;}}
+@media (max-width: 1040px){.main-navigation .menu-toggle,.main-navigation .mobile-bar-items a,.main-navigation .menu-bar-item > a{padding-left:20px;padding-right:20px;}.main-navigation .main-nav ul li a,.main-navigation .menu-toggle,.main-navigation .mobile-bar-items a,.main-navigation .menu-bar-item > a{line-height:41px;}.main-navigation .site-logo.navigation-logo img, .mobile-header-navigation .site-logo.mobile-header-logo img, .navigation-search input[type="search"]{height:41px;}}.post-image:not(:first-child), .page-content:not(:first-child), .entry-content:not(:first-child), .entry-summary:not(:first-child), footer.entry-meta{margin-top:1em;}.post-image-above-header .inside-article div.featured-image, .post-image-above-header .inside-article div.post-image{margin-bottom:1em;}.main-navigation.slideout-navigation .main-nav > ul > li > a{line-height:60px;}
+</style>
+<style id='generateblocks-inline-css'>
+.gb-button-wrapper{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:flex-start;clear:both;}.gb-button-wrapper a.gb-button-ac59105c, .gb-button-wrapper a.gb-button-ac59105c:visited{padding:15px 20px;background-color:#0366d6;color:#ffffff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;}.gb-button-wrapper a.gb-button-ac59105c:hover, .gb-button-wrapper a.gb-button-ac59105c:active, .gb-button-wrapper a.gb-button-ac59105c:focus{background-color:#222222;color:#ffffff;}.gb-button-wrapper a.gb-button-9e8d3737, .gb-button-wrapper a.gb-button-9e8d3737:visited{padding:15px 20px;background-color:#0366d6;color:#ffffff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;}.gb-button-wrapper a.gb-button-9e8d3737:hover, .gb-button-wrapper a.gb-button-9e8d3737:active, .gb-button-wrapper a.gb-button-9e8d3737:focus{background-color:#222222;color:#ffffff;}.gb-button-wrapper a.gb-button-6841cab3, .gb-button-wrapper a.gb-button-6841cab3:visited{padding:15px 20px;background-color:#0366d6;color:#ffffff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;}.gb-button-wrapper a.gb-button-6841cab3:hover, .gb-button-wrapper a.gb-button-6841cab3:active, .gb-button-wrapper a.gb-button-6841cab3:focus{background-color:#222222;color:#ffffff;}.gb-container .wp-block-image img{vertical-align:middle;}.gb-grid-wrapper .wp-block-image{margin-bottom:0;}.gb-highlight{background:none;}
+</style>
+<link rel="stylesheet" id="generate-blog-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/plugins/gp-premium/blog/functions/css/style.min.css?ver=2.2.2"></link>
+<link rel="stylesheet" id="generate-secondary-nav-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/plugins/gp-premium/secondary-nav/functions/css/main.min.css?ver=2.2.2"></link>
+<style id='generate-secondary-nav-inline-css'>
+.secondary-navigation{background-color:#636363;}.secondary-nav-below-header .secondary-navigation .inside-navigation.grid-container, .secondary-nav-above-header .secondary-navigation .inside-navigation.grid-container{padding:0px;}.secondary-navigation .main-nav ul li a,.secondary-navigation .menu-toggle,.secondary-menu-bar-items .menu-bar-item > a{color:#ffffff;font-weight:bold;font-size:14px;line-height:27px;}.secondary-navigation .secondary-menu-bar-items{color:#ffffff;font-size:14px;}button.secondary-menu-toggle:hover,button.secondary-menu-toggle:focus{color:#ffffff;}.widget-area .secondary-navigation{margin-bottom:40px;}.secondary-navigation ul ul{background-color:#303030;top:auto;}.secondary-navigation .main-nav ul ul li a{color:#ffffff;font-size:13px;}.secondary-navigation .main-nav ul li:not([class*="current-menu-"]):hover > a, .secondary-navigation .main-nav ul li:not([class*="current-menu-"]):focus > a, .secondary-navigation .main-nav ul li.sfHover:not([class*="current-menu-"]) > a, .secondary-menu-bar-items .menu-bar-item:hover > a{color:#ffffff;background-color:#303030;}.secondary-navigation .main-nav ul ul li:not([class*="current-menu-"]):hover > a,.secondary-navigation .main-nav ul ul li:not([class*="current-menu-"]):focus > a,.secondary-navigation .main-nav ul ul li.sfHover:not([class*="current-menu-"]) > a{color:#ffffff;background-color:#474747;}.secondary-navigation .main-nav ul li[class*="current-menu-"] > a{color:#222222;background-color:#ffffff;}.secondary-navigation .main-nav ul ul li[class*="current-menu-"] > a{color:#ffffff;background-color:#474747;}.secondary-navigation.toggled .dropdown-menu-toggle:before{display:none;}@media (max-width: 1040px) {.secondary-menu-bar-items .menu-bar-item:hover > a{background: none;color: #ffffff;}}
+</style>
+<link rel="stylesheet" id="generate-secondary-nav-mobile-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/plugins/gp-premium/secondary-nav/functions/css/main-mobile.min.css?ver=2.2.2"></link>
+<link rel="stylesheet" id="generate-offside-css" media="all" data-pmdelayedstyle="https://linuxconfig.org/wp-content/plugins/gp-premium/menu-plus/functions/css/offside.min.css?ver=2.2.2"></link>
+<style id='generate-offside-inline-css'>
+.slideout-navigation.main-navigation{background-color:#e0314f;}.slideout-navigation.main-navigation .main-nav ul li a{color:#ffffff;font-weight:500;text-transform:none;font-size:18px;}.slideout-navigation.main-navigation ul ul{background-color:#222222;}.slideout-navigation.main-navigation .main-nav ul ul li a{color:#ffffff;}.slideout-navigation.main-navigation.do-overlay .main-nav ul ul li a{font-size:1em;font-size:17px;}@media (max-width:768px){.slideout-navigation.main-navigation .main-nav ul li a{font-size:18px;}.slideout-navigation.main-navigation .main-nav ul ul li a{font-size:17px;}}.slideout-navigation.main-navigation .main-nav ul li:not([class*="current-menu-"]):hover > a, .slideout-navigation.main-navigation .main-nav ul li:not([class*="current-menu-"]):focus > a, .slideout-navigation.main-navigation .main-nav ul li.sfHover:not([class*="current-menu-"]) > a{color:#f7f7f7;background-color:#e0314f;}.slideout-navigation.main-navigation .main-nav ul ul li:not([class*="current-menu-"]):hover > a, .slideout-navigation.main-navigation .main-nav ul ul li:not([class*="current-menu-"]):focus > a, .slideout-navigation.main-navigation .main-nav ul ul li.sfHover:not([class*="current-menu-"]) > a{color:#fafafa;background-color:#222222;}.slideout-navigation.main-navigation .main-nav ul li[class*="current-menu-"] > a{color:#ffffff;background-color:#e0314f;}.slideout-navigation.main-navigation .main-nav ul ul li[class*="current-menu-"] > a{color:#ffffff;background-color:#222222;}.slideout-navigation, .slideout-navigation a{color:#ffffff;}.slideout-navigation button.slideout-exit{color:#ffffff;padding-left:20px;padding-right:20px;}.slide-opened nav.toggled .menu-toggle:before{display:none;}@media (max-width: 1040px){.menu-bar-item.slideout-toggle{display:none;}}
+</style>
+<link rel="https://api.w.org/" href="https://linuxconfig.org/wp-json/" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://linuxconfig.org/xmlrpc.php?rsd" />
+<script async src="https://linuxconfig.org/wp-content/uploads/perfmatters/gtagv4.js?id=G-FZGPX5JD5J" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script><script type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "G-FZGPX5JD5J");</script><BASE href="/">
+<script async src="https://cdn.fuseplatform.net/publift/tags/2/2224/fuse.js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script><link rel="icon" href="https://linuxconfig.org/wp-content/uploads/2021/08/cropped-android-chrome-512x512-1-60x60.png" sizes="32x32" />
+<link rel="icon" href="https://linuxconfig.org/wp-content/uploads/2021/08/cropped-android-chrome-512x512-1-300x300.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://linuxconfig.org/wp-content/uploads/2021/08/cropped-android-chrome-512x512-1-300x300.png" />
+<meta name="msapplication-TileImage" content="https://linuxconfig.org/wp-content/uploads/2021/08/cropped-android-chrome-512x512-1-300x300.png" />
+		<style id="wp-custom-css">
+			/* GeneratePress Site CSS */ /* grey line under navigation */
+
+.site-header {
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* navigation subscribe underline */
+
+.main-navigation:not(.slideout-navigation) .main-nav li.subscribe-button a {
+	box-shadow: 0px -8px 0px #e0314f inset;
+	transition: all 0.6s ease 0s;
+	padding: 0px;
+	margin: 0px 20px
+}
+
+.main-navigation:not(.slideout-navigation) .main-nav li.subscribe-button a:hover {
+	box-shadow: 0px -16px 0px #e0314f inset;
+}
+
+/* wpsp meta spacing */
+
+.wp-show-posts-entry-meta {
+	margin-top: 10px;
+}
+
+/* wpsp column spacing */
+
+.wp-show-posts-columns .wp-show-posts-inner {
+	margin: 0px 0px 40px 60px;
+}
+
+/* mailchimp form styling */
+
+.mc4wp-form {
+	text-align: center;
+}
+
+.mc4wp-form input[type=text], .mc4wp-form input[type=email] {
+	background-color: #ffffff;
+	line-height: 28px;
+  border: 1px solid #aaa;
+	border-radius: 0px;
+	margin: 2px;
+}
+
+.mc4wp-form input[type=submit] {
+	line-height: 30px;
+	border: none;
+  border-radius: 0px;
+	margin: 2px;
+  transition: all 0.5s ease 0s;
+}
+
+@media (max-width: 768px) {
+.mc4wp-form input[type=text], .mc4wp-form input[type=email], .mc4wp-form input[type=submit] {
+		width: 100%;
+	}
+}
+
+@media (min-width:1025px) {
+  .footer-widgets .footer-widget-1 {
+    flex-basis: 50%;
+		padding-right: 100px;
+  }
+  .footer-widgets .footer-widget-2 {
+    flex-basis: 20%;
+  }
+  .footer-widgets .footer-widget-3 {
+    flex-basis: 30%;
+  }
+}
+
+.mobile-header-navigation {
+	padding: 10px;
+} /* End GeneratePress Site CSS */
+
+.examples {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.steps > li {
+  counter-increment: step-counter;
+  margin-bottom: 50px;
+}
+
+.steps > li::before {
+  content: "Step " counter(step-counter) "";
+  border-bottom: 0.5px solid black;
+  line-height: 20pt;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 100%;
+  background-color: rgb(200,200,200);
+  color: black;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.steps ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.steps ol li {
+  counter-increment: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+
+
+
+
+.methods {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.methods > li {
+  counter-increment: method-counter;
+  margin-bottom: 50px;
+}
+
+.methods > li::before {
+  content: "Method " counter(method-counter) "";
+  border-bottom: 0.5px solid black;
+  line-height: 20pt;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 100%;
+  background-color: rgb(0,170,238);
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.methods ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.methods ol li {
+  counter-increment: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+
+.examples {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.examples > li {
+  counter-increment: example-counter;
+  margin-bottom: 50px;
+}
+
+.examples > li::before {
+  content: "Example " counter(example-counter) "";
+  border-bottom: 0.5px solid black;
+  line-height: 20pt;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 100%;
+  background-color: rgb(0,0,0);
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.examples ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.examples ol li {
+  counter-increment: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.steps ul, .steps ol,
+.methods ul, .methods ol,
+.examples ul, .examples ol {
+  margin: 10px 0 10px 20px;
+  padding-left: 20px;
+}
+
+.steps ul li, .methods ul li, .examples ul li {
+  list-style-type: disc;
+  margin-bottom: 10px;
+}
+
+.steps ol li, .methods ol li, .examples ol li {
+  list-style-type: decimal;
+  margin-bottom: 10px;
+}
+
+.steps ul li::marker, 
+.methods ul li::marker, 
+.examples ul li::marker {
+  color: rgb(0,170,238);
+  font-size: 1.2em;
+}
+
+.steps ol li::marker, 
+.methods ol li::marker, 
+.examples ol li::marker {
+  color: rgb(200,100,100);
+  font-size: 1.2em;
+}
+
+.steps ul li:hover, .steps ol li:hover, 
+.methods ul li:hover, .methods ol li:hover, 
+.examples ul li:hover, .examples ol li:hover {
+  background-color: rgba(0,0,0,0.05);
+  padding-left: 5px;
+  transition: all 0.3s ease;
+}
+
+.steps ol, .methods ol, .examples ol {
+  padding-left: 30px;
+}
+
+.steps ul, .methods ul, .examples ul {
+  padding-left: 30px;
+}
+
+
+.options {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.options li {
+  counter-increment: method-counter;
+  margin-bottom: 50px;
+}
+
+.options li::before {
+  content: "Option " counter(method-counter) "";
+  border-bottom: 0.5px solid black;
+  line-height: 20pt;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 100%;
+  background-color: rgb(106,15,89);
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+
+
+
+code, samp, kbd {
+	font-family: "Courier New", Courier, monospace, sans-serif;
+	text-align: left;
+	color: darkorange;
+	background: #fafafa;
+	padding: 3px 5px;
+	font-weight: bold;
+	}
+pre code {
+	line-height: 1.6em;
+	font-size: 13px;
+	}
+pre {
+	padding: 0.em 0.5em 0.3em 0.7em;
+	border-left: 11px solid #02b1f0;
+	margin: 1.7em 0 1.7em 0.3em;
+	overflow: auto;
+	width: 100%;
+		font-family: "Courier New", Courier, monospace, sans-serif;
+	font-size: 15px;
+	line-height: 1.1em;
+	}
+/* target IE7 and IE6 */
+*:first-child+html pre {
+	padding-bottom: 2em;
+	overflow-y: hidden;
+	overflow: visible;
+	overflow-x: auto;
+	}
+* html pre {
+	padding-bottom: 2em;
+	overflow: visible;
+	overflow-x: auto;
+	}
+
+
+
+.uk-alert {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.uk-alert-success {
+  background-color: rgba(227, 253, 235, 1);
+  font-size: 19px;
+  border-color: rgba(38, 179, 3, 1);
+  color: rgba(60, 118, 61, 1);
+}
+
+.uk-alert-info {
+  background-color: rgba(217, 237, 247, 1);
+		font-size: 19px;
+  color: rgba(49, 112, 143, 1);
+  border-color: rgba(126, 182, 193, 1);
+}
+
+
+.uk-alert-warning {
+  background-color: rgba(252, 248, 227, 1);
+		font-size: 19px;
+  border-color: rgba(177, 161, 129, 1);
+  color: rgba(138, 109, 59, 1);
+}
+
+.uk-alert-danger {
+  background-color: rgba(248, 215, 218, 1);
+	font-size: 19px;
+  border-color: rgba(220, 53, 69, 1);
+  color: rgba(114, 28, 36,1);
+}
+
+.uk-thumbnail-caption{
+	font-size: 18px;
+	text-align: left;
+	font-style: italic;
+	position: relative;
+  bottom: 36px;
+	color: grey;
+	border-width: 1px solid #efefef;
+	padding: 3px 5px;
+
+}
+
+
+
+.uk-table{border-collapse:collapse;border-spacing:0;width:100%;margin-bottom:15px}*+.uk-table{margin-top:15px}.uk-table td,.uk-table th{padding:8px;border-bottom:1px solid #ddd}
+
+.uk-table th{text-align:left;background-color: rgba(53, 53, 53, 1);color: rgba(255, 255, 255, 1);}
+
+.uk-table thead th{vertical-align:bottom}
+
+.uk-table caption,.uk-table tfoot{font-size:12px;font-style:italic}.uk-table caption{text-align:left;color:#999}.uk-table tbody tr.uk-active{background:#f0f0f0}.uk-table-middle,.uk-table-middle td{vertical-align:middle!important}.uk-table-striped tbody tr:nth-of-type(odd){background:#fafafa}.uk-table-condensed td{padding:4px 8px}.uk-table-hover tbody tr:hover{background:#f0f0f0}.uk-form input,.uk-form select
+
+
+/* code for bash scripting beginner only */
+
+.uk-text-success {
+    color: #659f13!important;
+}
+.uk-text-warning {
+    color: #e28327!important;
+}
+
+.uk-text-primary {
+    color: #2d7091!important;
+}
+
+.uk-comment-primary .uk-comment-header {
+    border-color: rgba(45,112,145,.3);
+    background-color: #ebf7fd;
+    color: #2d7091;
+    text-shadow: 0 1px 0 #fff;
+}
+.uk-comment-header {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fafafa;
+}
+
+.uk-comment-avatar {
+    margin-right: 15px;
+    float: left;
+}
+.uk-comment-title {
+    margin: 5px 0 0;
+    font-size: 16px;
+    line-height: 22px;
+}
+/* sticky */
+@media(min-width: 769px) {
+    .both-sidebars .site-content {
+        display: flex;
+    }
+    #left-sidebar, #primary, #right-sidebar {
+        left: unset;
+    }
+    #left-sidebar {
+        order: -1;
+    }
+    .inside-left-sidebar, .inside-right-sidebar {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+   .incontent_ads {
+     height: 280px;
+		 overflow: hidden;
+   }
+ }
+ @media (max-width: 960px) {
+   .incontent_ads {
+     height: 250px;
+		 overflow: hidden;
+   }
+ }
+ @media (min-width: 961px) {
+   .incontent_ads {
+     height: 90px;
+		 overflow: hidden;
+   }
+}
+
+
+@media  {
+   .sticky_ads {
+     width: 301px;
+     height: 601px;
+     margin: 0 auto;
+   }
+ }
+@media  {
+   .sticky_ads1 {
+     width: 301px;
+     height: 251px;
+     margin: 0 auto;
+   }
+ }
+
+time.entry-date.published {
+    display: none;
+}
+
+/* Display updated date */
+.posted-on .updated {
+    display: inline-block;
+    margin-right: 0em;
+}
+
+
+@media (max-width: 768px) {
+    #right-sidebar {
+        display: none;
+    }
+}
+
+strong {
+    color: #9c5e00;
+}
+
+.uk-badge {
+    font-size: 1rem;
+}
+.uk-badge {
+    margin-right: 5px;
+}
+.uk-badge-warning {
+    background-color: #faa732;
+}
+.uk-badge {
+    display: inline-block;
+    padding: 0 5px;
+    background: #00a8e6;
+        background-color: rgb(0, 178, 230);
+
+    font-weight: 700;
+    line-height: 14px;
+    text-align: center;
+    text-transform: none;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: px;
+    text-shadow: 0 1px 0 rgba(0,0,0,.1);
+}
+.uk-badge, a.uk-badge:hover {
+    color: #fff;
+}
+.uk-badge, .uk-close, .uk-overlay, .uk-overlay-area-content {
+    vertical-align: middle;
+}
+
+
+.footer-widgets .footer-widget-1 {
+    flex-basis: 30%;
+}
+
+.footer-widgets .footer-widget-2 {
+    flex-basis: 15%;
+}
+
+.footer-widgets .footer-widget-3 {
+    flex-basis: 25%;
+}
+
+.footer-widgets .footer-widget-4 {
+    flex-basis: 25%;
+}
+
+@media screen and (min-width: 800px) {
+.leaderboard-ad-wrapper {
+width: 929px;
+height: 90px;
+text-align: center;
+}
+
+.site-logo {
+    width: 480px !important;
+    height: auto;
+}
+}
+
+.solutions {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.solutions > li {
+  counter-increment: solution-counter;
+  margin-bottom: 50px;
+}
+
+.solutions > li::before {
+  content: "Solution " counter(solution-counter) "";
+  border-bottom: 0.5px solid black;
+  line-height: 20pt;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 100%;
+  background-color: rgb(110,161,92);
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.solutions ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.solutions ol li {
+  counter-increment: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+
+		</style>
+		<noscript><style>.perfmatters-lazy[data-src]{display:none !important;}</style></noscript><style>.perfmatters-lazy-youtube{position:relative;width:100%;max-width:100%;height:0;padding-bottom:56.23%;overflow:hidden}.perfmatters-lazy-youtube img{position:absolute;top:0;right:0;bottom:0;left:0;display:block;width:100%;max-width:100%;height:auto;margin:auto;border:none;cursor:pointer;transition:.5s all;-webkit-transition:.5s all;-moz-transition:.5s all}.perfmatters-lazy-youtube img:hover{-webkit-filter:brightness(75%)}.perfmatters-lazy-youtube .play{position:absolute;top:50%;left:50%;right:auto;width:68px;height:48px;margin-left:-34px;margin-top:-24px;background:url(https://linuxconfig.org/wp-content/plugins/perfmatters/img/youtube.svg) no-repeat;background-position:center;background-size:cover;pointer-events:none;filter:grayscale(1)}.perfmatters-lazy-youtube:hover .play{filter:grayscale(0)}.perfmatters-lazy-youtube iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:99}.wp-has-aspect-ratio .wp-block-embed__wrapper{position:relative;}.wp-has-aspect-ratio .perfmatters-lazy-youtube{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;padding-bottom:0}.perfmatters-lazy.pmloaded,.perfmatters-lazy.pmloaded>img,.perfmatters-lazy>img.pmloaded,.perfmatters-lazy[data-ll-status=entered]{animation:500ms pmFadeIn}@keyframes pmFadeIn{0%{opacity:0}100%{opacity:1}}</style></head>
+
+<body class="error404 wp-custom-logo wp-embed-responsive wp-theme-generatepress post-image-above-header post-image-aligned-center generate-columns-activated secondary-nav-above-header secondary-nav-aligned-left slideout-enabled slideout-mobile sticky-menu-slide page-id-25616 no-sidebar nav-float-right one-container nav-search-enabled header-aligned-left dropdown-hover" itemtype="https://schema.org/WebPage" itemscope>
+	<a class="screen-reader-text skip-link" href="#content" title="Skip to content">Skip to content</a>			<nav id="secondary-navigation" class="secondary-navigation grid-container" itemtype="https://schema.org/SiteNavigationElement" itemscope="itemscope">
+				<div class="inside-navigation grid-container grid-parent">
+										<button class="menu-toggle secondary-menu-toggle">
+						<span class="gp-icon icon-menu-bars"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M0 96c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24z" /></svg><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" /></svg></span><span class="mobile-menu">Menu</span>					</button>
+					<div class="main-nav"><ul id="menu-top-bar-menu" class=" secondary-menu sf-menu"><li id="menu-item-9806" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9806"><a href="https://linuxconfig.org/ubuntu">Ubuntu</a></li>
+<li id="menu-item-9808" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9808"><a href="https://linuxconfig.org/debian">Debian</a></li>
+<li id="menu-item-9809" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9809"><a href="https://linuxconfig.org/redhat">Redhat / CentOS / AlmaLinux</a></li>
+<li id="menu-item-9817" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9817"><a href="https://linuxconfig.org/fedora">Fedora</a></li>
+<li id="menu-item-9810" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9810"><a href="https://linuxconfig.org/kali-linux">Kali Linux</a></li>
+</ul></div>				</div><!-- .inside-navigation -->
+			</nav><!-- #secondary-navigation -->
+					<header class="site-header has-inline-mobile-toggle" id="masthead" aria-label="Site"  itemtype="https://schema.org/WPHeader" itemscope>
+			<div class="inside-header grid-container">
+				<div class="site-logo">
+					<a href="https://linuxconfig.org/" rel="home">
+						<img class="header-image is-logo-image perfmatters-lazy" alt="LinuxConfig" src="data:image/svg+xml,%3Csvg%20xmlns=&#039;http://www.w3.org/2000/svg&#039;%20width=&#039;250&#039;%20height=&#039;70&#039;%20viewBox=&#039;0%200%20250%2070&#039;%3E%3C/svg%3E" width="250" height="70" data-src="https://linuxconfig.org/wp-content/uploads/2024/04/logo-lx.avif" /><noscript><img  class="header-image is-logo-image" alt="LinuxConfig" src="https://linuxconfig.org/wp-content/uploads/2024/04/logo-lx.avif" width="250" height="70" /></noscript>
+					</a>
+				</div>	<nav class="main-navigation mobile-menu-control-wrapper" id="mobile-menu-control-wrapper" aria-label="Mobile Toggle">
+		<div class="menu-bar-items"><span class="menu-bar-item search-item"><a aria-label="Open Search Bar" href="#"><span class="gp-icon icon-search"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path fill-rule="evenodd" clip-rule="evenodd" d="M208 48c-88.366 0-160 71.634-160 160s71.634 160 160 160 160-71.634 160-160S296.366 48 208 48zM0 208C0 93.125 93.125 0 208 0s208 93.125 208 208c0 48.741-16.765 93.566-44.843 129.024l133.826 134.018c9.366 9.379 9.355 24.575-.025 33.941-9.379 9.366-24.575 9.355-33.941-.025L337.238 370.987C301.747 399.167 256.839 416 208 416 93.125 416 0 322.875 0 208z" /></svg><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" /></svg></span></a></span></div>		<button data-nav="site-navigation" class="menu-toggle" aria-controls="generate-slideout-menu" aria-expanded="false">
+			<span class="gp-icon icon-menu-bars"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M0 96c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24z" /></svg><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" /></svg></span><span class="screen-reader-text">Menu</span>		</button>
+	</nav>
+			<nav class="main-navigation has-menu-bar-items sub-menu-right" id="site-navigation" aria-label="Primary"  itemtype="https://schema.org/SiteNavigationElement" itemscope>
+			<div class="inside-navigation">
+				<form method="get" class="search-form navigation-search" action="https://linuxconfig.org/">
+					<input type="search" class="search-field" value="" name="s" title="Search" />
+				</form>				<button class="menu-toggle" aria-controls="generate-slideout-menu" aria-expanded="false">
+					<span class="gp-icon icon-menu-bars"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M0 96c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24zm0 160c0-13.255 10.745-24 24-24h464c13.255 0 24 10.745 24 24s-10.745 24-24 24H24c-13.255 0-24-10.745-24-24z" /></svg><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" /></svg></span><span class="screen-reader-text">Menu</span>				</button>
+				<div id="primary-menu" class="main-nav"><ul id="menu-top-main-menu" class=" menu sf-menu"><li id="menu-item-9640" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-9640"><a href="https://linuxconfig.org/linux-tutorials">Linux Tutorials</a></li>
+<li id="menu-item-8425" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8425"><a href="https://linuxconfig.org/system-administration-configuration">System Admin</a></li>
+<li id="menu-item-8426" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8426"><a href="https://linuxconfig.org/programming-scripting">Programming</a></li>
+<li id="menu-item-8427" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8427"><a href="https://linuxconfig.org/multimedia-games">Multimedia</a></li>
+<li id="menu-item-8525" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8525"><a rel="nofollow noopener noreferrer" href="https://forum.linuxconfig.org/">Forum</a></li>
+<li id="menu-item-9641" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9641"><a href="https://linuxconfig.org/linux-commands">Linux Commands</a></li>
+<li id="menu-item-8526" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8526"><a rel="nofollow noopener noreferrer" href="https://linuxconfig.org/linuxcareers-com-linux-job-portal">Linux Jobs</a></li>
+</ul></div><div class="menu-bar-items"><span class="menu-bar-item search-item"><a aria-label="Open Search Bar" href="#"><span class="gp-icon icon-search"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path fill-rule="evenodd" clip-rule="evenodd" d="M208 48c-88.366 0-160 71.634-160 160s71.634 160 160 160 160-71.634 160-160S296.366 48 208 48zM0 208C0 93.125 93.125 0 208 0s208 93.125 208 208c0 48.741-16.765 93.566-44.843 129.024l133.826 134.018c9.366 9.379 9.355 24.575-.025 33.941-9.379 9.366-24.575 9.355-33.941-.025L337.238 370.987C301.747 399.167 256.839 416 208 416 93.125 416 0 322.875 0 208z" /></svg><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" /></svg></span></a></span></div><div class="leaderboard-ad-wrapper" data-fuse="22413944646"></div>			</div>
+		</nav>
+					<div class="header-widget">
+							</div>
+						</div>
+		</header>
+		
+	<div class="site grid-container container hfeed" id="page">
+				<div class="site-content" id="content">
+			
+	<div class="content-area" id="primary">
+		<main class="site-main" id="main">
+			<div class="generate-columns-container "><div class="inside-article">
+
+	
+	<header class="entry-header">
+				<h1 class="entry-title" itemprop="headline">Oops! That page can&rsquo;t be found.</h1>
+	</header>
+
+	
+	<div class="entry-content" itemprop="text">
+		<p>It looks like nothing was found at this location. Maybe try searching?</p><form method="get" class="search-form" action="https://linuxconfig.org/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:">
+	</label>
+	<button class="search-submit" aria-label="Search"><span class="gp-icon icon-search"><svg viewBox="0 0 512 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"><path fill-rule="evenodd" clip-rule="evenodd" d="M208 48c-88.366 0-160 71.634-160 160s71.634 160 160 160 160-71.634 160-160S296.366 48 208 48zM0 208C0 93.125 93.125 0 208 0s208 93.125 208 208c0 48.741-16.765 93.566-44.843 129.024l133.826 134.018c9.366 9.379 9.355 24.575-.025 33.941-9.379 9.366-24.575 9.355-33.941-.025L337.238 370.987C301.747 399.167 256.839 416 208 416 93.125 416 0 322.875 0 208z" /></svg></span></button></form>
+	</div>
+
+	
+</div>
+</div><!-- .generate-columns-contaier -->		</main>
+	</div>
+
+	
+	</div>
+</div>
+
+
+<div class="site-footer">
+				<div id="footer-widgets" class="site footer-widgets">
+				<div class="footer-widgets-container grid-container">
+					<div class="inside-footer-widgets">
+							<div class="footer-widget-1">
+		<aside id="block-12" class="widget inner-padding widget_block">
+<h3 class="wp-block-heading" id="h-newsletter">NEWSLETTER</h3>
+</aside><aside id="block-11" class="widget inner-padding widget_block widget_text">
+<p>Subscribe to&nbsp;Linux Career Newsletter&nbsp;to receive latest news, jobs, career advice and featured configuration tutorials.</p>
+</aside><aside id="block-25" class="widget inner-padding widget_block"><div class="gb-button-wrapper gb-button-wrapper-47b15502">
+
+<a class="gb-button gb-button-9e8d3737 gb-button-text" href="https://bit.ly/2X5D30q" rel="nofollow">SUBSCRIBE</a>
+
+</div></aside><aside id="block-13" class="widget inner-padding widget_block">
+<h3 class="wp-block-heading" id="h-write-for-us">WRITE FOR US</h3>
+</aside><aside id="block-15" class="widget inner-padding widget_block widget_text">
+<p>LinuxConfig is looking for a technical writer(s) geared towards GNU/Linux and FLOSS technologies. Your articles will feature various GNU/Linux configuration tutorials and FLOSS technologies used in combination with GNU/Linux operating system.</p>
+</aside><aside id="block-16" class="widget inner-padding widget_block widget_text">
+<p>When writing your articles you will be expected to be able to keep up with a technological advancement regarding the above mentioned technical area of expertise. You will work independently and be able to produce at minimum 2 technical articles a month.</p>
+</aside><aside id="block-21" class="widget inner-padding widget_block"><div class="gb-button-wrapper gb-button-wrapper-fea23fb6">
+
+<a class="gb-button gb-button-ac59105c gb-button-text" href="https://www.linuxcareers.com/jobs/floss-technical-writer-new-york-city-new-york/1-1/" rel="nofollow">APPLY NOW</a>
+
+</div></aside>	</div>
+		<div class="footer-widget-2">
+		<aside id="tag_cloud-3" class="widget inner-padding widget_tag_cloud"><h2 class="widget-title">TAGS</h2><div class="tagcloud"><a href="https://linuxconfig.org/tag/18-04" class="tag-cloud-link tag-link-75 tag-link-position-1" style="font-size: 14.608695652174pt;" aria-label="18.04 (198 items)">18.04</a>
+<a href="https://linuxconfig.org/tag/administration" class="tag-cloud-link tag-link-14 tag-link-position-2" style="font-size: 22pt;" aria-label="administration (1,421 items)">administration</a>
+<a href="https://linuxconfig.org/tag/apache" class="tag-cloud-link tag-link-27 tag-link-position-3" style="font-size: 9.2173913043478pt;" aria-label="apache (47 items)">apache</a>
+<a href="https://linuxconfig.org/tag/applications" class="tag-cloud-link tag-link-43 tag-link-position-4" style="font-size: 14.608695652174pt;" aria-label="applications (199 items)">applications</a>
+<a href="https://linuxconfig.org/tag/backup" class="tag-cloud-link tag-link-31 tag-link-position-5" style="font-size: 9.0434782608696pt;" aria-label="backup (45 items)">backup</a>
+<a href="https://linuxconfig.org/tag/bash" class="tag-cloud-link tag-link-21 tag-link-position-6" style="font-size: 15.478260869565pt;" aria-label="bash (248 items)">bash</a>
+<a href="https://linuxconfig.org/tag/beginner" class="tag-cloud-link tag-link-15 tag-link-position-7" style="font-size: 17.217391304348pt;" aria-label="beginner (401 items)">beginner</a>
+<a href="https://linuxconfig.org/tag/browser" class="tag-cloud-link tag-link-74 tag-link-position-8" style="font-size: 9.1304347826087pt;" aria-label="browser (46 items)">browser</a>
+<a href="https://linuxconfig.org/tag/centos" class="tag-cloud-link tag-link-61 tag-link-position-9" style="font-size: 9.0434782608696pt;" aria-label="centos (45 items)">centos</a>
+<a href="https://linuxconfig.org/tag/centos8" class="tag-cloud-link tag-link-86 tag-link-position-10" style="font-size: 12.086956521739pt;" aria-label="centos8 (102 items)">centos8</a>
+<a href="https://linuxconfig.org/tag/commands" class="tag-cloud-link tag-link-16 tag-link-position-11" style="font-size: 19.304347826087pt;" aria-label="commands (691 items)">commands</a>
+<a href="https://linuxconfig.org/tag/database" class="tag-cloud-link tag-link-56 tag-link-position-12" style="font-size: 10.695652173913pt;" aria-label="database (70 items)">database</a>
+<a href="https://linuxconfig.org/tag/debian" class="tag-cloud-link tag-link-20 tag-link-position-13" style="font-size: 10.869565217391pt;" aria-label="debian (73 items)">debian</a>
+<a href="https://linuxconfig.org/tag/desktop" class="tag-cloud-link tag-link-24 tag-link-position-14" style="font-size: 17.652173913043pt;" aria-label="desktop (449 items)">desktop</a>
+<a href="https://linuxconfig.org/tag/development" class="tag-cloud-link tag-link-42 tag-link-position-15" style="font-size: 17.04347826087pt;" aria-label="development (382 items)">development</a>
+<a href="https://linuxconfig.org/tag/docker" class="tag-cloud-link tag-link-68 tag-link-position-16" style="font-size: 10.260869565217pt;" aria-label="docker (62 items)">docker</a>
+<a href="https://linuxconfig.org/tag/error" class="tag-cloud-link tag-link-51 tag-link-position-17" style="font-size: 8pt;" aria-label="error (34 items)">error</a>
+<a href="https://linuxconfig.org/tag/fedora" class="tag-cloud-link tag-link-30 tag-link-position-18" style="font-size: 8.9565217391304pt;" aria-label="fedora (44 items)">fedora</a>
+<a href="https://linuxconfig.org/tag/filesystem" class="tag-cloud-link tag-link-17 tag-link-position-19" style="font-size: 15.04347826087pt;" aria-label="filesystem (223 items)">filesystem</a>
+<a href="https://linuxconfig.org/tag/firewall" class="tag-cloud-link tag-link-46 tag-link-position-20" style="font-size: 9.0434782608696pt;" aria-label="firewall (45 items)">firewall</a>
+<a href="https://linuxconfig.org/tag/gaming" class="tag-cloud-link tag-link-60 tag-link-position-21" style="font-size: 11.04347826087pt;" aria-label="gaming (77 items)">gaming</a>
+<a href="https://linuxconfig.org/tag/gnome" class="tag-cloud-link tag-link-63 tag-link-position-22" style="font-size: 10.434782608696pt;" aria-label="gnome (65 items)">gnome</a>
+<a href="https://linuxconfig.org/tag/hardware" class="tag-cloud-link tag-link-47 tag-link-position-23" style="font-size: 11.130434782609pt;" aria-label="Hardware (78 items)">Hardware</a>
+<a href="https://linuxconfig.org/tag/installation" class="tag-cloud-link tag-link-40 tag-link-position-24" style="font-size: 17.04347826087pt;" aria-label="installation (382 items)">installation</a>
+<a href="https://linuxconfig.org/tag/kali" class="tag-cloud-link tag-link-73 tag-link-position-25" style="font-size: 10.086956521739pt;" aria-label="kali (59 items)">kali</a>
+<a href="https://linuxconfig.org/tag/multimedia" class="tag-cloud-link tag-link-32 tag-link-position-26" style="font-size: 14.695652173913pt;" aria-label="multimedia (203 items)">multimedia</a>
+<a href="https://linuxconfig.org/tag/networking" class="tag-cloud-link tag-link-36 tag-link-position-27" style="font-size: 14.869565217391pt;" aria-label="networking (215 items)">networking</a>
+<a href="https://linuxconfig.org/tag/nvidia" class="tag-cloud-link tag-link-67 tag-link-position-28" style="font-size: 9.7391304347826pt;" aria-label="nvidia (54 items)">nvidia</a>
+<a href="https://linuxconfig.org/tag/programming" class="tag-cloud-link tag-link-45 tag-link-position-29" style="font-size: 15.04347826087pt;" aria-label="programming (223 items)">programming</a>
+<a href="https://linuxconfig.org/tag/python" class="tag-cloud-link tag-link-66 tag-link-position-30" style="font-size: 10.347826086957pt;" aria-label="python (64 items)">python</a>
+<a href="https://linuxconfig.org/tag/raspberrypi" class="tag-cloud-link tag-link-219 tag-link-position-31" style="font-size: 10.95652173913pt;" aria-label="raspberrypi (75 items)">raspberrypi</a>
+<a href="https://linuxconfig.org/tag/redhat" class="tag-cloud-link tag-link-58 tag-link-position-32" style="font-size: 10.260869565217pt;" aria-label="redhat (62 items)">redhat</a>
+<a href="https://linuxconfig.org/tag/rhel8" class="tag-cloud-link tag-link-85 tag-link-position-33" style="font-size: 12.173913043478pt;" aria-label="rhel8 (104 items)">rhel8</a>
+<a href="https://linuxconfig.org/tag/scripting" class="tag-cloud-link tag-link-22 tag-link-position-34" style="font-size: 14.782608695652pt;" aria-label="scripting (210 items)">scripting</a>
+<a href="https://linuxconfig.org/tag/security" class="tag-cloud-link tag-link-26 tag-link-position-35" style="font-size: 15.652173913043pt;" aria-label="security (264 items)">security</a>
+<a href="https://linuxconfig.org/tag/server" class="tag-cloud-link tag-link-39 tag-link-position-36" style="font-size: 16.347826086957pt;" aria-label="server (315 items)">server</a>
+<a href="https://linuxconfig.org/tag/ssh" class="tag-cloud-link tag-link-35 tag-link-position-37" style="font-size: 9.5652173913043pt;" aria-label="ssh (52 items)">ssh</a>
+<a href="https://linuxconfig.org/tag/storage" class="tag-cloud-link tag-link-19 tag-link-position-38" style="font-size: 11.304347826087pt;" aria-label="storage (82 items)">storage</a>
+<a href="https://linuxconfig.org/tag/terminal" class="tag-cloud-link tag-link-38 tag-link-position-39" style="font-size: 14.521739130435pt;" aria-label="terminal (192 items)">terminal</a>
+<a href="https://linuxconfig.org/tag/ubuntu" class="tag-cloud-link tag-link-23 tag-link-position-40" style="font-size: 19.565217391304pt;" aria-label="ubuntu (747 items)">ubuntu</a>
+<a href="https://linuxconfig.org/tag/ubuntu-20-04" class="tag-cloud-link tag-link-90 tag-link-position-41" style="font-size: 15.391304347826pt;" aria-label="ubuntu 20.04 (243 items)">ubuntu 20.04</a>
+<a href="https://linuxconfig.org/tag/video" class="tag-cloud-link tag-link-92 tag-link-position-42" style="font-size: 8pt;" aria-label="video (34 items)">video</a>
+<a href="https://linuxconfig.org/tag/virtualization" class="tag-cloud-link tag-link-54 tag-link-position-43" style="font-size: 9.9130434782609pt;" aria-label="virtualization (56 items)">virtualization</a>
+<a href="https://linuxconfig.org/tag/webapp" class="tag-cloud-link tag-link-50 tag-link-position-44" style="font-size: 9.5652173913043pt;" aria-label="webapp (51 items)">webapp</a>
+<a href="https://linuxconfig.org/tag/webserver" class="tag-cloud-link tag-link-25 tag-link-position-45" style="font-size: 12.782608695652pt;" aria-label="webserver (121 items)">webserver</a></div>
+</aside><aside id="block-50" class="widget inner-padding widget_block"><div class="gb-button-wrapper gb-button-wrapper-aa8d8e65">
+
+<a class="gb-button gb-button-6841cab3 gb-button-text" href="/about-us">ABOUT US</a>
+
+</div></aside>	</div>
+		<div class="footer-widget-3">
+		<aside id="block-36" class="widget inner-padding widget_block">
+<h3 class="wp-block-heading" id="h-featured-tutorials">FEATURED TUTORIALS</h3>
+</aside><aside id="block-37" class="widget inner-padding widget_block"><ul>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-22-04" target="_blank">How to install the NVIDIA drivers on Ubuntu 22.04</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/howto-mount-usb-drive-in-linux" target="_blank">How to mount USB drive in Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-tar-gz-file-on-linux" target="_blank">How to install tar.gz file on Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-enable-disable-wayland-on-ubuntu-22-04-desktop" target="_blank">How to enable/disable wayland on Ubuntu Desktop</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux" target="_blank">Linux IP forwarding</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-configure-static-ip-address-on-ubuntu-18-04-bionic-beaver-linux" target="_blank">Netplan static IP on Ubuntu configuration</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-google-chrome-browser-on-linux" target="_blank">Google Chrome for Linux: Download and Installation</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/ubuntu-22-04-network-configuration" target="_blank">Ubuntu Network Configuration Guide</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-check-nvidia-driver-version-on-your-linux-system" target="_blank">How to Check NVIDIA Driver Version on Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-find-my-ip-address-on-ubuntu-20-04-focal-fossa-linux" target="_blank">How to find my IP address on Ubuntu Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/change-ip-address-on-ubuntu-server" target="_blank">Change IP address on Ubuntu Server</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-use-curl-to-get-public-ip-address" target="_blank">How to use curl to get public IP address</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux" target="_blank">How to install the NVIDIA drivers on Ubuntu 20.04 Focal Fossa Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-make-a-bootable-usb-from-an-iso-in-linux" target="_blank">How to make a bootable USB from an ISO in Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-missing-ifconfig-command-on-debian-linux" target="_blank">How to install missing ifconfig command on Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-yum-on-linux" target="_blank">How to install Yum on Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/ubuntu-24-04-lts-vs-22-04-lts-a-comparison-guide-and-whats-new" target="_blank">Ubuntu 24.04 LTS vs 22.04 LTS: A Comparison Guide and What’s New</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/ubuntu-20-04-remote-desktop-access-from-windows-10" target="_blank">Ubuntu Remote Desktop Access from Windows 10/11</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-install-adobe-acrobat-reader-on-ubuntu-20-04-focal-fossa-linux" target="_blank">How to Install Adobe Acrobat Reader on Ubuntu and Debian Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/resolving-the-no-space-left-on-device-error-on-linux" target="_blank">Resolving the ‘No Space Left on Device’ Error on Linux</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/how-to-configure-static-ip-address-on-ubuntu-18-10-cosmic-cuttlefish-linux" target="_blank">Ubuntu Static IP configuration</a>
+    </li>
+    <li>
+        <a href="https://linuxconfig.org/bash-scripting-tutorial" target="_blank">Bash Scripting Tutorial</a>
+    </li>
+</ul></aside>	</div>
+		<div class="footer-widget-4">
+		<aside id="block-40" class="widget inner-padding widget_block">
+<h3 class="gb-headline gb-headline-3c90cba8 gb-headline-text">LATEST TUTORIALS</h3>
+</aside><aside id="block-38" class="widget inner-padding widget_block widget_recent_entries"><ul class="wp-block-latest-posts__list wp-block-latest-posts"><li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/using-custom-charge-thresholds-with-gnomes-preserve-battery-health-feature">Using Custom Charge Thresholds with GNOME&#8217;s Preserve Battery Health Feature</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/self-hosted-finance-management-setting-up-firefly-iii-with-docker">Self-Hosted Finance Management: Setting Up Firefly III with Docker</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/what-is-docker-pull-command">What is Docker Pull Command?</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/reclaiming-proxmox-storage-disk-space-via-linux-cli">Reclaiming Proxmox Storage Disk Space via Linux CLI</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/unlock-powerful-monitoring-your-guide-to-prometheus-and-grafana">Unlock Powerful System Monitoring: Your Guide to Prometheus and Grafana</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/dockerfile-build-best-practices-errors">Dockerfile Build – Best Practices &#038; Errors</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/shell-upgrade-supercharge-your-terminal-with-zsh-oh-my-zsh">Shell Upgrade: Supercharge Your Terminal with Zsh &#038; Oh My Zsh</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/enhancing-privacy-on-linux-mounting-logs-and-temporary-directories-in-ram">Enhancing Privacy on Linux: Mounting Logs and Temporary Directories in RAM</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/start-docker-daemon-on-linux">Start Docker Daemon on Linux</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/docker-run-with-logs-capturing-and-debugging-output">Docker Run With Logs – Capturing and Debugging Output</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/check-if-docker-is-running-linux-commands">Check If Docker Is Running – Linux Commands</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/bash-function-to-sort-docker-ps-output">Bash Function to Sort Docker Ps Output</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/docker-basic-commands-on-linux">Docker Basic Commands on Linux</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-network-connect-two-containers-with-docker-compose">How to Network Connect Two Containers With Docker-compose</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-convert-markdown-to-pdf-on-linux">How to Convert Markdown to Pdf on Linux</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-add-a-sql-user-in-a-docker-container">How to Add a Sql User in a Docker Container</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/docker-container-vulnerability-scanning-tools">Docker Container Vulnerability Scanning Tools</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-show-hidden-files-on-linux">How to Show Hidden Files on Linux</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-backup-your-data-with-kopia-on-linux">How to backup your data with Kopia on Linux</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://linuxconfig.org/how-to-hash-a-file-on-linux">How to Hash a File on Linux</a></li>
+</ul></aside>	</div>
+						</div>
+				</div>
+			</div>
+					<footer class="site-info" aria-label="Site"  itemtype="https://schema.org/WPFooter" itemscope>
+			<div class="inside-site-info grid-container">
+								<div class="copyright-bar">
+					&copy; 2025 TOSID Group Pty Ltd - LinuxConfig.org				</div>
+			</div>
+		</footer>
+		</div>
+
+<a title="Scroll back to top" aria-label="Scroll back to top" rel="nofollow" href="#" class="generate-back-to-top" data-scroll-speed="400" data-start-scroll="300" role="button">
+					<span class="gp-icon icon-arrow-up"><svg viewBox="0 0 330 512" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M305.863 314.916c0 2.266-1.133 4.815-2.832 6.514l-14.157 14.163c-1.699 1.7-3.964 2.832-6.513 2.832-2.265 0-4.813-1.133-6.512-2.832L164.572 224.276 53.295 335.593c-1.699 1.7-4.247 2.832-6.512 2.832-2.265 0-4.814-1.133-6.513-2.832L26.113 321.43c-1.699-1.7-2.831-4.248-2.831-6.514s1.132-4.816 2.831-6.515L158.06 176.408c1.699-1.7 4.247-2.833 6.512-2.833 2.265 0 4.814 1.133 6.513 2.833L303.03 308.4c1.7 1.7 2.832 4.249 2.832 6.515z" fill-rule="nonzero" /></svg></span>
+				</a>		<nav id="generate-slideout-menu" class="main-navigation slideout-navigation do-overlay" itemtype="https://schema.org/SiteNavigationElement" itemscope style="display: none;" aria-hidden="true">
+			<div class="inside-navigation grid-container grid-parent">
+				<button class="slideout-exit has-svg-icon"><span class="gp-icon pro-close">
+				<svg viewBox="0 0 512 512" aria-hidden="true" role="img" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1em" height="1em">
+					<path d="M71.029 71.029c9.373-9.372 24.569-9.372 33.942 0L256 222.059l151.029-151.03c9.373-9.372 24.569-9.372 33.942 0 9.372 9.373 9.372 24.569 0 33.942L289.941 256l151.03 151.029c9.372 9.373 9.372 24.569 0 33.942-9.373 9.372-24.569 9.372-33.942 0L256 289.941l-151.029 151.03c-9.373 9.372-24.569 9.372-33.942 0-9.372-9.373-9.372-24.569 0-33.942L222.059 256 71.029 104.971c-9.372-9.373-9.372-24.569 0-33.942z" />
+				</svg>
+			</span> <span class="screen-reader-text">Close</span></button><div class="main-nav"><ul id="menu-top-main-menu-1" class=" slideout-menu"><li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-9640"><a href="https://linuxconfig.org/linux-tutorials">Linux Tutorials</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8425"><a href="https://linuxconfig.org/system-administration-configuration">System Admin</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8426"><a href="https://linuxconfig.org/programming-scripting">Programming</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8427"><a href="https://linuxconfig.org/multimedia-games">Multimedia</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8525"><a rel="nofollow noopener noreferrer" href="https://forum.linuxconfig.org/">Forum</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9641"><a href="https://linuxconfig.org/linux-commands">Linux Commands</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8526"><a rel="nofollow noopener noreferrer" href="https://linuxconfig.org/linuxcareers-com-linux-job-portal">Linux Jobs</a></li>
+</ul></div>			</div><!-- .inside-navigation -->
+		</nav><!-- #site-navigation -->
+
+		<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/generatepress\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="generate-a11y" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">!function(){"use strict";if("querySelector"in document&&"addEventListener"in window){var e=document.body;e.addEventListener("mousedown",function(){e.classList.add("using-mouse")}),e.addEventListener("keydown",function(){e.classList.remove("using-mouse")})}}();</script><script id="generate-offside-js-extra" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">
+var offSide = {"side":"left"};
+</script>
+<script src="https://linuxconfig.org/wp-content/plugins/gp-premium/menu-plus/functions/js/offside.min.js?ver=2.2.2" id="generate-offside-js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script>
+<!--[if lte IE 11]>
+<script src="https://linuxconfig.org/wp-content/themes/generatepress/assets/js/classList.min.js?ver=3.5.0" id="generate-classlist-js"></script>
+<![endif]-->
+<script id="generate-menu-js-extra" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">
+var generatepressMenu = {"toggleOpenedSubMenus":"1","openSubMenuLabel":"Open Sub-Menu","closeSubMenuLabel":"Close Sub-Menu"};
+</script>
+<script src="https://linuxconfig.org/wp-content/themes/generatepress/assets/js/menu.min.js?ver=3.5.0" id="generate-menu-js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script>
+<script id="generate-navigation-search-js-extra" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">
+var generatepressNavSearch = {"open":"Open Search Bar","close":"Close Search Bar"};
+</script>
+<script src="https://linuxconfig.org/wp-content/themes/generatepress/assets/js/navigation-search.min.js?ver=3.5.0" id="generate-navigation-search-js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script>
+<script id="generate-back-to-top-js-extra" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1">
+var generatepressBackToTop = {"smooth":"1"};
+</script>
+<script src="https://linuxconfig.org/wp-content/themes/generatepress/assets/js/back-to-top.min.js?ver=3.5.0" id="generate-back-to-top-js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script>
+<script src="https://linuxconfig.org/wp-content/plugins/page-links-to/dist/new-tab.js?ver=3.3.7" id="page-links-to-js" type="pmdelayedscript" data-cfasync="false" data-no-optimize="1" data-no-defer="1" data-no-minify="1"></script>
+<script id="perfmatters-lazy-load-js-before" type="27d2d06b6390c2aa58e520b2-text/javascript">
+window.lazyLoadOptions={elements_selector:"img[data-src],.perfmatters-lazy,.perfmatters-lazy-css-bg",thresholds:"0px 0px",class_loading:"pmloading",class_loaded:"pmloaded",callback_loaded:function(element){if(element.tagName==="IFRAME"){if(element.classList.contains("pmloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}};window.addEventListener("LazyLoad::Initialized",function(e){var lazyLoadInstance=e.detail.instance;var target=document.querySelector("body");var observer=new MutationObserver(function(mutations){lazyLoadInstance.update()});var config={childList:!0,subtree:!0};observer.observe(target,config);});function perfmattersLazyLoadYouTube(e){var t=document.createElement("iframe"),r="ID?";r+=0===e.dataset.query.length?"":e.dataset.query+"&",r+="autoplay=1",t.setAttribute("src",r.replace("ID",e.dataset.src)),t.setAttribute("frameborder","0"),t.setAttribute("allowfullscreen","1"),t.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"),e.replaceChild(t,e.firstChild)}
+</script>
+<script async src="https://linuxconfig.org/wp-content/plugins/perfmatters/js/lazyload.min.js?ver=2.3.3" id="perfmatters-lazy-load-js" type="27d2d06b6390c2aa58e520b2-text/javascript"></script>
+
+        
+<script id="perfmatters-delayed-scripts-js" type="27d2d06b6390c2aa58e520b2-text/javascript">const pmDelayClick=true;const pmDelayTimer=setTimeout(pmTriggerDOMListener,10*1000);const pmUserInteractions=["keydown","mousedown","mousemove","wheel","touchmove","touchstart","touchend"],pmDelayedScripts={normal:[],defer:[],async:[]},jQueriesArray=[],pmInterceptedClicks=[];var pmDOMLoaded=!1,pmClickTarget="";function pmTriggerDOMListener(){"undefined"!=typeof pmDelayTimer&&clearTimeout(pmDelayTimer),pmUserInteractions.forEach(function(e){window.removeEventListener(e,pmTriggerDOMListener,{passive:!0})}),document.removeEventListener("visibilitychange",pmTriggerDOMListener),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",pmTriggerDelayedScripts):pmTriggerDelayedScripts()}async function pmTriggerDelayedScripts(){pmDelayEventListeners(),pmDelayJQueryReady(),pmProcessDocumentWrite(),pmSortDelayedScripts(),pmPreloadDelayedScripts(),await pmLoadDelayedScripts(pmDelayedScripts.normal),await pmLoadDelayedScripts(pmDelayedScripts.defer),await pmLoadDelayedScripts(pmDelayedScripts.async),await pmTriggerEventListeners(),document.querySelectorAll("link[data-pmdelayedstyle]").forEach(function(e){e.setAttribute("href",e.getAttribute("data-pmdelayedstyle"))}),window.dispatchEvent(new Event("perfmatters-allScriptsLoaded")),pmWaitForPendingClicks().then(()=>{pmReplayClicks()})}function pmDelayEventListeners(){let e={};function t(t,n){function r(n){return e[t].delayedEvents.indexOf(n)>=0?"perfmatters-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},delayedEvents:[]},t.addEventListener=function(){arguments[0]=r(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=r(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)}),e[t].delayedEvents.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:n||function(){},set:function(n){e["perfmatters"+t]=n}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}function pmDelayJQueryReady(){let e=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>e,set(t){if(t&&t.fn&&!jQueriesArray.includes(t)){t.fn.ready=t.fn.init.prototype.ready=function(e){pmDOMLoaded?e.bind(document)(t):document.addEventListener("perfmatters-DOMContentLoaded",function(){e.bind(document)(t)})};let n=t.fn.on;t.fn.on=t.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e=(e=(e=e.split(" ")).map(function(e){return"load"===e||0===e.indexOf("load.")?"perfmatters-jquery-load":e})).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach(function(t){delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]})}return n.apply(this,arguments),this},jQueriesArray.push(t)}e=t}})}function pmProcessDocumentWrite(){let e=new Map;document.write=document.writeln=function(t){var n=document.currentScript,r=document.createRange();let a=e.get(n);void 0===a&&(a=n.nextSibling,e.set(n,a));var i=document.createDocumentFragment();r.setStart(i,0),i.appendChild(r.createContextualFragment(t)),n.parentElement.insertBefore(i,a)}}function pmSortDelayedScripts(){document.querySelectorAll("script[type=pmdelayedscript]").forEach(function(e){e.hasAttribute("src")?e.hasAttribute("defer")&&!1!==e.defer?pmDelayedScripts.defer.push(e):e.hasAttribute("async")&&!1!==e.async?pmDelayedScripts.async.push(e):pmDelayedScripts.normal.push(e):pmDelayedScripts.normal.push(e)})}function pmPreloadDelayedScripts(){var e=document.createDocumentFragment();[...pmDelayedScripts.normal,...pmDelayedScripts.defer,...pmDelayedScripts.async].forEach(function(t){var n=t.getAttribute("src");if(n){var r=document.createElement("link");r.href=n,"module"==t.getAttribute("data-perfmatters-type")?r.rel="modulepreload":(r.rel="preload",r.as="script"),e.appendChild(r)}}),document.head.appendChild(e)}async function pmLoadDelayedScripts(e){var t=e.shift();return t?(await pmReplaceScript(t),pmLoadDelayedScripts(e)):Promise.resolve()}async function pmReplaceScript(e){return await pmNextFrame(),new Promise(function(t){let n=document.createElement("script");[...e.attributes].forEach(function(e){let t=e.nodeName;"type"!==t&&("data-perfmatters-type"===t&&(t="type"),n.setAttribute(t,e.nodeValue))}),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)})}async function pmTriggerEventListeners(){pmDOMLoaded=!0,await pmNextFrame(),document.dispatchEvent(new Event("perfmatters-DOMContentLoaded")),await pmNextFrame(),window.dispatchEvent(new Event("perfmatters-DOMContentLoaded")),await pmNextFrame(),document.dispatchEvent(new Event("perfmatters-readystatechange")),await pmNextFrame(),document.perfmattersonreadystatechange&&document.perfmattersonreadystatechange(),await pmNextFrame(),window.dispatchEvent(new Event("perfmatters-load")),await pmNextFrame(),window.perfmattersonload&&window.perfmattersonload(),await pmNextFrame(),jQueriesArray.forEach(function(e){e(window).trigger("perfmatters-jquery-load")});let e=new Event("perfmatters-pageshow");e.persisted=window.pmPersisted,window.dispatchEvent(e),await pmNextFrame(),window.perfmattersonpageshow&&window.perfmattersonpageshow({persisted:window.pmPersisted})}async function pmNextFrame(){return new Promise(function(e){requestAnimationFrame(e)})}function pmReplayClicks(){window.removeEventListener("touchstart",pmTouchStartHandler,{passive:!0}),window.removeEventListener("mousedown",pmTouchStartHandler),pmInterceptedClicks.forEach(e=>{e.target.outerHTML===pmClickTarget&&e.target.dispatchEvent(new MouseEvent("click",{view:e.view,bubbles:!0,cancelable:!0}))})}function pmWaitForPendingClicks(){return new Promise(e=>{window.pmIsClickPending?pmPendingClickFinished=e:e()})}function pmPndingClickStarted(){window.pmIsClickPending=!0}function pmPendingClickFinished(){window.pmIsClickPending=!1}function pmClickHandler(e){e.target.removeEventListener("click",pmClickHandler),pmRenameDOMAttribute(e.target,"pm-onclick","onclick"),pmInterceptedClicks.push(e),e.preventDefault(),e.stopPropagation(),e.stopImmediatePropagation(),pmPendingClickFinished()}function pmTouchStartHandler(e){"HTML"!==e.target.tagName&&(pmClickTarget||(pmClickTarget=e.target.outerHTML),window.addEventListener("touchend",pmTouchEndHandler),window.addEventListener("mouseup",pmTouchEndHandler),window.addEventListener("touchmove",pmTouchMoveHandler,{passive:!0}),window.addEventListener("mousemove",pmTouchMoveHandler),e.target.addEventListener("click",pmClickHandler),pmRenameDOMAttribute(e.target,"onclick","pm-onclick"),pmPendingClickStarted())}function pmTouchMoveHandler(e){window.removeEventListener("touchend",pmTouchEndHandler),window.removeEventListener("mouseup",pmTouchEndHandler),window.removeEventListener("touchmove",pmTouchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",pmTouchMoveHandler),e.target.removeEventListener("click",pmClickHandler),pmRenameDOMAttribute(e.target,"pm-onclick","onclick"),pmPendingClickFinished()}function pmTouchEndHandler(e){window.removeEventListener("touchend",pmTouchEndHandler),window.removeEventListener("mouseup",pmTouchEndHandler),window.removeEventListener("touchmove",pmTouchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",pmTouchMoveHandler)}function pmRenameDOMAttribute(e,t,n){e.hasAttribute&&e.hasAttribute(t)&&(event.target.setAttribute(n,event.target.getAttribute(t)),event.target.removeAttribute(t))}window.pmIsClickPending=!1,window.addEventListener("pageshow",e=>{window.pmPersisted=e.persisted}),pmUserInteractions.forEach(function(e){window.addEventListener(e,pmTriggerDOMListener,{passive:!0})}),pmDelayClick&&(window.addEventListener("touchstart",pmTouchStartHandler,{passive:!0}),window.addEventListener("mousedown",pmTouchStartHandler)),document.addEventListener("visibilitychange",pmTriggerDOMListener);</script><script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="27d2d06b6390c2aa58e520b2-|49" defer></script></body>
+</html>
