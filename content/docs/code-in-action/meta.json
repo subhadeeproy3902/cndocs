@@ -3,5 +3,5 @@
   "description": "Explore real-world networking projects.",
   "icon": "Code",
   "root": true,
-  "pages": ["index", "message-queues", "unix-sockets"]
+  "pages": ["index", "message-queues", "unix-sockets", "tcp-sockets"]
 }
