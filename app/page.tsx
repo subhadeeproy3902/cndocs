@@ -164,7 +164,7 @@ export default function Home() {
                 Getting Started <ArrowRight className="size-4" />
               </Link>
               <a
-                href="https://github.com/subhadeeproy3902/cn-docs"
+                href="https://github.com/subhadeeproy3902/cndocs"
                 target="_blank"
                 rel="noreferrer noopener"
                 className={cn(

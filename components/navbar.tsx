@@ -45,7 +45,7 @@ export function NavbarDemo() {
         <NavItems items={navItems} />
         <div className="flex items-center gap-4">
           <NavbarButton variant="gradient">
-            <Link href="https://github.com/subhadeeproy3902/cn-docs">
+            <Link href="https://github.com/subhadeeproy3902/cndocs">
               Github
             </Link>
           </NavbarButton>
@@ -84,7 +84,7 @@ export function NavbarDemo() {
             <NavbarButton
               variant="gradient"
               className="w-full"
-              onClick={() => redirect("https://github.com/subhadeeproy3902/cn-docs")}
+              onClick={() => redirect("https://github.com/subhadeeproy3902/cndocs")}
             >
               Github
             </NavbarButton>

@@ -130,8 +130,8 @@ struct message {
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/subhadeeproy3902/cn-docs.git
-   cd cn-docs
+   git clone https://github.com/subhadeeproy3902/cndocs.git
+   cd cndocs
    ```
 
 2. Install dependencies:
