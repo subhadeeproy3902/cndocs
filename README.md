@@ -1,23 +1,53 @@
-# CN Docs - The Best ever Networking Documentation
+# CN Docs - The Ultimate Networking Documentation
+
+![alt text](image.png)
+
+## Comprehensive Computer Networking & Socket Programming Documentation
+
+A beautiful, structured learning resource for students and professionals
+
+[View Live Site](https://cn.mvp-subha.me)
 
 ## 📚 Overview
 
 CN Docs is a comprehensive, well-structured documentation site for computer networking and socket programming. Built with Next.js and Fumadocs, it provides clear explanations, practical examples, and high-quality code samples for everything from networking fundamentals to advanced socket programming techniques.
 
-### 🌟 Key Features
+## ✨ Features
 
-- **Comprehensive Coverage**: From OSI model to advanced socket programming
-- **High-Quality Code Examples**: Well-documented, production-ready code samples
-- **Practical Projects**: Real-world networking applications and implementations
-- **Clear Explanations**: Complex concepts broken down into digestible sections
-- **Interactive UI**: Modern, responsive interface with excellent navigation
-- **Structured Learning Path**: Logical progression from basics to advanced topics
+### Website Features
+
+- 📚 **Comprehensive documentation** with MDX support
+- 🔍 **Full-text search functionality**
+- 🖼️ **Dynamic OG image generation** for social sharing
+- 📱 **Fully responsive design** for all devices
+- 🎨 **Clean and modern UI** powered by Fumadocs
+- ⚡ **Fast and SEO-friendly** with Next.js
+- 📝 **Easy-to-follow structured learning path**
+
+### Content Features
+
+- 🧠 **Comprehensive coverage** from OSI model to advanced socket programming
+- 💻 **High-quality code examples** with proper documentation
+- 🛠️ **Practical projects** with real-world networking applications
+- 📊 **Visual explanations** with diagrams and illustrations
+- 🔄 **Interactive examples** where applicable
+- 📘 **Beginner-friendly explanations** of complex concepts
+
+### Technical Features
+
+- 🚀 **Next.js framework** for optimal performance
+- 📄 **MDX documentation** for rich content
+- 🎨 **Tailwind CSS** for beautiful styling
+- 🔧 **TypeScript** for type safety
+- 🔄 **Automated content generation** tools
+- 🌐 **SEO optimization** for better discoverability
 
 ## 🧩 Content Structure
 
 The documentation is organized into logical sections:
 
 ### I. Foundational Concepts
+
 - Networking Basics
 - OSI Model
 - TCP/IP Model
@@ -30,6 +60,7 @@ The documentation is organized into logical sections:
 - HTTP Protocol
 
 ### II. Socket Programming
+
 - Socket Fundamentals
   - Socket Types
   - Socket API
@@ -53,6 +84,7 @@ The documentation is organized into logical sections:
 - Error Handling
 
 ### III. Code in Action
+
 - Complete networking projects
 - Example implementations
 - Performance benchmarks
@@ -96,12 +128,14 @@ struct message {
 ### Installation
 
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/subhadeeproy3902/cndocs.git
-   cd cndocs
+   git clone https://github.com/subhadeeproy3902/cn-docs.git
+   cd cn-docs
    ```
 
 2. Install dependencies:
+
    ```bash
    bun install
    # or
@@ -109,6 +143,7 @@ struct message {
    ```
 
 3. Run the development server:
+
    ```bash
    bun run dev
    # or
@@ -136,6 +171,7 @@ bun run add-doc <url>
 ```
 
 This automatically:
+
 - Scrapes content from the provided URL
 - Downloads images to the public folder
 - Generates well-formatted MDX files
@@ -170,7 +206,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-<div align="center">
-  <p>Created with ❤️ by <a href="https://github.com/subhadeeproy3902">Subhadeep Roy</a></p>
-  <p>Visit the live site: <a href="https://cn.mvp-subha.me">https://cn.mvp-subha.me</a></p>
-</div>
+Created with ❤️ by [Subhadeep Roy](https://github.com/subhadeeproy3902)
+
+Visit the live site: [https://cn.mvp-subha.me](https://cn.mvp-subha.me)
