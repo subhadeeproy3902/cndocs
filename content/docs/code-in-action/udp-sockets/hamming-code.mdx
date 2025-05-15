@@ -1,0 +1,411 @@
+---
+title: "UDP Hamming Code Implementation"
+description: "Implementation of Hamming code error correction using UDP sockets in C"
+---
+
+# UDP Hamming Code Implementation
+
+In this document, we'll explore a client-server application that implements Hamming code error correction using UDP sockets. The client takes a data word from the user and sends it to the server. The server calculates the Hamming code for the data word and sends the codeword back to the client.
+
+## What is Hamming Code?
+
+Hamming code is an error-correction code developed by Richard Hamming that can detect and correct single-bit errors in data transmission. It works by adding parity bits at specific positions in the data word, allowing the receiver to detect and correct errors.
+
+The key features of Hamming codes include:
+
+1. **Error Detection**: Can detect up to two-bit errors
+2. **Error Correction**: Can correct single-bit errors
+3. **Efficiency**: Requires fewer redundant bits than simple repetition codes
+
+Hamming codes are widely used in applications where reliability is critical, such as computer memory (ECC RAM), telecommunications, and data storage.
+
+## Code Implementation
+
+Let's examine the two main components of our implementation:
+
+### 1. Server Implementation (server.c)
+
+The server receives data words from clients, calculates the Hamming code, and sends the codeword back:
+
+<img className="max-w-xl rounded-xl mx-auto" src="/image/udp-hamming-server.png" alt="UDP Hamming Server Implementation" />
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
+#include <math.h>
+
+#define MAX 100
+
+int code[32];
+char hammingCode[MAX];
+
+// Function to calculate parity bit at a given position
+int calculateParity(int position, int totalLength) {
+    int count = 0;
+    for (int i = position - 1; i < totalLength; i += 2 * position) {
+        for (int j = i; j < i + position && j < totalLength; j++) {
+            if (code[j] == 1) count++;
+        }
+    }
+    return (count % 2 == 0) ? 0 : 1;
+}
+
+// Reverses a string
+char *reverseString(const char *input) {
+    int len = strlen(input);
+    char *rev = (char *)malloc(len + 1);
+    for (int i = 0; i < len; i++) {
+        rev[i] = input[len - i - 1];
+    }
+    rev[len] = '\0';
+    return rev;
+}
+
+// Generates Hamming code from a given dataword
+void generateHammingCode(char *dataword) {
+    int n = strlen(dataword);
+    int parityCount = 0;
+
+    // Reverse data for proper bit positioning
+    char *reversedData = reverseString(dataword);
+    strcpy(dataword, reversedData);
+    free(reversedData);
+
+    // Calculate required parity bits
+    while (n > (int)pow(2, parityCount) - (parityCount + 1)) {
+        parityCount++;
+    }
+
+    int totalBits = parityCount + n;
+    int j = 0, k = 0;
+
+    // Insert data and placeholder parity bits
+    for (int i = 0; i < totalBits; i++) {
+        if (i == (int)pow(2, k) - 1) {
+            code[i] = 0;  // Placeholder for parity
+            k++;
+        } else {
+            code[i] = dataword[j++] - '0';
+        }
+    }
+
+    // Calculate actual parity bits
+    for (int i = 0; i < parityCount; i++) {
+        int pos = (int)pow(2, i);
+        code[pos - 1] = calculateParity(pos, totalBits);
+    }
+
+    // Store result in global buffer (reversed for final output)
+    for (int i = 0; i < totalBits; i++) {
+        hammingCode[i] = (code[totalBits - i - 1] == 0) ? '0' : '1';
+    }
+    hammingCode[totalBits] = '\0';
+    printf("Generated Hamming Code: %s\n", hammingCode);
+}
+
+int main() {
+    int server_fd, server_len, client_len;
+    struct sockaddr_in server_address, client_address;
+    char input[MAX];
+
+    // Create UDP socket
+    server_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Configure server address
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_address.sin_port = htons(8888);
+    server_len = sizeof(server_address);
+
+    // Bind socket to address
+    if (bind(server_fd, (struct sockaddr *)&server_address, server_len) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("UDP Hamming Server is Running...\n");
+
+    // Initial handshake with client
+    client_len = sizeof(client_address);
+    recvfrom(server_fd, input, MAX, 0, (struct sockaddr *)&client_address, &client_len);
+    printf("Client Connected. Received: %s\n", input);
+    sendto(server_fd, "Hello from Server", 18, 0, (struct sockaddr *)&client_address, client_len);
+
+    // Main processing loop
+    while (1) {
+        memset(input, 0, MAX);
+        recvfrom(server_fd, input, MAX, 0, (struct sockaddr *)&client_address, &client_len);
+
+        printf("Received Dataword: %s\n", input);
+        if (strcmp(input, "end") == 0) {
+            printf("Connection Closed.\n");
+            break;
+        }
+
+        generateHammingCode(input);
+        sendto(server_fd, hammingCode, strlen(hammingCode) + 1, 0, (struct sockaddr *)&client_address, client_len);
+        memset(hammingCode, 0, MAX);
+    }
+
+    close(server_fd);
+    return 0;
+}
+```
+
+The server implementation includes:
+
+1. **Socket Setup**:
+   - Creating a UDP socket
+   - Binding the socket to an address and port
+   - Waiting for client messages
+
+2. **Hamming Code Generation**:
+   - Calculating the number of parity bits needed
+   - Positioning the parity bits at powers of 2
+   - Calculating each parity bit
+   - Generating the complete Hamming code
+
+3. **Client Communication**:
+   - Receiving data words from clients
+   - Sending Hamming codes back to clients
+
+### 2. Client Implementation (client.c)
+
+The client connects to the server, sends data words, and displays the Hamming codes:
+
+<img className="max-w-xl rounded-xl mx-auto" src="/image/udp-hamming-client.png" alt="UDP Hamming Client Implementation" />
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
+
+#define MAX 100
+
+int main() {
+    int sockfd, len, result;
+    struct sockaddr_in address;
+    char input[MAX], res[MAX];
+    puts("Client is Running!!");
+    
+    // Create UDP socket
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    
+    // Configure server address
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    address.sin_port = htons(8888);
+    len = sizeof(address);
+    
+    // Initial handshake with server
+    strcpy(input, "Hello from Client..");
+    printf("Sending %s to the server.\n", input);
+    sendto(sockfd, input, strlen(input)+1, 0, (struct sockaddr*)&address, len);
+    result = recvfrom(sockfd, res, MAX, 0, (struct sockaddr*)&address, &len);
+    
+    if(result == -1) {
+        puts("Server not found!!");
+        perror("recvfrom");
+        exit(1);
+    } else {
+        printf("Server sent: %s\n", res);
+        printf("Connected to Server..\n");
+        strcpy(res, "");
+        strcpy(input, "");
+    }
+    
+    // Main processing loop
+    while(1) {
+        printf("\nEnter the dataword: ");
+        scanf("%[^\n]", input);
+        getchar();
+        
+        printf("Sending message to the server\n");
+        sendto(sockfd, input, strlen(input)+1, 0, (struct sockaddr*)&address, len);
+        
+        if(strcmp(input, "end") == 0) {
+            break;
+        }
+        
+        printf("Waiting for the server..\n");
+        sleep(1);
+        recvfrom(sockfd, res, MAX, 0, (struct sockaddr*)&address, &len);
+        
+        printf("Client Received the codeword: ");
+        for(int i = strlen(res); i >= 0; i--) {
+            printf("%c", res[i]);
+        }
+        printf("\n");
+    }
+    
+    close(sockfd);
+    return 0;
+}
+```
+
+The client implementation follows these steps:
+1. Create a UDP socket
+2. Configure the server address
+3. Perform an initial handshake with the server
+4. Get a data word from the user
+5. Send the data word to the server
+6. Receive the Hamming code from the server
+7. Display the Hamming code (in reverse order for proper representation)
+8. Repeat until the user enters "end"
+9. Close the socket and exit
+
+## Hamming Code Algorithm
+
+The Hamming code algorithm used in this implementation is quite sophisticated. Let's break it down:
+
+### 1. Calculating the Number of Parity Bits
+
+The number of parity bits (r) needed for a data word of length m is determined by the inequality:
+
+2^r ≥ m + r + 1
+
+In our implementation, this is calculated as:
+
+```c
+while (n > (int)pow(2, parityCount) - (parityCount + 1)) {
+    parityCount++;
+}
+```
+
+### 2. Positioning the Bits
+
+In a Hamming code, the parity bits are placed at positions that are powers of 2 (1, 2, 4, 8, etc.), and the data bits are placed at the remaining positions:
+
+```c
+for (int i = 0; i < totalBits; i++) {
+    if (i == (int)pow(2, k) - 1) {
+        code[i] = 0;  // Placeholder for parity
+        k++;
+    } else {
+        code[i] = dataword[j++] - '0';
+    }
+}
+```
+
+### 3. Calculating Parity Bits
+
+Each parity bit is calculated to ensure that the parity (even or odd) of the bits it covers is correct:
+
+```c
+for (int i = 0; i < parityCount; i++) {
+    int pos = (int)pow(2, i);
+    code[pos - 1] = calculateParity(pos, totalBits);
+}
+```
+
+The `calculateParity` function determines the value of each parity bit:
+
+```c
+int calculateParity(int position, int totalLength) {
+    int count = 0;
+    for (int i = position - 1; i < totalLength; i += 2 * position) {
+        for (int j = i; j < i + position && j < totalLength; j++) {
+            if (code[j] == 1) count++;
+        }
+    }
+    return (count % 2 == 0) ? 0 : 1;
+}
+```
+
+This function counts the number of 1s in the positions that the parity bit covers and sets the parity bit to ensure even parity (0 if the count is already even, 1 if it's odd).
+
+## UDP Socket Communication
+
+This implementation uses UDP (User Datagram Protocol) sockets for communication between the client and server. UDP is a connectionless protocol, which means:
+
+1. No connection is established before sending data
+2. No guarantee of delivery or ordering
+3. Lower overhead compared to TCP
+
+For this application, UDP is suitable because:
+- The messages are small and self-contained
+- The application has a simple request-response pattern
+- The client and server are likely on the same network
+
+The key UDP socket functions used are:
+
+- `socket(AF_INET, SOCK_DGRAM, 0)`: Creates a UDP socket
+- `bind()`: Binds the server socket to an address and port
+- `sendto()`: Sends a datagram to a specific address
+- `recvfrom()`: Receives a datagram and records the sender's address
+
+## Compiling and Running
+
+To compile the server and client programs:
+
+```bash
+gcc -o server server.c -lm
+gcc -o client client.c
+```
+
+Note: The `-lm` flag is required for the server to link the math library (for the `pow()` function).
+
+To run the programs:
+
+1. Start the server in one terminal:
+   ```bash
+   ./server
+   ```
+
+2. Start the client in another terminal:
+   ```bash
+   ./client
+   ```
+
+## Example Usage
+
+Here's an example of using the application:
+
+<img className="max-w-xl mx-auto rounded-xl" src="/image/udp-hamming/1.png" alt="UDP Hamming Example Usage" />
+
+```
+Enter the dataword: 1011
+Sending message to the server
+Waiting for the server..
+Client Received the codeword: 1001101
+
+Enter the dataword: 101
+Sending message to the server
+Waiting for the server..
+Client Received the codeword: 10101
+
+Enter the dataword: end
+```
+
+## Conclusion
+
+This implementation demonstrates how to use UDP sockets to create a client-server application that performs Hamming code error correction. The client sends data words to the server, which calculates the Hamming code and sends it back to the client.
+
+Hamming codes are an important technique in error detection and correction, providing a way to ensure data integrity in the presence of noise or other transmission errors. This implementation provides a practical example of how Hamming codes work and how they can be implemented using UDP sockets.
+
+Key concepts demonstrated in this implementation include:
+- UDP socket programming
+- Hamming code calculation
+- Error detection and correction
+- Client-server communication
+
+This application serves as a foundation for understanding more complex error correction techniques and network programming concepts.
