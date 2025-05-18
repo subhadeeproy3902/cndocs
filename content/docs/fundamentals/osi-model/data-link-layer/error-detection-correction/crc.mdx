@@ -1,0 +1,172 @@
+---
+title: Cyclic Redundancy Check (CRC)
+description: Learn about Cyclic Redundancy Check (CRC), a powerful error-detecting code used in digital networks and storage devices.
+---
+
+# Cyclic Redundancy Check (CRC)
+
+Cyclic Redundancy Check (CRC) is a powerful error-detecting code commonly used in digital networks and storage devices to detect accidental changes to raw data. It is particularly good at detecting common errors caused by noise in transmission channels.
+
+## What is CRC?
+
+CRC is an error detection technique based on binary division. Unlike the checksum scheme, which is based on addition, CRC is based on polynomial division in a finite field.
+
+In CRC, a sequence of redundant bits, called the CRC bits, are appended to the end of the data unit so that the resulting data unit becomes exactly divisible by a predetermined binary number. At the destination, the incoming data unit is divided by the same number. If at this step there is no remainder, the data unit is assumed to be correct and is therefore accepted. A remainder indicates that the data unit has been damaged in transit and therefore must be rejected.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/-2Fncd7j-UdwI3rs5o--wQaMEFAJHFMkrWNzadwGFrg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c2ltcGxpbGVhcm4u/Y29tL2ljZTkvZnJl/ZV9yZXNvdXJjZXNf/YXJ0aWNsZV90aHVt/Yi9DUkNfMS5wbmc" alt="CRC" />
+
+## How CRC Works
+
+The CRC calculation is based on polynomial arithmetic, specifically polynomial division over the finite field GF(2) (i.e., the set `{0,1}` using modulo 2 arithmetic).
+
+Here's how CRC works:
+
+1. **Define a Generator Polynomial**: A key polynomial is chosen based on the desired error detection properties. This is known as the generator polynomial.
+
+2. **Append Zeros**: The message is first augmented by appending k-1 zeros to it, where k is the degree of the generator polynomial.
+
+3. **Perform Division**: The augmented message is divided by the generator polynomial using modulo-2 division.
+
+4. **Calculate Remainder**: The remainder from the division is the CRC.
+
+5. **Transmit Data with CRC**: The original message is transmitted along with the CRC.
+
+6. **Verify at Receiver**: The receiver divides the received message (including the CRC) by the same generator polynomial. If the remainder is zero, the message is accepted; otherwise, it is rejected.
+
+## CRC Calculation Example
+
+Let's walk through a simple example to understand how CRC is calculated:
+
+### Step 1: Define the Data and Generator Polynomial
+
+- Data: 1010000
+- Generator Polynomial: x³ + 1 (represented as 1001 in binary)
+
+### Step 2: Append Zeros
+
+Since the degree of the generator polynomial is 3, we append 3-1 = 2 zeros to the data:
+1010000 + 00 = 101000000
+
+### Step 3: Perform Division
+
+We now perform modulo-2 division of the augmented data by the generator polynomial. A simple example: 
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/-ODlb1g_aKa4uzzUPbzaP3aPuNnz0OEo2b7QOkGLdPA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9jcmNfZ2VuZXJh/dG9yX2FuZF9jaGVj/a2VyX2V4MS5qcGc" alt="" />
+
+### Step 4: Transmit Data with CRC
+
+The data to be transmitted is the original data followed by the CRC:
+1010000 + 00 = 101000000
+
+### Step 5: Verify at Receiver
+
+At the receiver, the entire received message (101000000) is divided by the generator polynomial (1001). If there are no errors, the remainder should be zero.
+
+## Generator Polynomials
+
+The choice of generator polynomial is crucial for the error detection capabilities of CRC. Some commonly used generator polynomials include:
+
+1. **CRC-8**: x⁸ + x² + x + 1 (used in ATM header error check)
+2. **CRC-16**: x¹⁶ + x¹⁵ + x² + 1 (used in HDLC, XMODEM, and other protocols)
+3. **CRC-32**: x³² + x²⁶ + x²³ + x²² + x¹⁶ + x¹² + x¹¹ + x¹⁰ + x⁸ + x⁷ + x⁵ + x⁴ + x² + x + 1 (used in Ethernet, ZIP, PNG, etc.)
+
+These polynomials are chosen for their ability to detect specific types of errors, such as single-bit errors, double-bit errors, odd number of errors, and burst errors.
+
+## Error Detection Capabilities of CRC
+
+CRC has excellent error detection capabilities:
+
+1. **Single-Bit Errors**: CRC can detect all single-bit errors as long as the generator polynomial has more than one non-zero term.
+
+2. **Double-Bit Errors**: CRC can detect all double-bit errors as long as the generator polynomial has a factor with at least three terms.
+
+3. **Odd Number of Errors**: CRC can detect all errors with an odd number of bits if the generator polynomial contains the factor (x+1).
+
+4. **Burst Errors**: CRC can detect all burst errors of length less than or equal to the degree of the generator polynomial.
+
+5. **Most Longer Burst Errors**: CRC can detect a high percentage of burst errors of length greater than the degree of the generator polynomial.
+
+## Implementation of CRC
+
+CRC can be implemented in hardware or software. Hardware implementations are typically faster and are used in high-speed communication systems. Software implementations are more flexible and are used in applications where speed is not critical.
+
+Here's a simple Python implementation of CRC:
+
+```python
+def crc_remainder(input_bitstring, polynomial_bitstring, initial_filler):
+    """Calculate the CRC remainder of a string of bits using a chosen polynomial.
+    initial_filler should be '1' or '0'."""
+
+    len_input = len(input_bitstring)
+    initial_padding = initial_filler * (len(polynomial_bitstring) - 1)
+    input_padded_array = list(input_bitstring + initial_padding)
+    polynomial_bitstring_array = list(polynomial_bitstring)
+
+    for i in range(len_input):
+        if input_padded_array[i] == '1':
+            for j in range(len(polynomial_bitstring)):
+                input_padded_array[i + j] = str(int(input_padded_array[i + j]) ^ int(polynomial_bitstring_array[j]))
+
+    return ''.join(input_padded_array)[len_input:]
+
+def crc_check(input_bitstring, polynomial_bitstring, check_value):
+    """Calculate the CRC check of a string of bits using a chosen polynomial."""
+
+    polynomial_bitstring = polynomial_bitstring.lstrip('0')
+    len_input = len(input_bitstring)
+    initial_padding = check_value
+    input_padded_array = list(input_bitstring + initial_padding)
+    polynomial_bitstring_array = list(polynomial_bitstring)
+
+    for i in range(len_input):
+        if input_padded_array[i] == '1':
+            for j in range(len(polynomial_bitstring)):
+                input_padded_array[i + j] = str(int(input_padded_array[i + j]) ^ int(polynomial_bitstring_array[j]))
+
+    remainder = ''.join(input_padded_array)[len_input:]
+    return remainder == '0' * len(remainder)
+
+# Example usage
+data = "1010000"
+polynomial = "1001"  # x^3 + 1
+crc = crc_remainder(data, polynomial, '0')
+print(f"CRC: {crc}")
+
+# Check if data is corrupted
+received_data = data + crc
+print(f"Is data valid: {crc_check(data, polynomial, crc)}")
+```
+
+## Advantages of CRC
+
+1. **High Error Detection Capability**: CRC can detect a wide range of errors, including single-bit errors, double-bit errors, odd number of errors, and burst errors.
+
+2. **Efficiency**: CRC is computationally efficient and can be implemented in hardware for high-speed applications.
+
+3. **Standardization**: CRC algorithms are standardized, making them widely compatible across different systems.
+
+4. **Robustness**: CRC is robust against common types of noise and interference in communication channels.
+
+## Disadvantages of CRC
+
+1. **Cannot Correct Errors**: CRC can only detect errors, not correct them. If an error is detected, the data must be retransmitted.
+
+2. **Overhead**: CRC adds overhead to the data being transmitted, which can be significant for small data packets.
+
+3. **Not Cryptographically Secure**: CRC is not designed for security purposes and can be easily manipulated by an attacker.
+
+## Applications of CRC
+
+CRC is widely used in various applications:
+
+1. **Data Storage**: CRC is used in storage devices like hard drives and SSDs to verify data integrity.
+
+2. **Data Transmission**: CRC is used in communication protocols like Ethernet, Wi-Fi, and Bluetooth to detect transmission errors.
+
+3. **File Formats**: CRC is used in file formats like ZIP, PNG, and PDF to verify file integrity.
+
+4. **Network Protocols**: CRC is used in network protocols like HDLC, PPP, and X.25 to detect transmission errors.
+
+## Conclusion
+
+Cyclic Redundancy Check (CRC) is a powerful error detection technique that is widely used in digital networks and storage devices. It provides excellent error detection capabilities and is computationally efficient. While it cannot correct errors, it can detect a wide range of errors, making it an essential tool for ensuring data integrity in communication systems.

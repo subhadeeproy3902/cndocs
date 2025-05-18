@@ -1,0 +1,123 @@
+---
+title: Error Detection and Correction
+description: Learn about error detection and correction techniques used in the Data Link Layer to ensure reliable data transmission over unreliable or noisy communication channels.
+---
+
+# Error Detection and Correction
+
+Error detection and correction are techniques used in the Data Link Layer to ensure reliable data transmission over unreliable or noisy communication channels. When data is transmitted over a network, it may get corrupted due to various factors such as noise, attenuation, or distortion. Error detection and correction mechanisms help identify these errors and, in some cases, correct them without requiring retransmission.
+
+## Types of Errors
+
+Before discussing error detection and correction techniques, it's important to understand the types of errors that can occur during data transmission:
+
+### Single-Bit Error
+
+A single-bit error occurs when exactly one bit in a data unit is altered during transmission. For example, the original data "01010001" might be received as "01010**0**01" (the 6th bit changed from 0 to 1).
+
+### Multiple-Bit Error
+
+A multiple-bit error occurs when more than one bit in a data unit is altered during transmission. For example, the original data "01010001" might be received as "01**1**100**0**1" (the 3rd and 7th bits changed).
+
+### Burst Error
+
+A burst error occurs when multiple consecutive bits are altered during transmission. This is often caused by impulse noise or a physical defect in the communication medium. For example, the original data "01010001" might be received as "010**0110**1" (a burst error affecting the 4th through 7th bits).
+
+## Error Detection Methods
+
+Several methods are used to detect errors in transmitted data:
+
+### 1. Simple Parity Check
+
+The simple parity check is one of the most basic error detection techniques. It works by adding an extra bit, called a parity bit, to the data being transmitted. The value of this bit is chosen so that the total number of 1s in the data (including the parity bit) is either even (even parity) or odd (odd parity), depending on the agreed convention.
+
+**Advantages:**
+- Simple to implement
+- Can detect all single-bit errors
+- Can detect an odd number of errors
+
+**Disadvantages:**
+- Cannot detect an even number of bit errors
+- Cannot correct errors, only detect them
+
+### 2. Two-Dimensional Parity Check
+
+The two-dimensional parity check extends the simple parity check by organizing data in a two-dimensional grid and calculating parity bits for each row and column.
+
+**Advantages:**
+- Can detect and correct all single-bit errors
+- Can detect two or three bit errors that occur anywhere in the matrix
+
+**Disadvantages:**
+- Cannot correct two or three bit errors, only detect them
+- If there's an error in the parity bit itself, this scheme may not work correctly
+
+### 3. Checksum
+
+Checksum is a method where the data is divided into equal segments, and these segments are added using 1's complement arithmetic to get a sum. The sum is then complemented to get the checksum, which is sent along with the data. At the receiver's end, the same process is repeated, and if the result is zero, the data is considered correct.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/W1oqdDnWDF-60fwswPdZ8_pFcSrRZ5D9pB4-p-0bBu0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvZGV0ZWN0MTMu/anBn" alt="Checksum" />
+
+**Advantages:**
+- Simple to implement
+- Good for detecting errors in stored data
+
+**Disadvantages:**
+- May not detect all errors, especially if multiple bits are changed in a way that the checksum remains the same
+- Cannot correct errors, only detect them
+
+### 4. Cyclic Redundancy Check (CRC)
+
+CRC is a powerful error detection technique based on binary division. A sequence of redundant bits, called the CRC bits, is appended to the end of the data unit so that the resulting data unit becomes exactly divisible by a predetermined binary number.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/ZFFztEH5u-J3Ujdh8Jqd7LbOYJzd_6LXv10jnyv82MU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvZGV0ZWN0MTQu/anBn" alt="CRC" />
+
+**Advantages:**
+- Very effective at detecting common types of errors
+- Can detect all single-bit errors
+- Can detect all double-bit errors (in standard CRC implementations)
+- Can detect any odd number of errors
+- Can detect burst errors
+
+**Disadvantages:**
+- More complex to implement than simpler methods like parity checks
+- Cannot correct errors, only detect them
+
+## Error Correction Methods
+
+While error detection methods can identify when errors have occurred, error correction methods can actually fix certain types of errors without requiring retransmission.
+
+### 1. Hamming Code
+
+Hamming code is a set of error-correction codes that can detect and correct single-bit errors. It works by adding multiple parity bits to the data being transmitted. The positions of these parity bits are chosen so that different incorrect bits produce different error results, allowing the identification and correction of single-bit errors.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/Jkawpj6bemM34PwHNVCGSLTTln7qcpxMa2MtCmjWcsc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMDA0MjQx/ODQ0MTkvaGFtbWlu/Z19jb2RlLnBuZw" alt="Hamming Code" />
+
+**Advantages:**
+- Can detect and correct single-bit errors
+- Can detect (but not correct) double-bit errors
+- Relatively simple to implement
+
+**Disadvantages:**
+- Adds overhead to the data being transmitted
+- Cannot correct multiple-bit errors
+
+### 2. Forward Error Correction (FEC)
+
+Forward Error Correction is a technique where the sender encodes the data with redundant information, allowing the receiver to detect and correct errors without requiring retransmission. This is particularly useful in situations where retransmission is costly or impossible, such as in deep space communications.
+
+**Advantages:**
+- Can correct errors without requiring retransmission
+- Useful in high-latency or one-way communication systems
+
+**Disadvantages:**
+- Adds significant overhead to the data being transmitted
+- More complex to implement than error detection methods
+
+## Detailed Topics
+
+In the following sections, we will explore these error detection and correction methods in more detail:
+
+1. [Block Coding](/docs/fundamentals/osi-model/data-link-layer/error-detection-correction/block-coding) - Techniques for encoding data to detect and correct errors
+2. [Hamming Distance](/docs/fundamentals/osi-model/data-link-layer/error-detection-correction/hamming-distance) - A measure of the difference between two binary strings
+3. [Cyclic Redundancy Check (CRC)](/docs/fundamentals/osi-model/data-link-layer/error-detection-correction/crc) - A powerful error detection technique based on polynomial division

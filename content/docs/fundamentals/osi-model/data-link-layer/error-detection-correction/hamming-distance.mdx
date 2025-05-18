@@ -1,0 +1,157 @@
+---
+title: Hamming Distance
+description: Learn about Hamming Distance, a key concept in information theory and coding theory used for error detection and correction.
+---
+
+# Hamming Distance
+
+Hamming distance is a key concept in information theory, coding theory, and error detection and correction. Named after Richard Hamming, who introduced the concept in his work on error-detecting and error-correcting codes, the Hamming distance measures the difference between two strings of equal length by counting the positions at which the corresponding symbols differ.
+
+## Definition
+
+The Hamming distance between two strings of equal length is the number of positions at which the corresponding symbols differ. In other words, it measures the minimum number of substitutions required to change one string into the other.
+
+For binary strings, the Hamming distance is simply the number of bit positions in which the two strings differ.
+
+## Mathematical Representation
+
+For two strings x and y of equal length, the Hamming distance d(x, y) is defined as:
+
+```
+d(x, y) = sum from i=1 to n of |x_i - y_i|
+```
+
+where x_i and y_i are the i-th symbols in x and y respectively, and n is the length of the strings.
+
+For binary strings, the Hamming distance can also be calculated using the XOR operation:
+
+```
+d(x, y) = weight(x XOR y)
+```
+
+where XOR denotes the exclusive OR operation, and weight is the number of '1' bits in the result.
+
+## Examples
+
+Let's look at some examples to understand the concept better:
+
+### Example 1: Binary Strings
+
+Consider two binary strings:
+- String 1: 1010101
+- String 2: 1001001
+
+To find the Hamming distance, we compare each bit position:
+
+| Position | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|----------|---|---|---|---|---|---|---|
+| String 1 | 1 | 0 | 1 | 0 | 1 | 0 | 1 |
+| String 2 | 1 | 0 | 0 | 1 | 0 | 0 | 1 |
+| Different?| No| No| Yes| Yes| Yes| No| No|
+
+The Hamming distance is 3, as the strings differ in 3 positions (positions 3, 4, and 5).
+
+### Example 2: Text Strings
+
+Consider two text strings:
+- String 1: "karolin"
+- String 2: "kathrin"
+
+To find the Hamming distance, we compare each character position:
+
+| Position | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|----------|---|---|---|---|---|---|---|
+| String 1 | k | a | r | o | l | i | n |
+| String 2 | k | a | t | h | r | i | n |
+| Different?| No| No| Yes| Yes| Yes| No| No|
+
+The Hamming distance is 3, as the strings differ in 3 positions (positions 3, 4, and 5).
+
+## Significance in Error Detection and Correction
+
+The Hamming distance plays a crucial role in error detection and correction codes. Here's why it's important:
+
+### 1. Error Detection Capability
+
+A code with a Hamming distance of d can detect up to d-1 errors. This is because if up to d-1 bits are changed, the resulting codeword will still be closer to the original codeword than to any other valid codeword.
+
+For example, if a code has a Hamming distance of 3, it can detect up to 2 errors.
+
+### 2. Error Correction Capability
+
+A code with a Hamming distance of d can correct up to ⌊(d-1)/2⌋ errors. This is because if up to ⌊(d-1)/2⌋ bits are changed, the resulting codeword will still be closer to the original codeword than to any other valid codeword.
+
+For example, if a code has a Hamming distance of 3, it can correct up to 1 error.
+
+### 3. Relationship with Redundancy
+
+To achieve a higher Hamming distance, more redundant bits need to be added to the code. This increases the code's error detection and correction capabilities but also increases the overhead.
+
+## Hamming Distance in Various Coding Schemes
+
+### 1. Parity Bit
+
+A single parity bit provides a Hamming distance of 2, which means it can detect 1 error but cannot correct any errors.
+
+### 2. Hamming Code
+
+Hamming codes are designed to have a Hamming distance of 3, which means they can detect up to 2 errors and correct 1 error.
+
+### 3. Extended Hamming Code
+
+Extended Hamming codes have a Hamming distance of 4, which means they can detect up to 3 errors and correct 1 error. Alternatively, they can be used to detect 2 errors without correction.
+
+### 4. Reed-Solomon Codes
+
+Reed-Solomon codes can be designed with various Hamming distances, allowing them to correct multiple errors. They are particularly effective against burst errors.
+
+## Calculating Hamming Distance
+
+### Method 1: Bit-by-Bit Comparison
+
+1. Compare the two strings bit by bit.
+2. Count the number of positions where the bits differ.
+
+### Method 2: XOR Operation (for Binary Strings)
+
+1. Perform an XOR operation on the two strings.
+2. Count the number of '1' bits in the result.
+
+```python
+def hamming_distance(str1, str2):
+    if len(str1) != len(str2):
+        raise ValueError("Strings must be of equal length")
+
+    return sum(c1 != c2 for c1, c2 in zip(str1, str2))
+
+# Example usage
+binary1 = "1010101"
+binary2 = "1001001"
+print(f"Hamming distance: {hamming_distance(binary1, binary2)}")  # Output: 3
+```
+
+## Applications of Hamming Distance
+
+### 1. Error Detection and Correction Codes
+
+As discussed, Hamming distance is fundamental to the design of error detection and correction codes.
+
+### 2. Information Theory
+
+In information theory, Hamming distance is used to analyze the efficiency and reliability of communication systems.
+
+### 3. Computational Biology
+
+In computational biology, Hamming distance is used to measure the similarity between DNA sequences.
+
+### 4. Data Mining and Machine Learning
+
+In data mining and machine learning, Hamming distance is used as a metric to measure the similarity between data points.
+
+### 5. Cryptography
+
+In cryptography, Hamming distance is used to analyze the security of cryptographic systems.
+
+## Conclusion
+
+Hamming distance is a fundamental concept in information theory and coding theory. It provides a measure of the difference between two strings and is crucial for the design and analysis of error detection and correction codes. Understanding Hamming distance is essential for anyone working in the field of data communication and information processing.

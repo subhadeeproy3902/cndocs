@@ -1,0 +1,165 @@
+---
+title: Stop and Wait ARQ
+description: Learn about Stop and Wait ARQ, a simple protocol for reliable data transmission that provides both flow control and error control in computer networks.
+---
+
+# Stop and Wait ARQ
+
+Stop and Wait ARQ (Automatic Repeat reQuest) is one of the simplest protocols used for reliable data transmission in computer networks. It is a flow control and error control mechanism that ensures data is transmitted correctly between sender and receiver, especially over noisy or unreliable communication channels.
+
+## What is Stop and Wait ARQ?
+
+Stop and Wait ARQ is a protocol where the sender transmits a single data frame, then waits for an acknowledgment (ACK) from the receiver before sending the next frame. If the sender does not receive an acknowledgment within a specified timeout period, it assumes that the frame was lost or corrupted and retransmits it.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/i1sX4vZVaCl02vhnQ9iB583o5uHwnk5LQHjx6UOGY1c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9TdG9wX1dhaXQu/anBn" alt="Stop and Wait ARQ" />
+
+This protocol is used in connection-oriented communication and provides both flow control and error control. It is primarily implemented in the Data Link Layer and Transport Layer of the OSI model.
+
+## How Stop and Wait ARQ Works
+
+The Stop and Wait ARQ protocol follows these steps:
+
+1. **Sender Transmits a Frame**: The sender transmits a data frame with a sequence number (typically 0 or 1) and starts a timer.
+
+2. **Receiver Processes the Frame**: The receiver checks the received frame for errors.
+
+3. **Receiver Sends Acknowledgment**:
+   - If the frame is received correctly, the receiver sends an acknowledgment (ACK) with the sequence number of the next expected frame.
+   - If the frame is corrupted, the receiver discards it and does not send an acknowledgment.
+
+4. **Sender Waits for Acknowledgment**:
+   - If the sender receives the correct ACK before the timer expires, it sends the next frame.
+   - If the timer expires before receiving an ACK, the sender assumes the frame or the ACK was lost and retransmits the same frame.
+
+5. **Sequence Numbers**: To handle duplicate frames (which can occur if an ACK is lost), the protocol uses sequence numbers. In the simplest form of Stop and Wait ARQ, only two sequence numbers (0 and 1) are needed, as there is at most one unacknowledged frame at any time.
+
+## Example Scenario
+
+Let's walk through an example to understand how Stop and Wait ARQ works:
+
+### Successful Transmission
+
+1. Sender sends Frame 0 and starts a timer.
+2. Receiver receives Frame 0 correctly and sends ACK 1 (indicating it expects Frame 1 next).
+3. Sender receives ACK 1 before the timer expires, stops the timer, and sends Frame 1.
+4. Receiver receives Frame 1 correctly and sends ACK 0 (indicating it expects Frame 0 next).
+5. Sender receives ACK 0 before the timer expires, stops the timer, and sends Frame 0 (if there's more data to send).
+
+### Lost Frame
+
+1. Sender sends Frame 0 and starts a timer.
+2. Frame 0 is lost in transit.
+3. Receiver does not receive Frame 0, so it does not send an ACK.
+4. Sender's timer expires, so it retransmits Frame 0 and restarts the timer.
+5. Receiver receives the retransmitted Frame 0 correctly and sends ACK 1.
+6. Sender receives ACK 1 before the timer expires, stops the timer, and sends Frame 1.
+
+### Lost Acknowledgment
+
+1. Sender sends Frame 0 and starts a timer.
+2. Receiver receives Frame 0 correctly and sends ACK 1.
+3. ACK 1 is lost in transit.
+4. Sender's timer expires, so it retransmits Frame 0 and restarts the timer.
+5. Receiver receives the duplicate Frame 0, recognizes it as a duplicate (because it's expecting Frame 1), and sends ACK 1 again.
+6. Sender receives ACK 1 before the timer expires, stops the timer, and sends Frame 1.
+
+## Important Parameters in Stop and Wait ARQ
+
+### 1. Timeout Period
+
+The timeout period is the maximum time the sender waits for an acknowledgment before retransmitting a frame. It should be set to at least the round-trip time (RTT), which is the time it takes for a frame to reach the receiver plus the time it takes for an acknowledgment to return to the sender.
+
+If the timeout period is too short, the sender may retransmit frames unnecessarily. If it's too long, the protocol becomes inefficient when frames or acknowledgments are lost.
+
+### 2. Sequence Numbers
+
+In Stop and Wait ARQ, sequence numbers are used to identify frames and their corresponding acknowledgments. Since there is at most one unacknowledged frame at any time, only two sequence numbers (0 and 1) are needed.
+
+The sequence number alternates between 0 and 1 for each new frame. The acknowledgment number indicates the sequence number of the next expected frame.
+
+### 3. Propagation Delay
+
+Propagation delay is the time it takes for a frame to travel from the sender to the receiver. It affects the efficiency of the Stop and Wait ARQ protocol, especially over long-distance networks.
+
+Propagation delay is calculated as:
+```
+Propagation Delay = Distance / Speed of Signal
+```
+
+### 4. Transmission Delay
+
+Transmission delay is the time it takes to push all the bits of a frame into the link. It depends on the frame size and the transmission rate.
+
+Transmission delay is calculated as:
+```
+Transmission Delay = Frame Size / Transmission Rate
+```
+
+## Efficiency of Stop and Wait ARQ
+
+The efficiency of Stop and Wait ARQ is relatively low, especially over long-distance networks or high-bandwidth channels. This is because the sender must wait for an acknowledgment before sending the next frame, leading to idle time.
+
+The efficiency can be calculated as:
+```
+Efficiency = Transmission Time / (Transmission Time + 2 * Propagation Time + Processing Time)
+```
+
+Where:
+- Transmission Time is the time it takes to transmit a frame.
+- Propagation Time is the time it takes for a frame to travel from the sender to the receiver.
+- Processing Time is the time it takes for the receiver to process a frame and generate an acknowledgment.
+
+For a simplified calculation, assuming negligible processing time:
+```
+Efficiency = 1 / (1 + 2a)
+```
+
+Where `a` is the ratio of propagation time to transmission time.
+
+## Advantages of Stop and Wait ARQ
+
+1. **Simplicity**: Stop and Wait ARQ is simple to implement and understand.
+
+2. **Error Control**: It provides reliable data transmission by detecting and retransmitting lost or corrupted frames.
+
+3. **Flow Control**: It prevents the sender from overwhelming the receiver by ensuring that the receiver has processed the current frame before the next one is sent.
+
+4. **Low Buffer Requirements**: Since there is at most one unacknowledged frame at any time, the buffer requirements are minimal.
+
+## Disadvantages of Stop and Wait ARQ
+
+1. **Low Efficiency**: The protocol is inefficient, especially over long-distance networks or high-bandwidth channels, due to the idle time while waiting for acknowledgments.
+
+2. **Underutilization of Bandwidth**: The channel is often idle, leading to underutilization of the available bandwidth.
+
+3. **High Latency**: The protocol introduces latency, as each frame must be acknowledged before the next one can be sent.
+
+4. **Vulnerability to Channel Noise**: In noisy channels, frequent retransmissions may be required, further reducing efficiency.
+
+## Applications of Stop and Wait ARQ
+
+Despite its limitations, Stop and Wait ARQ is used in various applications:
+
+1. **Local Area Networks (LANs)**: In LANs, where propagation delays are small, Stop and Wait ARQ can be efficient enough for many applications.
+
+2. **Low-Bandwidth Channels**: In channels with low bandwidth, the efficiency loss due to waiting for acknowledgments may be acceptable.
+
+3. **Simple Devices**: In simple devices with limited processing power and memory, Stop and Wait ARQ provides a straightforward way to ensure reliable data transmission.
+
+4. **Educational Purposes**: Stop and Wait ARQ is often used to introduce the concepts of flow control and error control in networking courses.
+
+## Improvements and Alternatives
+
+To address the limitations of Stop and Wait ARQ, several improvements and alternatives have been developed:
+
+1. **Go-Back-N ARQ**: Allows the sender to transmit multiple frames before receiving an acknowledgment, up to a specified window size. If an error is detected, all frames from the error onwards must be retransmitted.
+
+2. **Selective Repeat ARQ**: Similar to Go-Back-N, but only the frames with errors need to be retransmitted, improving efficiency.
+
+3. **Sliding Window Protocol**: A generalized form of flow control that encompasses both Go-Back-N and Selective Repeat ARQ.
+
+## Conclusion
+
+Stop and Wait ARQ is a simple yet effective protocol for reliable data transmission in computer networks. It provides both flow control and error control, ensuring that data is transmitted correctly between sender and receiver. While it has limitations in terms of efficiency, especially over long-distance networks or high-bandwidth channels, it remains useful in various applications, particularly in local area networks and simple devices.
+
+For more advanced applications requiring higher efficiency, alternatives such as Go-Back-N ARQ, Selective Repeat ARQ, or the Sliding Window Protocol may be more appropriate.

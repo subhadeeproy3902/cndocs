@@ -1,0 +1,147 @@
+---
+title: Slotted ALOHA
+description: Learn about Slotted ALOHA, an improved version of Pure ALOHA that increases channel utilization efficiency by dividing time into discrete slots.
+---
+
+# Slotted ALOHA
+
+Slotted ALOHA is an improvement over Pure ALOHA, designed to increase the efficiency of channel utilization in random access protocols. It was developed as a modification to the original ALOHA system at the University of Hawaii in the early 1970s.
+
+## What is Slotted ALOHA?
+
+Slotted ALOHA is a medium access control (MAC) protocol that divides time into discrete slots of fixed length. Devices are only allowed to transmit at the beginning of a time slot, which reduces the probability of collisions compared to Pure ALOHA.
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/elmLUaHullNoOeOVHmbYf7NOISf1fY8UXIbCDMu_uaw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyNTAyMDcx/NzM1MTk4MjIwMTcv/U2xvdHRlZC1BTE9I/QS03Njgud2VicA" alt="Slotted ALOHA" />
+
+## How Slotted ALOHA Works
+
+The operation of Slotted ALOHA can be described as follows:
+
+1. **Time Synchronization**: All devices in the network are synchronized to a common clock, which defines the boundaries of time slots.
+
+2. **Transmission**: When a device has data to send, it waits until the beginning of the next time slot and then transmits.
+
+3. **Acknowledgment**: After transmitting, the device waits for an acknowledgment (ACK) from the receiver.
+
+4. **Collision Detection**: If the device does not receive an ACK within a specified timeout period, it assumes that a collision has occurred.
+
+5. **Backoff and Retransmission**: After detecting a collision, the device waits for a random number of time slots (backoff) before retransmitting. This random backoff helps reduce the probability of repeated collisions.
+
+6. **Repeat**: The device continues this process until it successfully transmits its data or reaches a maximum number of retransmission attempts.
+
+## Vulnerable Time in Slotted ALOHA
+
+In Slotted ALOHA, a collision occurs only if two or more devices transmit in the same time slot. Unlike Pure ALOHA, where the vulnerable time is twice the frame transmission time, in Slotted ALOHA, the vulnerable time is exactly one time slot.
+
+This reduction in vulnerable time from 2 × T to T is the key reason for the improved efficiency of Slotted ALOHA compared to Pure ALOHA.
+
+## Throughput Analysis of Slotted ALOHA
+
+The throughput of Slotted ALOHA can be analyzed using the following assumptions:
+
+1. All frames have the same length and fit exactly into one time slot.
+2. Frames arrive according to a Poisson process with an average of λ frames per time slot.
+3. The number of devices is infinite (to simplify the analysis).
+4. The probability of a frame being involved in a collision is independent of its transmission history.
+
+Given these assumptions, the throughput S (the average number of successful transmissions per time slot) can be calculated as:
+
+`S = G \times e^{-G}`
+
+Where G is the offered load (the average number of transmission attempts per time slot).
+
+The maximum throughput occurs when G = 1, giving a maximum throughput of:
+
+`S_{max} = 1 \times e^{-1} \approx 0.368`
+
+This means that the maximum channel utilization in Slotted ALOHA is about 36.8%, which is twice the maximum throughput of Pure ALOHA (18.4%).
+
+<img className="max-w-xl rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20240731115124/What-is-Slotted-ALOHA.png" alt="Throughput of Slotted ALOHA" />
+
+## Example Scenario
+
+Let's consider a simple example to understand how Slotted ALOHA works:
+
+1. Device A has data to send and waits until the beginning of the next time slot (Slot 1) to transmit.
+2. Device B also has data to send but misses the beginning of Slot 1, so it waits until the beginning of Slot 2 to transmit.
+3. Device A's transmission in Slot 1 is successful, and it receives an acknowledgment.
+4. Device C also has data to send and decides to transmit at the beginning of Slot 2, the same time as Device B.
+5. The transmissions from Device B and Device C in Slot 2 collide, and neither receives an acknowledgment.
+6. Device B waits for a random number of time slots (say, 2) before retransmitting in Slot 4.
+7. Device C waits for a random number of time slots (say, 3) before retransmitting in Slot 5.
+8. Both Device B's retransmission in Slot 4 and Device C's retransmission in Slot 5 are successful, and they receive acknowledgments.
+
+## Advantages of Slotted ALOHA
+
+1. **Improved Efficiency**: Slotted ALOHA has a maximum throughput of about 36.8%, which is twice the maximum throughput of Pure ALOHA (18.4%).
+
+2. **Reduced Collision Probability**: By restricting transmissions to the beginning of time slots, the probability of collisions is reduced.
+
+3. **Simplicity**: Like Pure ALOHA, Slotted ALOHA is relatively simple to implement, requiring minimal coordination among devices.
+
+4. **Decentralized**: There is no central controller for managing transmissions, making the system more robust to single points of failure.
+
+5. **Dynamic**: Devices can join or leave the network without affecting the protocol's operation.
+
+## Disadvantages of Slotted ALOHA
+
+1. **Time Synchronization**: Slotted ALOHA requires all devices to be synchronized to a common clock, which can be challenging to achieve in some networks.
+
+2. **Still Inefficient**: Despite the improvement over Pure ALOHA, Slotted ALOHA still wastes more than 60% of the channel capacity due to collisions and idle time.
+
+3. **Unstable under Heavy Load**: As the network load increases, the number of collisions increases, leading to a decrease in throughput.
+
+4. **No Collision Detection**: Devices do not check if the channel is free before transmitting, which increases the probability of collisions.
+
+5. **No Fairness Guarantee**: There is no mechanism to ensure fair access to the channel, so some devices may dominate the channel while others starve.
+
+## Improvements to Slotted ALOHA
+
+Several improvements have been made to Slotted ALOHA to address its limitations:
+
+### 1. Carrier Sense Multiple Access (CSMA)
+
+CSMA improves upon ALOHA by having devices listen to the channel before transmitting. If the channel is busy, the device waits until it becomes idle. This significantly reduces the probability of collisions.
+
+### 2. CSMA with Collision Detection (CSMA/CD)
+
+CSMA/CD, used in traditional Ethernet, adds collision detection to CSMA. Devices listen to the channel while transmitting and stop immediately if they detect a collision. This further improves efficiency by reducing the time wasted in collisions.
+
+### 3. CSMA with Collision Avoidance (CSMA/CA)
+
+CSMA/CA, used in wireless networks like Wi-Fi, tries to avoid collisions by using techniques like random backoff before transmission and the Request to Send (RTS) / Clear to Send (CTS) mechanism.
+
+### 4. Reservation-Based Protocols
+
+Reservation-based protocols, such as Reservation ALOHA (R-ALOHA), allow devices to reserve future time slots for transmission, reducing the probability of collisions.
+
+## Applications of Slotted ALOHA
+
+Slotted ALOHA and its variants have been used in various applications:
+
+1. **Satellite Communication**: Slotted ALOHA has been used in satellite communication systems, where the propagation delay is significant.
+
+2. **RFID Systems**: Some RFID systems use Slotted ALOHA-based protocols for tag identification.
+
+3. **Cellular Networks**: Early cellular networks used variants of Slotted ALOHA for random access channels.
+
+4. **Wireless Sensor Networks**: In some wireless sensor networks, Slotted ALOHA is used for its simplicity and reasonable efficiency under light to moderate loads.
+
+## Comparison with Pure ALOHA
+
+| Feature | Pure ALOHA | Slotted ALOHA |
+|---------|------------|---------------|
+| Time Division | No | Yes (into discrete slots) |
+| Transmission Timing | Any time | Only at the beginning of a time slot |
+| Vulnerable Time | 2 × T | T |
+| Maximum Throughput | 18.4% | 36.8% |
+| Time Synchronization | Not required | Required |
+| Implementation Complexity | Very simple | Simple, but requires synchronization |
+
+## Conclusion
+
+Slotted ALOHA is an improvement over Pure ALOHA that increases the maximum channel utilization from 18.4% to 36.8% by dividing time into discrete slots and restricting transmissions to the beginning of these slots. This reduces the vulnerable time from twice the frame transmission time to exactly one time slot.
+
+While Slotted ALOHA is more efficient than Pure ALOHA, it still wastes more than 60% of the channel capacity due to collisions and idle time. It also requires time synchronization among all devices, which can be challenging to achieve in some networks.
+
+Despite these limitations, Slotted ALOHA laid the foundation for more advanced MAC protocols like CSMA, CSMA/CD, and CSMA/CA, which are widely used in modern networks. The principles of Slotted ALOHA are still relevant in certain applications where simplicity and reasonable efficiency under light to moderate loads are important.
