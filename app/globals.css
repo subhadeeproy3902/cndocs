@@ -1,10 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-html {
-  overflow-x: hidden;
-}
-
 @custom-variant dark (&:is(.dark *));
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
