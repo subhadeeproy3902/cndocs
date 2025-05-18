@@ -1,0 +1,290 @@
+---
+title: "Email Protocols (SMTP, POP3, IMAP)"
+description: "Learn about the core protocols that power email communication: SMTP for sending, and POP3 and IMAP for receiving messages"
+---
+
+# Email Protocols: SMTP, POP3, and IMAP
+
+Email remains one of the most widely used communication methods in the world. Behind this seemingly simple technology is a set of protocols that work together to ensure messages are properly sent, received, and stored. This document explores the three primary email protocols: SMTP, POP3, and IMAP.
+
+## Email System Architecture
+
+Email operates on a client-server model with multiple servers involved in the delivery process:
+
+<img className="max-w-xl mx-auto" src="https://imgs.search.brave.com/liR4O-2CmSrd9ZgizG6X6T-qRRtE0e-pYUM-5TTp1Tg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2ludGVy/bmV0X3RlY2hub2xv/Z2llcy9pbWFnZXMv/aW50ZXJuZXQtZW1h/aWxfd29ya2luZy5q/cGc" alt="Email System Architecture" />
+
+The email system consists of:
+
+1. **Mail User Agents (MUAs)**: Email clients like Outlook, Gmail, Thunderbird
+2. **Mail Transfer Agents (MTAs)**: Servers that route email between networks
+3. **Mail Delivery Agents (MDAs)**: Servers that deliver email to recipient mailboxes
+4. **Mail Submission Agents (MSAs)**: Servers that accept email from clients for delivery
+
+## Simple Mail Transfer Protocol (SMTP)
+
+SMTP is the standard protocol for sending email messages between servers and from a client to a server.
+
+### SMTP Basics
+
+- **Primary Function**: Outgoing mail transport
+- **Default Port**: 25 (unencrypted), 587 (with STARTTLS), 465 (SMTPS)
+- **Connection Type**: Typically TCP
+- **RFC**: Originally defined in RFC 821, updated in RFC 5321
+
+### How SMTP Works
+
+1. **Connection Establishment**: The client establishes a TCP connection to the SMTP server
+2. **Greeting**: The server sends a greeting message with its identity
+3. **HELO/EHLO**: The client identifies itself to the server
+4. **Authentication**: The client authenticates (if required)
+5. **Mail Transaction**:
+   - MAIL FROM: Specifies the sender
+   - RCPT TO: Specifies the recipient(s)
+   - DATA: Contains the message content
+   - The message ends with a line containing only a period (.)
+6. **Termination**: The client sends QUIT to end the session
+
+### SMTP Commands and Responses
+
+| Command | Description |
+|---------|-------------|
+| HELO/EHLO | Identify the client to the server |
+| MAIL FROM | Specify the sender's email address |
+| RCPT TO | Specify the recipient's email address |
+| DATA | Begin the message content |
+| RSET | Reset the current transaction |
+| QUIT | End the session |
+| AUTH | Authenticate the client |
+
+SMTP responses consist of a three-digit code followed by descriptive text:
+- 2xx: Success
+- 3xx: Command accepted, but needs additional information
+- 4xx: Temporary failure
+- 5xx: Permanent failure
+
+### SMTP Example Session
+
+```
+C: [Establishes connection]
+S: 220 mail.example.com ESMTP Server
+C: EHLO client.example.org
+S: 250-mail.example.com
+S: 250-SIZE 14680064
+S: 250-AUTH LOGIN PLAIN
+S: 250 HELP
+C: MAIL FROM:<sender@example.org>
+S: 250 OK
+C: RCPT TO:<recipient@example.com>
+S: 250 OK
+C: DATA
+S: 354 Start mail input; end with <CRLF>.<CRLF>
+C: From: "Sender" <sender@example.org>
+C: To: "Recipient" <recipient@example.com>
+C: Subject: Test Email
+C: 
+C: This is a test email.
+C: .
+S: 250 OK: queued as 12345
+C: QUIT
+S: 221 Bye
+```
+
+### SMTP Security
+
+Early SMTP had no built-in security, but modern implementations use:
+- **STARTTLS**: Upgrades an unencrypted connection to encrypted
+- **SMTPS**: SMTP over SSL/TLS (implicit encryption)
+- **Authentication**: Requires credentials before sending mail
+- **SPF, DKIM, DMARC**: Email authentication methods to prevent spoofing
+
+## Post Office Protocol (POP3)
+
+POP3 is a protocol used by email clients to retrieve messages from a mail server.
+
+### POP3 Basics
+
+- **Primary Function**: Downloading email from server to client
+- **Default Port**: 110 (unencrypted), 995 (POP3S)
+- **Connection Type**: TCP
+- **RFC**: Defined in RFC 1939
+
+### How POP3 Works
+
+1. **Connection**: Client connects to the POP3 server
+2. **Authentication**: Client authenticates with username and password
+3. **Transaction**: Client retrieves messages and may delete them from the server
+4. **Update**: Server marks messages as deleted if requested
+5. **Termination**: Client disconnects, and server removes deleted messages
+
+### POP3 States
+
+POP3 operates in three states:
+1. **Authorization State**: Client authenticates to the server
+2. **Transaction State**: Client accesses messages
+3. **Update State**: Server removes messages marked for deletion
+
+### POP3 Commands and Responses
+
+| Command | Description |
+|---------|-------------|
+| USER | Specify username |
+| PASS | Specify password |
+| STAT | Get mailbox status |
+| LIST | List message numbers and sizes |
+| RETR | Retrieve a specific message |
+| DELE | Mark a message for deletion |
+| NOOP | No operation, server responds with OK |
+| RSET | Reset (unmark deleted messages) |
+| QUIT | End session |
+
+Responses are either "+OK" (success) or "-ERR" (failure) followed by additional information.
+
+### POP3 Example Session
+
+```
+C: [Establishes connection]
+S: +OK POP3 server ready
+C: USER alice
+S: +OK
+C: PASS secret
+S: +OK Mailbox open, 2 messages
+C: STAT
+S: +OK 2 320
+C: LIST
+S: +OK 2 messages (320 octets)
+S: 1 120
+S: 2 200
+S: .
+C: RETR 1
+S: +OK 120 octets
+S: [Message content]
+S: .
+C: DELE 1
+S: +OK Message deleted
+C: QUIT
+S: +OK Bye
+```
+
+### POP3 Characteristics
+
+- **Simple and Lightweight**: Minimal commands and functionality
+- **Download and Delete**: Traditionally downloads messages to the client and removes them from the server
+- **Offline Access**: Once downloaded, messages can be accessed without an internet connection
+- **Single-Device Focused**: Not designed for accessing mail from multiple devices
+
+## Internet Message Access Protocol (IMAP)
+
+IMAP is a more advanced protocol for retrieving email that allows users to manage messages directly on the mail server.
+
+### IMAP Basics
+
+- **Primary Function**: Managing email on the server
+- **Default Port**: 143 (unencrypted), 993 (IMAPS)
+- **Connection Type**: TCP
+- **RFC**: Defined in RFC 3501
+
+### How IMAP Works
+
+1. **Connection**: Client connects to the IMAP server
+2. **Authentication**: Client authenticates with username and password
+3. **Mailbox Selection**: Client selects a mailbox to work with
+4. **Message Manipulation**: Client can fetch, search, and organize messages
+5. **State Maintenance**: Server maintains message state (read, unread, flagged)
+6. **Termination**: Client logs out
+
+### IMAP States
+
+IMAP operates in four states:
+1. **Not Authenticated**: Initial state after connection
+2. **Authenticated**: After successful login
+3. **Selected**: After a mailbox is selected
+4. **Logout**: Final state before disconnection
+
+### IMAP Commands and Responses
+
+| Command | Description |
+|---------|-------------|
+| LOGIN | Authenticate with username and password |
+| SELECT | Select a mailbox |
+| EXAMINE | Select a mailbox in read-only mode |
+| FETCH | Retrieve message or message parts |
+| STORE | Change message flags |
+| SEARCH | Search for messages matching criteria |
+| CREATE | Create a new mailbox |
+| DELETE | Delete a mailbox |
+| RENAME | Rename a mailbox |
+| SUBSCRIBE | Add a mailbox to the subscription list |
+| LOGOUT | End the session |
+
+Responses include status responses, data responses, and tagged/untagged responses.
+
+### IMAP Example Session
+
+```
+C: [Establishes connection]
+S: * OK IMAP4rev1 Server Ready
+C: a001 LOGIN user password
+S: a001 OK LOGIN completed
+C: a002 SELECT INBOX
+S: * 18 EXISTS
+S: * 2 RECENT
+S: * OK [UNSEEN 17] Message 17 is the first unseen
+S: * OK [UIDVALIDITY 3857529045] UIDs valid
+S: a002 OK [READ-WRITE] SELECT completed
+C: a003 FETCH 12 BODY[HEADER]
+S: * 12 FETCH (BODY[HEADER] {342}
+S: [Message headers]
+S: )
+S: a003 OK FETCH completed
+C: a004 LOGOUT
+S: * BYE IMAP4rev1 server terminating connection
+S: a004 OK LOGOUT completed
+```
+
+### IMAP Characteristics
+
+- **Server-Based Management**: Messages remain on the server
+- **Multiple Device Access**: Same mailbox can be accessed from different devices
+- **Partial Message Retrieval**: Can download just headers or specific parts of messages
+- **Folder Management**: Can create, rename, and delete folders on the server
+- **Message Flags**: Supports read/unread status, flagged, answered, etc.
+- **Search Capabilities**: Can search messages on the server
+
+## Comparison of POP3 and IMAP
+
+| Feature | POP3 | IMAP |
+|---------|------|------|
+| **Message Storage** | Typically downloaded to client | Stored on server |
+| **Multiple Device Access** | Limited | Excellent |
+| **Offline Access** | Excellent | Limited (unless cached) |
+| **Bandwidth Usage** | Higher initially, lower later | Lower initially, higher with continued use |
+| **Server Storage Requirements** | Low | High |
+| **Folder Management** | Limited | Extensive |
+| **Partial Message Retrieval** | No | Yes |
+| **Search Capabilities** | Client-side only | Server-side available |
+| **Complexity** | Simple | More complex |
+
+## Email Extensions and Related Protocols
+
+### MIME (Multipurpose Internet Mail Extensions)
+
+- Extends email to support:
+  - Non-ASCII text
+  - Non-text attachments (images, audio, video)
+  - Multiple parts in one message
+  - Defined in RFCs 2045-2049
+
+### Email Authentication Protocols
+
+- **SPF (Sender Policy Framework)**: Verifies sender's domain
+- **DKIM (DomainKeys Identified Mail)**: Adds digital signature to verify message integrity
+- **DMARC (Domain-based Message Authentication, Reporting & Conformance)**: Combines SPF and DKIM with reporting
+
+## Conclusion
+
+Email protocols work together to create a complete messaging system:
+- **SMTP** handles message sending and transfer between servers
+- **POP3** provides simple message retrieval, typically downloading messages to the client
+- **IMAP** offers advanced message management, keeping messages on the server
+
+Understanding these protocols is essential for email administrators, developers working with email functionality, and anyone troubleshooting email issues. While these protocols have evolved over time with security enhancements and extensions, their core functionality remains the foundation of email communication worldwide.

@@ -1,0 +1,268 @@
+---
+title: "Bluetooth Technology"
+description: "Learn about Bluetooth, a wireless technology standard for exchanging data over short distances using radio waves"
+---
+
+# Bluetooth Technology
+
+Bluetooth is a wireless technology standard for exchanging data over short distances using radio waves in the ISM band from 2.402 GHz to 2.48 GHz, from fixed and mobile devices, and building personal area networks (PANs). Invented by telecom vendor Ericsson in 1994, it has evolved into a ubiquitous technology found in billions of devices worldwide.
+
+## What is Bluetooth?
+
+Bluetooth is a standardized protocol for sending and receiving data via a 2.4GHz wireless link. It's designed to connect devices wirelessly over a short range, typically less than 100 meters, with minimal power consumption.
+
+<img className="max-w-xl mx-auto" src="https://imgs.search.brave.com/R5tjLtlauiKcSOlnBeUdwpLVW88n4xqFkKpO0a5QHRI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZW5naW5lZXJzZ2Fy/YWdlLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxOS8wNy9p/bWFnZTcuanBn" alt="Bluetooth Logo" />
+
+The name "Bluetooth" comes from Harald Bluetooth, a 10th-century Danish king who united dissonant Danish tribes into a single kingdom. The technology was named after him as it was intended to unite different devices.
+
+## How Bluetooth Works
+
+Bluetooth operates using a radio technology called frequency-hopping spread spectrum:
+
+### Frequency Hopping
+
+- Bluetooth divides transmitted data into packets
+- Transmits each packet on one of 79 designated Bluetooth channels
+- Each channel has a bandwidth of 1 MHz
+- The protocol switches channels up to 1600 times per second
+- This helps reduce interference and provides basic security
+
+### Network Topology
+
+Bluetooth devices connect to each other forming a network known as a piconet:
+
+- A piconet can contain up to 8 active devices (1 master and up to 7 slaves)
+- The master device controls the timing and frequency hopping sequence
+- Multiple piconets can be linked to form a scatternet
+- Devices can participate in multiple piconets simultaneously
+
+## Bluetooth Protocol Stack
+
+The Bluetooth protocol stack consists of several layers:
+
+### Core Protocols
+
+1. **Baseband**: Handles physical channel management, links, packets, error detection
+2. **Link Manager Protocol (LMP)**: Manages link setup, security, and control
+3. **Logical Link Control and Adaptation Protocol (L2CAP)**: Multiplexes data, segments packets, quality of service
+4. **Service Discovery Protocol (SDP)**: Allows devices to discover services offered by other devices
+
+### Cable Replacement Protocols
+
+1. **RFCOMM**: Serial port emulation, provides a simple reliable data stream
+2. **BNEP**: Bluetooth Network Encapsulation Protocol, used for IP networking over Bluetooth
+
+### Adopted Protocols
+
+1. **OBEX**: Object Exchange, used for file transfers
+2. **TCS**: Telephony Control Protocol, for call control signaling
+3. **AT Commands**: For modem control
+
+### Application Profiles
+
+Bluetooth profiles define how applications use Bluetooth. Common profiles include:
+
+- **A2DP**: Advanced Audio Distribution Profile for streaming audio
+- **AVRCP**: Audio/Video Remote Control Profile
+- **HFP**: Hands-Free Profile for car kits and headsets
+- **HSP**: Headset Profile for headsets
+- **HID**: Human Interface Device for keyboards, mice, etc.
+- **FTP**: File Transfer Profile
+- **PAN**: Personal Area Networking
+
+<img className="max-w-xl mx-auto" src="https://imgs.search.brave.com/ETlZ-aaE5YyxM-jPfVIcQod2VKe6ZxcekF97yF-PjU0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyNDAyMjgx/MzMxMjkvYmx1ZXRv/b3RocHJvdG9jb2xz/dGFjay02NjAuanBn" alt="Bluetooth Piconet" />
+
+## Bluetooth Versions
+
+Bluetooth has evolved significantly since its inception:
+
+### Bluetooth 1.x (1999-2001)
+
+- Initial release with data rates up to 721 kbps
+- Many interoperability issues
+- No encryption
+
+### Bluetooth 2.0 + EDR (2004)
+
+- Enhanced Data Rate (EDR) increased speed to 3 Mbps
+- Lower power consumption
+- Improved error handling
+
+### Bluetooth 3.0 + HS (2009)
+
+- High Speed (HS) with theoretical data rates up to 24 Mbps
+- Uses Bluetooth for negotiation and establishment, then hands off to 802.11 for high-speed data transfer
+- Enhanced power control
+
+### Bluetooth 4.0 (2010) - Bluetooth Low Energy (BLE)
+
+- Introduced Bluetooth Low Energy (BLE) or Bluetooth Smart
+- Designed for Internet of Things (IoT) applications
+- Significantly reduced power consumption
+- Shorter range but much lower energy requirements
+- Not backward compatible with classic Bluetooth
+
+### Bluetooth 5.0 (2016)
+
+- 2x speed (up to 2 Mbps in BLE mode)
+- 4x range
+- 8x broadcasting message capacity
+- Improved coexistence with other wireless technologies
+
+### Bluetooth 5.1 (2019)
+
+- Direction finding capabilities
+- Improved location services with centimeter-level accuracy
+- Enhanced advertising capabilities
+
+### Bluetooth 5.2 (2020)
+
+- Enhanced Attribute Protocol (EATT)
+- LE Power Control
+- LE Isochronous Channels for improved audio streaming
+
+### Bluetooth 5.3 (2021)
+
+- Improved connection subrating
+- Enhanced encryption
+- Channel classification enhancement
+- Periodic advertising enhancement
+
+## Bluetooth Low Energy (BLE)
+
+Bluetooth Low Energy, introduced in Bluetooth 4.0, is a power-efficient version designed for IoT and applications requiring minimal energy consumption:
+
+### Key Differences from Classic Bluetooth
+
+| Feature | Classic Bluetooth | Bluetooth Low Energy |
+|---------|-------------------|----------------------|
+| **Power Consumption** | Higher | Much lower (can run for years on a coin cell battery) |
+| **Range** | Up to 100 meters | Up to 100 meters (version 5+) |
+| **Data Rate** | Up to 3 Mbps | Up to 2 Mbps (version 5+) |
+| **Network Topology** | Piconet (1:7) | 1:many |
+| **Latency** | ~100ms | ~6ms |
+| **Application Focus** | Audio, file transfer | IoT, sensors, beacons |
+| **Security** | 56/128-bit | 128-bit AES |
+
+### BLE Architecture
+
+BLE uses a different architecture than classic Bluetooth:
+
+- **Generic Access Profile (GAP)**: Controls connections and advertising
+- **Generic Attribute Profile (GATT)**: Defines the way BLE devices transfer data
+- **Attributes**: Data organized into services and characteristics
+- **Services**: Collections of related characteristics
+- **Characteristics**: Data values that can be read, written, or notified
+
+## Bluetooth Security
+
+Bluetooth security has evolved over time to address various vulnerabilities:
+
+### Security Features
+
+1. **Pairing**: Process of establishing a trusted relationship between devices
+2. **Bonding**: Storing pairing information for future reconnection
+3. **Authentication**: Verifying the identity of devices
+4. **Encryption**: Protecting data transmitted between devices
+5. **Authorization**: Controlling access to resources
+
+### Pairing Methods
+
+- **Just Works**: Simple pairing with no user interaction (least secure)
+- **Numeric Comparison**: Users verify matching numbers on both devices
+- **Passkey Entry**: User enters a PIN code
+- **Out of Band (OOB)**: Uses another technology (NFC, QR codes) to exchange pairing information
+
+### Known Vulnerabilities
+
+Bluetooth has had several security issues over the years:
+- **Bluejacking**: Sending unsolicited messages
+- **Bluesnarfing**: Unauthorized access to information
+- **BlueBorne**: Remote code execution vulnerabilities
+- **KNOB Attack**: Forcing devices to use weak encryption
+- **BIAS**: Impersonation attacks on paired devices
+
+## Bluetooth Applications
+
+Bluetooth is used in a wide variety of applications:
+
+### Consumer Electronics
+
+- Wireless headphones and speakers
+- Smartwatches and fitness trackers
+- Game controllers
+- Remote controls
+- Smart home devices
+
+### Healthcare
+
+- Medical devices and sensors
+- Patient monitoring
+- Hearing aids
+- Glucose monitors
+
+### Automotive
+
+- Hands-free calling
+- Audio streaming
+- Keyless entry
+- Tire pressure monitoring
+
+### Industrial and IoT
+
+- Asset tracking
+- Environmental monitoring
+- Smart manufacturing
+- Building automation
+
+## Advantages and Limitations of Bluetooth
+
+### Advantages
+
+- **Ubiquity**: Built into billions of devices
+- **Low Power**: Especially with BLE
+- **No Line of Sight Required**: Works through walls and objects
+- **Automatic Operation**: Connects without user intervention once paired
+- **Standardized**: Works across different manufacturers and device types
+- **Cost-Effective**: Inexpensive to implement
+
+### Limitations
+
+- **Range**: Limited compared to Wi-Fi and cellular
+- **Bandwidth**: Lower data rates than Wi-Fi
+- **Connection Stability**: Can be affected by interference
+- **Security Concerns**: Various vulnerabilities have been discovered
+- **Pairing Issues**: Sometimes difficult to pair devices
+- **Limited Number of Connections**: Classic Bluetooth limited to 7 slave devices
+
+## Future of Bluetooth
+
+Bluetooth continues to evolve with new features and capabilities:
+
+### Bluetooth LE Audio
+
+- New audio codec (LC3)
+- Multi-stream audio
+- Broadcast audio
+- Hearing aid support
+- Lower power consumption for audio applications
+
+### Direction Finding
+
+- Centimeter-level positioning
+- Asset tracking
+- Indoor navigation
+- Proximity services
+
+### Mesh Networking
+
+- Many-to-many device communication
+- Extended range through message relaying
+- Ideal for smart buildings, industrial applications
+- Self-healing networks
+
+## Conclusion
+
+Bluetooth technology has become an essential part of our connected world, enabling wireless communication between a vast array of devices. From its origins as a simple cable replacement to today's sophisticated low-energy implementations powering IoT devices, Bluetooth continues to evolve and adapt to new use cases.
+
+Understanding Bluetooth technology is valuable for developers, engineers, and anyone working with wireless devices. As the Internet of Things expands and more devices become connected, Bluetooth will continue to play a crucial role in enabling seamless, power-efficient wireless communication.
