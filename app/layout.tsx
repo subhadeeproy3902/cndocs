@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     "network protocols",
     "socket examples"
   ],
+  metadataBase: new URL("https://cn.mvp-subha.me"),
 };
 
 export default function RootLayout({
