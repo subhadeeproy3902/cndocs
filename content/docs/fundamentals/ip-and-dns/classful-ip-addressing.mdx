@@ -33,11 +33,11 @@ Some points to be noted about dotted decimal notation:
 - The value of any segment (byte) is between 0 and 255 (both included).
 - No zeroes preceding the value in any segment (054 is wrong, 54 is correct).
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_1.jpg" alt="Dotted Decimal Notation" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_1.jpg" alt="Dotted Decimal Notation" />
 
 ### Hexadecimal Notation
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/hex-notation.jpg" alt="Hexadecimal Notation" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/hex-notation.jpg" alt="Hexadecimal Notation" />
 
 ## Need For Classful Addressing
 
@@ -61,14 +61,14 @@ Each of these classes has a valid range of IP addresses. Classes D and E are res
 
 The class of IP address is used to determine the bits used for network ID and host ID and the number of total networks and hosts possible in that particular class. Each ISP or network administrator assigns an IP address to each device that is connected to its network.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_3.jpg" alt="Classful Addressing" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_3.jpg" alt="Classful Addressing" />
 
 **Note:**
 
 - IP addresses are globally managed by Internet Assigned Numbers Authority (IANA) and Regional Internet Registries (RIR).
 - While finding the total number of host IP addresses, 2 IP addresses are not counted and are therefore, decreased from the total count because the first IP address of any network is the network number and whereas the last IP address is reserved for broadcast IP.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/classful-address-space.png" alt="Occupation of The Address Space In Classful Addressing" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/classful-address-space.png" alt="Occupation of The Address Space In Classful Addressing" />
 
 ### Class A
 
@@ -83,7 +83,7 @@ The higher-order bit of the first octet in class A is always set to 0. The remai
 
 IP addresses belonging to class A ranges from 0.0.0.0 – 127.255.255.255.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_4.jpg" alt="Class A" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_4.jpg" alt="Class A" />
 
 ### Class B
 
@@ -99,7 +99,7 @@ The higher-order bits of the first octet of IP addresses of class B are always s
 
 IP addresses belonging to class B ranges from 128.0.0.0 – 191.255.255.255.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_5.jpg" alt="Class B" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_5.jpg" alt="Class B" />
 
 ### Class C
 
@@ -115,7 +115,7 @@ The higher-order bits of the first octet of IP addresses of class C is always se
 
 IP addresses belonging to class C range from 192.0.0.0 – 223.255.255.255.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_6.jpg" alt="Class C" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_6.jpg" alt="Class C" />
 
 ### Class D
 
@@ -123,13 +123,13 @@ IP address belonging to class D is reserved for multi-casting. The higher-order 
 
 Class D does not possess any subnet mask. IP addresses belonging to class D range from 224.0.0.0 – 239.255.255.255.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_7.jpg" alt="Class D" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_7.jpg" alt="Class D" />
 
 ### Class E
 
 IP addresses belonging to class E are reserved for experimental and research purposes. IP addresses of class E range from 240.0.0.0 – 255.255.255.255. This class doesn't have any subnet mask. The higher-order bits of the first octet of class E are always set to 1111.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/IP_addressing_8.jpg" alt="Class E" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IP_addressing_8.jpg" alt="Class E" />
 
 ## Range of Special IP Addresses
 
@@ -155,7 +155,7 @@ Hosts that are located on the same physical network are identified by the networ
 
 ## Structure of Classful Addressing
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/nethostdata.jpg" alt="Summary of Classful addressing" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/nethostdata.jpg" alt="Summary of Classful addressing" />
 
 In the above table, the number of networks for class A should be 127 (Network ID with all 0s is not considered).
 

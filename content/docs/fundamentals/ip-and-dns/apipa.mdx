@@ -13,7 +13,7 @@ APIPA is employed when a device that is intended to use DHCP for obtaining an IP
 
 This self-assigned IP address permits the device to communicate with other devices within the same local network that are also using APIPA addresses. However, APIPA-configured devices cannot establish connections beyond their local area networks nor have internet access.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/apipa1.png" alt="APIPA Concept" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/apipa1.png" alt="APIPA Concept" />
 
 APIPA is helpful in cases where setting up a DHCP server may not be possible or when network problems prevent devices from obtaining operational IP addresses temporarily. It offers a backup plan so that in case there is no DHCP server configured at all, information can still get across the local area network.
 
@@ -29,7 +29,7 @@ The APIPA process begins when a client is unable to find a DHCP server. At this 
 
 If APIPA detects a DHCP server on the network, it stops and allows the DHCP server to take over, replacing the APIPA-assigned address with a dynamically allocated address from the DHCP server.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/apipa2.png" alt="Working of APIPA" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/apipa2.png" alt="Working of APIPA" />
 
 > **Note:** To determine if an IP address is provided by APIPA, you can run the following command:
 > ```
@@ -112,7 +112,7 @@ APIPA is extremely useful for home networks and small offices where running and 
 - APIPA does not provide DNS server information, making domain name resolution impossible.
 - APIPA does not provide default gateway information, preventing communication beyond the local subnet.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/apipa-summary.png" alt="APIPA Summary" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/apipa-summary.png" alt="APIPA Summary" />
 
 ## Conclusion
 

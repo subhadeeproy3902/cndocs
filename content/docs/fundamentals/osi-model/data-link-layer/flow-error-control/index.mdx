@@ -91,7 +91,7 @@ Stop-and-Wait ARQ is the simplest form of ARQ protocol. In this protocol:
 - If the frame is corrupted, the receiver discards it and does not send an acknowledgment.
 - If the sender does not receive an acknowledgment within a timeout period, it retransmits the frame.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/i1sX4vZVaCl02vhnQ9iB583o5uHwnk5LQHjx6UOGY1c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9TdG9wX1dhaXQu/anBn" alt="Stop-and-Wait ARQ" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/i1sX4vZVaCl02vhnQ9iB583o5uHwnk5LQHjx6UOGY1c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9TdG9wX1dhaXQu/anBn" alt="Stop-and-Wait ARQ" />
 
 ### 2. Go-Back-N ARQ
 
@@ -102,7 +102,7 @@ Go-Back-N ARQ allows the sender to transmit multiple frames before receiving an 
 - If a frame is corrupted or lost, the receiver discards it and all subsequent frames, even if they are received correctly.
 - The sender must retransmit the corrupted frame and all subsequent frames.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/MMaAXPUrLCrRzr-FFzafJMCY08k_lanaV5p5wiZnmBM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9iaW5h/cnl0ZXJtcy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDcvR28tYmFjay1u/LXByb3RvY29sLTEu/anBn" alt="Go-Back-N ARQ" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/MMaAXPUrLCrRzr-FFzafJMCY08k_lanaV5p5wiZnmBM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9iaW5h/cnl0ZXJtcy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDcvR28tYmFjay1u/LXByb3RvY29sLTEu/anBn" alt="Go-Back-N ARQ" />
 
 ### 3. Selective Repeat ARQ
 
@@ -113,19 +113,19 @@ Selective Repeat ARQ also allows the sender to transmit multiple frames before r
 - If a frame is corrupted or lost, the receiver requests retransmission of only that frame.
 - The sender retransmits only the frames that are corrupted or lost.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/5j-rIg9WQYQJUlDVJ2Q-mX_TRWxDArslwAjVbcaK0AI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9zZWxlY3RpdmVf/cmVwZWF0LmpwZw" alt="Selective Repeat ARQ" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/5j-rIg9WQYQJUlDVJ2Q-mX_TRWxDArslwAjVbcaK0AI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9zZWxlY3RpdmVf/cmVwZWF0LmpwZw" alt="Selective Repeat ARQ" />
 
 ### 4. Sliding Window Protocol
 
 The Sliding Window Protocol is a generalized form of flow control that encompasses both Go-Back-N and Selective Repeat ARQ. It allows the sender to transmit multiple frames before receiving an acknowledgment, up to a specified window size. The window "slides" as acknowledgments are received, allowing new frames to be sent.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/tIT-iyxri_GuznfZZvRFhha9Yt2anEvu6tVWn_pcPrI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L2Nkbi11/cGxvYWRzL1NsaWRp/bmdfV2luZG93X1By/b3RvY29sXzEuanBn" alt="Sliding Window Protocol" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/tIT-iyxri_GuznfZZvRFhha9Yt2anEvu6tVWn_pcPrI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L2Nkbi11/cGxvYWRzL1NsaWRp/bmdfV2luZG93X1By/b3RvY29sXzEuanBn" alt="Sliding Window Protocol" />
 
 ### 5. Piggybacking
 
 Piggybacking is a technique used to improve the efficiency of bidirectional communication. Instead of sending separate acknowledgment frames, the receiver can "piggyback" the acknowledgment on a data frame that it needs to send to the sender.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/LVLiPcnHfYtoPj2Ooo9YpUwSvNIwAfondOTG83TT3aE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMzAzMzEx/MjUzMjQvcGlnZ3li/YWNraW5nLnBuZw" alt="Piggybacking" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/LVLiPcnHfYtoPj2Ooo9YpUwSvNIwAfondOTG83TT3aE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMzAzMzEx/MjUzMjQvcGlnZ3li/YWNraW5nLnBuZw" alt="Piggybacking" />
 
 ## Detailed Topics
 

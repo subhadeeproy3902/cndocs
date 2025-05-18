@@ -13,7 +13,7 @@ CSMA is a protocol in which devices on a network check (or "sense") whether the 
 
 The basic principle of CSMA is simple: each station must first check the state of the medium before sending data. If the channel is busy, the station waits; if it's idle, the station can transmit.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/csma-example.png" alt="CSMA Example" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/csma-example.png" alt="CSMA Example" />
 
 ### Vulnerable Time in CSMA
 
@@ -39,7 +39,7 @@ There are four main types of CSMA protocols, each with different approaches to h
 
 CSMA/CD extends the basic CSMA protocol by adding the ability to detect collisions during transmission. This was widely used in early Ethernet networks with shared bus topology, though it's less common in modern switched Ethernet environments.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/csma-cd-example.png" alt="CSMA/CD Example" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/csma-cd-example.png" alt="CSMA/CD Example" />
 
 ### How CSMA/CD Works
 
@@ -49,19 +49,19 @@ CSMA/CD extends the basic CSMA protocol by adding the ability to detect collisio
 4. After sending the jam signal, the station waits for a random backoff time before attempting to transmit again.
 5. The process repeats until the transmission is successful or a maximum number of attempts is reached.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/csma-cd-flowchart.png" alt="CSMA/CD Flowchart" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/csma-cd-flowchart.png" alt="CSMA/CD Flowchart" />
 
 ### Collision Detection in CSMA/CD
 
 For collision detection to work effectively, the transmission time of a frame must be at least twice the maximum propagation time across the network. This ensures that a station can detect any collision before it finishes transmitting.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/collision-detection-1.png" alt="Collision Detection Example 1" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/collision-detection-1.png" alt="Collision Detection Example 1" />
 
 In the example above, two stations (A and B) are separated by a propagation time of 1 hour. If A begins transmitting at t=0 and a collision occurs at t=30 minutes, both stations will receive the collision signal at t=1 hour.
 
 For a more precise understanding, consider the worst-case scenario:
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/collision-detection-2.png" alt="Collision Detection Example 2" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/collision-detection-2.png" alt="Collision Detection Example 2" />
 
 If a collision occurs just before the signal reaches the destination (at t=59:59), it will take another 59:59 for the collision signal to reach the sender. This means the total time to detect a collision could be up to 2 * Tp (twice the propagation time).
 
@@ -75,7 +75,7 @@ If a frame is too short to satisfy this condition, padding is added to ensure it
 
 CSMA/CA is designed for wireless networks where collision detection is difficult due to the nature of radio transmission. Instead of detecting collisions, it tries to avoid them altogether.
 
-<img className="max-w-xl rounded-xl mx-auto" src="/images/csma-ca-flowchart.png" alt="CSMA/CA Flowchart" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/csma-ca-flowchart.png" alt="CSMA/CA Flowchart" />
 
 ### Key Strategies in CSMA/CA
 

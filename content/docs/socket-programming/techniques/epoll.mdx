@@ -16,7 +16,7 @@ Before diving into `epoll`, let's review why `select()` and `poll()` can be inef
 3. **Repeated Setup**: The set of monitored file descriptors must be rebuilt for each call
 4. **Limited Scalability**: Performance degrades significantly with a large number of file descriptors
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://www.davepacheco.net/blog/2006/event-ports-and-performance/tiny.png" alt="select() vs epoll() Performance" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://www.davepacheco.net/blog/2006/event-ports-and-performance/tiny.png" alt="select() vs epoll() Performance" />
 
 ## The epoll API
 
@@ -128,7 +128,7 @@ typedef union epoll_data {
 - More complex to program correctly
 - Must read/write all available data until EAGAIN/EWOULDBLOCK
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20230216153935/Level-triggering.png" alt="Level-Triggered vs Edge-Triggered" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20230216153935/Level-triggering.png" alt="Level-Triggered vs Edge-Triggered" />
 
 ## Example: TCP Echo Server Using epoll()
 

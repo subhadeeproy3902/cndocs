@@ -13,7 +13,7 @@ CRC is an error detection technique based on binary division. Unlike the checksu
 
 In CRC, a sequence of redundant bits, called the CRC bits, are appended to the end of the data unit so that the resulting data unit becomes exactly divisible by a predetermined binary number. At the destination, the incoming data unit is divided by the same number. If at this step there is no remainder, the data unit is assumed to be correct and is therefore accepted. A remainder indicates that the data unit has been damaged in transit and therefore must be rejected.
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/-2Fncd7j-UdwI3rs5o--wQaMEFAJHFMkrWNzadwGFrg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c2ltcGxpbGVhcm4u/Y29tL2ljZTkvZnJl/ZV9yZXNvdXJjZXNf/YXJ0aWNsZV90aHVt/Yi9DUkNfMS5wbmc" alt="CRC" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/-2Fncd7j-UdwI3rs5o--wQaMEFAJHFMkrWNzadwGFrg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c2ltcGxpbGVhcm4u/Y29tL2ljZTkvZnJl/ZV9yZXNvdXJjZXNf/YXJ0aWNsZV90aHVt/Yi9DUkNfMS5wbmc" alt="CRC" />
 
 ## How CRC Works
 
@@ -51,7 +51,7 @@ Since the degree of the generator polynomial is 3, we append 3-1 = 2 zeros to th
 
 We now perform modulo-2 division of the augmented data by the generator polynomial. A simple example: 
 
-<img className="max-w-xl rounded-xl mx-auto" src="https://imgs.search.brave.com/-ODlb1g_aKa4uzzUPbzaP3aPuNnz0OEo2b7QOkGLdPA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9jcmNfZ2VuZXJh/dG9yX2FuZF9jaGVj/a2VyX2V4MS5qcGc" alt="" />
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/-ODlb1g_aKa4uzzUPbzaP3aPuNnz0OEo2b7QOkGLdPA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9jcmNfZ2VuZXJh/dG9yX2FuZF9jaGVj/a2VyX2V4MS5qcGc" alt="" />
 
 ### Step 4: Transmit Data with CRC
 
