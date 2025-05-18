@@ -15,12 +15,12 @@ The OSI Model consists of **7 layers**, each with specific functions and respons
 
 There are 7 layers in the OSI Model, and each layer has its specific role in handling data:
 
-1. **Physical Layer**
+1. **[Physical Layer](/docs/fundamentals/osi-model/physical-layer)**
 2. **[Data Link Layer](/docs/fundamentals/osi-model/data-link-layer)**
 3. **[Network Layer](/docs/fundamentals/osi-model/network-layer)**
 4. **[Transport Layer](/docs/fundamentals/osi-model/transport-layer)**
-5. **Session Layer**
-6. **Presentation Layer** 
+5. **[Session Layer](/docs/fundamentals/osi-model/session-layer)**
+6. **[Presentation Layer](/docs/fundamentals/osi-model/presentation-layer)**
 7. **[Application Layer](/docs/fundamentals/osi-model/application-layer)**
 
 ### Layer 1 – Physical Layer
@@ -40,16 +40,18 @@ The **OSI (Open Systems Interconnection) Model** is a conceptual framework devel
 
 ## Layer 1 – Physical Layer
 
-The **Physical Layer** is responsible for the **actual physical connection** between devices. It handles raw data in the form of bits and transmits them over a physical medium.
+The **Physical Layer** is responsible for the **actual physical connection** between devices. It handles raw data in the form of bits and transmits them over a physical medium. Learn more in the [Physical Layer](/docs/fundamentals/osi-model/physical-layer) section.
 
 ### Functions of the Physical Layer:
 
+- **Bit Transmission**: Transmits individual bits from one node to the next.
 - **Bit Synchronization**: Provides a clock to sync bit transmission between sender and receiver.
 - **Bit Rate Control**: Determines the number of bits sent per second.
 - **Physical Topologies**: Defines network arrangement (Bus, Star, Mesh, etc.).
 - **Transmission Mode**: Supports Simplex, Half-Duplex, and Full Duplex modes.
+- **Physical Encoding**: Converts bits into signals for transmission.
 
-**Devices:** Hubs, Repeaters, Modems, Cables
+**Devices:** Hubs, Repeaters, Modems, Cables, Network Interface Cards (NICs), Transceivers
 
 ## Layer 2 – Data Link Layer (DLL)
 
@@ -103,15 +105,16 @@ The **Transport Layer** ensures **complete and reliable end-to-end delivery** of
 
 ## Layer 5 – Session Layer
 
-The **Session Layer** manages **sessions** between two communicating devices. It sets up, manages, and terminates communication sessions.
+The **Session Layer** manages **sessions** between two communicating devices. It sets up, manages, and terminates communication sessions. Learn more in the [Session Layer](/docs/fundamentals/osi-model/session-layer) section.
 
 ### Functions of the Session Layer:
 
-- **Session Establishment, Maintenance, and Termination**
+- **Session Establishment, Maintenance, and Termination**: Creates, manages, and ends communication sessions.
 - **Synchronization**: Adds checkpoints to manage data recovery.
 - **Dialog Control**: Supports half-duplex or full-duplex communication.
+- **Token Management**: Controls access to shared resources in some protocols.
 
-**Protocols:** NetBIOS, PPTP
+**Protocols:** NetBIOS, PPTP, RPC, SIP
 
 ## Example Flow
 
@@ -127,21 +130,21 @@ Each layer processes and adds its own header/trailer before sending it to the ne
 
 ## Layer 6 – Presentation Layer
 
-Also known as the **Translation Layer**. It prepares data from the Application layer for transmission over the network.
+Also known as the **Translation Layer**. It prepares data from the Application layer for transmission over the network. Learn more in the [Presentation Layer](/docs/fundamentals/osi-model/presentation-layer) section.
 
 ### Protocols Used:
-- JPEG
-- MPEG
-- GIF
-- TLS/SSL
+- JPEG, PNG, GIF (Image formats)
+- MPEG, MP3, MP4 (Media formats)
+- TLS/SSL (Security protocols)
+- ASCII, EBCDIC, Unicode (Character encodings)
 
 ### Functions of the Presentation Layer:
 
-- **Translation:** Converts data formats (e.g., ASCII to EBCDIC).
-- **Encryption/Decryption:**
-  - Encrypts data into ciphertext for secure transmission.
-  - Decrypts data back to plaintext.
-- **Compression:** Reduces the number of bits transmitted.
+- **Data Translation:** Converts data between different formats (e.g., ASCII to EBCDIC).
+- **Data Formatting:** Ensures data can be read by the receiving application.
+- **Encryption/Decryption:** Provides security by encrypting and decrypting data.
+- **Compression/Decompression:** Reduces the number of bits transmitted.
+- **Character Code Conversion:** Translates between different character encoding systems.
 
 ## Layer 7 – Application Layer
 
@@ -200,12 +203,12 @@ When data is transmitted between two devices, it travels through all 7 layers fr
 
 | Layer | Working | Protocol Data Unit | Protocols |
 |-------|---------|--------------------|-----------|
-| **1 – Physical Layer** | Establishing physical connections between devices | Bits | USB, SONET/SDH, etc. |
+| **1 – [Physical Layer](/docs/fundamentals/osi-model/physical-layer)** | Establishing physical connections between devices | Bits | USB, SONET/SDH, Ethernet (physical aspects), etc. |
 | **2 – Data Link Layer** | Node to node delivery of message | Frames | Ethernet, PPP, etc. |
 | **3 – Network Layer** | Transmission of data from one host to another across different networks | Packets | IP, ICMP, IGMP, OSPF, ARP, RARP, BOOTP, etc. |
 | **4 – Transport Layer** | Takes service from Network Layer and provides it to the Application Layer | Segments (TCP) / Datagrams (UDP) | [TCP](/docs/fundamentals/osi-model/transport-layer/tcp), [UDP](/docs/fundamentals/osi-model/transport-layer/udp), [SCTP](/docs/fundamentals/osi-model/transport-layer/sctp), etc. |
-| **5 – Session Layer** | Establishes connection, maintains sessions, ensures authentication and security | Data | NetBIOS, RPC, PPTP, etc. |
-| **6 – Presentation Layer** | Translates and formats data from Application Layer for transmission | Data | TLS/SSL, MIME, JPEG, PNG, ASCII, etc. |
+| **5 – [Session Layer](/docs/fundamentals/osi-model/session-layer)** | Establishes connection, maintains sessions, ensures authentication and security | Data | NetBIOS, RPC, PPTP, SIP, etc. |
+| **6 – [Presentation Layer](/docs/fundamentals/osi-model/presentation-layer)** | Translates and formats data from Application Layer for transmission | Data | TLS/SSL, MIME, JPEG, PNG, ASCII, EBCDIC, Unicode, etc. |
 | **7 – Application Layer** | Identifies client and synchronizes communication | Data | FTP, SMTP, DNS, DHCP, etc. |
 
 ## Why Does the OSI Model Matter?

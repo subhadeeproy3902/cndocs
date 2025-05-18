@@ -1,4 +1,4 @@
 {
   "icon": "Package",
-  "pages": ["introduction", "data-link-layer", "network-layer", "transport-layer", "application-layer"]
+  "pages": ["introduction", "physical-layer", "data-link-layer", "network-layer", "transport-layer", "session-layer", "presentation-layer", "application-layer"]
 }
