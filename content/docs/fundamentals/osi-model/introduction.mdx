@@ -16,8 +16,8 @@ The OSI Model consists of **7 layers**, each with specific functions and respons
 There are 7 layers in the OSI Model, and each layer has its specific role in handling data:
 
 1. **Physical Layer**
-2. **Data Link Layer**
-3. **Network Layer**
+2. **[Data Link Layer](/docs/fundamentals/osi-model/data-link-layer)**
+3. **[Network Layer](/docs/fundamentals/osi-model/network-layer)**
 4. **Transport Layer**
 5. **Session Layer**
 6. **Presentation Layer**
@@ -72,12 +72,13 @@ The **Data Link Layer** ensures **error-free delivery** of data from one node to
 
 ## Layer 3 – Network Layer
 
-The **Network Layer** ensures **data transfer between different networks** and handles **routing and addressing**. The unit of data is a **Packet**.
+The **Network Layer** ensures **data transfer between different networks** and handles **routing and addressing**. The unit of data is a **Packet**. Learn more in the [Network Layer](/docs/fundamentals/osi-model/network-layer) section.
 
 ### Functions of the Network Layer:
 
 - **Routing**: Selects the shortest/best path for packet delivery.
 - **Logical Addressing**: Adds source and destination **IP addresses**.
+- **Address Resolution**: Maps logical addresses to physical addresses using protocols like [ARP](/docs/fundamentals/osi-model/network-layer/arp).
 
 **Devices:** Routers, Layer-3 Switches
 
@@ -198,7 +199,7 @@ When data is transmitted between two devices, it travels through all 7 layers fr
 |-------|---------|--------------------|-----------|
 | **1 – Physical Layer** | Establishing physical connections between devices | Bits | USB, SONET/SDH, etc. |
 | **2 – Data Link Layer** | Node to node delivery of message | Frames | Ethernet, PPP, etc. |
-| **3 – Network Layer** | Transmission of data from one host to another across different networks | Packets | IP, ICMP, IGMP, OSPF, etc. |
+| **3 – Network Layer** | Transmission of data from one host to another across different networks | Packets | IP, ICMP, IGMP, OSPF, ARP, RARP, BOOTP, etc. |
 | **4 – Transport Layer** | Takes service from Network Layer and provides it to the Application Layer | Segments (TCP) / Datagrams (UDP) | TCP, UDP, SCTP, etc. |
 | **5 – Session Layer** | Establishes connection, maintains sessions, ensures authentication and security | Data | NetBIOS, RPC, PPTP, etc. |
 | **6 – Presentation Layer** | Translates and formats data from Application Layer for transmission | Data | TLS/SSL, MIME, JPEG, PNG, ASCII, etc. |
