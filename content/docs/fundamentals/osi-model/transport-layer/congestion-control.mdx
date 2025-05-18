@@ -1,0 +1,185 @@
+---
+title: Congestion Control in Transport Layer
+description: Learn about congestion control mechanisms in the Transport Layer, including detection, prevention, and various algorithms used to manage network congestion.
+---
+
+# Congestion Control in Transport Layer
+
+Congestion control is a critical function of the Transport Layer that prevents network overload by regulating the rate at which data is sent into the network. When too many packets are present in a network segment, performance degrades due to packet drops, increased delays, and inefficient resource utilization. Effective congestion control mechanisms ensure network stability, fairness among users, and optimal throughput.
+
+## Understanding Network Congestion
+
+Network congestion occurs when the amount of data being transmitted through a network approaches or exceeds its capacity. This situation is analogous to traffic congestion on highways, where too many vehicles lead to slowdowns and gridlock.
+
+### Causes of Congestion
+
+1. **Limited Network Resources**: Finite bandwidth, buffer space, and processing capacity
+2. **Traffic Bursts**: Sudden increases in data transmission
+3. **Slow Receivers**: Receivers unable to process incoming data quickly enough
+4. **Network Equipment Failures**: Router or link failures causing traffic rerouting
+5. **Inefficient Protocols**: Protocols that don't adapt to network conditions
+
+### Effects of Congestion
+
+1. **Packet Loss**: Routers drop packets when their buffers overflow
+2. **Increased Latency**: Packets spend more time in queues
+3. **Reduced Throughput**: Overall network efficiency decreases
+4. **Retransmissions**: Lost packets trigger retransmissions, further increasing congestion
+5. **Timeout**: Connections may time out and need to be reestablished
+
+## Congestion Control Approaches
+
+Congestion control mechanisms can be broadly classified into two categories:
+
+### Open-Loop Congestion Control
+
+Open-loop approaches focus on preventing congestion before it occurs:
+
+1. **Resource Provisioning**: Designing networks with sufficient capacity
+2. **Traffic Shaping**: Regulating data flow at the source
+3. **Admission Control**: Limiting new connections during high load
+4. **Traffic Policing**: Enforcing compliance with traffic specifications
+
+These methods don't rely on feedback from the network and are implemented as preventive measures.
+
+### Closed-Loop Congestion Control
+
+Closed-loop approaches use feedback from the network to detect and respond to congestion:
+
+1. **Implicit Feedback**: Inferring congestion from symptoms like packet loss or increased delay
+2. **Explicit Feedback**: Receiving direct signals from the network about congestion
+3. **Reactive Adjustment**: Modifying transmission rates based on feedback
+
+These methods dynamically adapt to changing network conditions.
+
+## TCP Congestion Control
+
+TCP implements a sophisticated congestion control mechanism that has evolved over time. The basic algorithm includes several phases:
+
+### 1. Slow Start
+
+- Begins with a small congestion window (cwnd), typically 1-10 maximum segment sizes (MSS)
+- Increases cwnd exponentially: doubles cwnd for each round-trip time (RTT)
+- Continues until reaching the slow start threshold (ssthresh) or detecting congestion
+
+### 2. Congestion Avoidance
+
+- Enters this phase when cwnd reaches ssthresh
+- Increases cwnd linearly: adds approximately one MSS to cwnd per RTT
+- More conservative growth to avoid triggering congestion
+- Continues until congestion is detected
+
+### 3. Congestion Detection
+
+TCP detects congestion through:
+
+- **Timeout**: When an acknowledgment isn't received within the expected time
+- **Duplicate ACKs**: Receiving multiple acknowledgments for the same segment (typically 3)
+
+### 4. Congestion Response
+
+When congestion is detected, TCP:
+
+- Sets ssthresh to half of the current cwnd
+- For timeout: Resets cwnd to 1 MSS and enters slow start
+- For duplicate ACKs: Enters fast recovery (in modern implementations)
+
+### 5. Fast Recovery
+
+- Reduces cwnd to ssthresh plus 3 MSS
+- Increases cwnd by 1 MSS for each additional duplicate ACK
+- Returns to congestion avoidance when a new ACK arrives
+
+## TCP Congestion Control Variants
+
+Several variants of TCP congestion control have been developed to address different network environments:
+
+### TCP Tahoe
+
+- Original implementation
+- Uses slow start, congestion avoidance
+- Resets to slow start on any congestion detection
+
+### TCP Reno
+
+- Adds fast recovery
+- Distinguishes between minor congestion (duplicate ACKs) and severe congestion (timeouts)
+
+### TCP New Reno
+
+- Improves fast recovery to handle multiple packet losses in a single window
+- Remains in fast recovery until all losses are recovered
+
+### TCP CUBIC
+
+- Default in Linux systems
+- Uses a cubic function to grow the congestion window
+- Less sensitive to RTT, more scalable for high-bandwidth networks
+
+### TCP BBR (Bottleneck Bandwidth and RTT)
+
+- Developed by Google
+- Models the network to estimate optimal sending rate
+- Focuses on maximizing throughput and minimizing latency
+
+## SCTP Congestion Control
+
+SCTP implements congestion control mechanisms similar to TCP:
+
+- Separate congestion control for each destination address in multi-homed scenarios
+- Uses selective acknowledgments (SACK) for more efficient loss recovery
+- Implements slow start, congestion avoidance, and fast retransmit
+
+## Explicit Congestion Notification (ECN)
+
+ECN is an extension to IP and TCP that allows end-to-end notification of network congestion without dropping packets:
+
+1. Routers mark packets instead of dropping them when congestion is imminent
+2. Receivers echo these marks back to senders
+3. Senders reduce their transmission rate in response
+
+This approach reduces packet loss and retransmissions, improving overall efficiency.
+
+## Router-Based Congestion Control
+
+Routers play a crucial role in congestion control through queue management algorithms:
+
+### Tail Drop
+
+- Simplest approach: drop incoming packets when the queue is full
+- Can lead to "global synchronization" where multiple TCP flows reduce their rates simultaneously
+
+### Random Early Detection (RED)
+
+- Drops packets probabilistically as queue length increases
+- Starts dropping before queue is completely full
+- Avoids global synchronization by affecting different flows at different times
+
+### Weighted Random Early Detection (WRED)
+
+- Extension of RED that provides different drop probabilities for different traffic classes
+- Allows for quality of service differentiation
+
+## Challenges in Congestion Control
+
+Several challenges complicate congestion control:
+
+1. **Heterogeneous Networks**: Different link types with varying capacities and delays
+2. **Wireless Networks**: Packet loss due to interference rather than congestion
+3. **High Bandwidth-Delay Product Networks**: Traditional algorithms may not scale efficiently
+4. **Short-Lived Flows**: Many web connections don't last long enough for algorithms to adapt
+5. **Non-Cooperative Traffic**: UDP and other protocols that don't implement congestion control
+
+## Fairness in Congestion Control
+
+A well-designed congestion control mechanism should ensure fairness among different flows:
+
+- **Max-Min Fairness**: Maximize the minimum allocation among all flows
+- **Proportional Fairness**: Balance between efficiency and fairness
+- **TCP Fairness**: Ensure that TCP flows sharing a bottleneck receive equal bandwidth
+
+## Conclusion
+
+Congestion control is essential for maintaining network stability and efficiency. The Transport Layer, particularly through protocols like TCP and SCTP, implements sophisticated mechanisms to detect congestion and adjust transmission rates accordingly. These mechanisms continue to evolve to address the challenges of modern networks, including high-speed links, wireless connections, and diverse application requirements.
+
+Effective congestion control requires a balance between maximizing throughput and ensuring fairness among users. By preventing network collapse and optimizing resource utilization, congestion control mechanisms form a critical component of reliable network communication.

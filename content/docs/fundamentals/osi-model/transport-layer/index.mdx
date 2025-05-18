@@ -1,0 +1,93 @@
+---
+title: Transport Layer in OSI Model
+description: Learn about the Transport Layer in the OSI model, its protocols, process-to-process communication, and quality of service mechanisms.
+---
+
+# Transport Layer in OSI Model
+
+The Transport Layer is the fourth layer in the OSI (Open Systems Interconnection) model, positioned between the Network Layer and the Session Layer. It plays a crucial role in ensuring reliable end-to-end data delivery between applications running on different hosts, regardless of the underlying network infrastructure.
+
+## Key Functions of the Transport Layer
+
+The Transport Layer performs several critical functions:
+
+1. **Process-to-Process Communication**: Enables communication between specific applications or processes running on different hosts through port numbers.
+
+2. **Segmentation and Reassembly**: Breaks large messages into smaller segments for transmission and reassembles them at the destination.
+
+3. **Connection Management**: Establishes, maintains, and terminates connections between applications (in connection-oriented protocols).
+
+4. **Flow Control**: Prevents a fast sender from overwhelming a slow receiver by regulating the rate of data transmission.
+
+5. **Error Control**: Detects and recovers from errors that occur during transmission, ensuring data integrity.
+
+6. **Congestion Control**: Prevents network congestion by monitoring network traffic and adjusting transmission rates accordingly.
+
+7. **Multiplexing and Demultiplexing**: Allows multiple applications to use the network services simultaneously.
+
+## Transport Layer Protocols
+
+The Transport Layer employs various protocols to perform its functions:
+
+### Connection-Oriented Protocols
+
+- [Transmission Control Protocol (TCP)](/docs/fundamentals/osi-model/transport-layer/tcp): A reliable, connection-oriented protocol that provides error recovery, flow control, and congestion control.
+
+- [Stream Control Transmission Protocol (SCTP)](/docs/fundamentals/osi-model/transport-layer/sctp): A newer protocol that combines features of TCP and UDP, providing reliability while supporting message-oriented communication and multi-homing.
+
+### Connectionless Protocols
+
+- [User Datagram Protocol (UDP)](/docs/fundamentals/osi-model/transport-layer/udp): A simple, connectionless protocol that provides minimal error checking and no flow control or congestion control.
+
+## Quality of Service (QoS)
+
+[Quality of Service](/docs/fundamentals/osi-model/transport-layer/quality-of-service) refers to the overall performance of a network, particularly the performance experienced by users. The Transport Layer implements various mechanisms to improve QoS:
+
+- **Traffic Shaping**: Techniques like [Leaky Bucket and Token Bucket algorithms](/docs/fundamentals/osi-model/transport-layer/traffic-shaping) to regulate data flow.
+
+- **Congestion Control**: Mechanisms to prevent network congestion and ensure fair resource allocation.
+
+## Transport Layer Addressing: Ports
+
+The Transport Layer uses port numbers to identify specific applications or processes:
+
+- **Well-Known Ports (0-1023)**: Reserved for common services (e.g., HTTP: 80, HTTPS: 443, FTP: 21).
+- **Registered Ports (1024-49151)**: Registered with IANA for specific services.
+- **Dynamic/Private Ports (49152-65535)**: Available for temporary use by client applications.
+
+## Transport Layer in Action
+
+When an application sends data:
+
+1. The Transport Layer receives data from the Session Layer.
+2. It breaks the data into segments and adds a header with source and destination port numbers, sequence numbers, and other control information.
+3. The segments are passed to the Network Layer for routing to the destination.
+
+When data is received:
+
+1. The Transport Layer receives segments from the Network Layer.
+2. It checks for errors and may request retransmission if necessary.
+3. It reassembles the segments into the original message.
+4. It delivers the message to the correct application using the destination port number.
+
+## Relationship with Other Layers
+
+The Transport Layer works closely with:
+
+- **Network Layer (Layer 3)**: Relies on the Network Layer for host-to-host delivery across networks.
+- **Session Layer (Layer 5)**: Provides services to the Session Layer, which manages communication sessions between applications.
+
+## Challenges at the Transport Layer
+
+The Transport Layer faces several challenges:
+
+1. **Reliability vs. Performance**: Balancing the need for reliable delivery with performance considerations.
+2. **Congestion**: Managing network congestion to prevent packet loss and delays.
+3. **Security**: Protecting against attacks like SYN flooding and port scanning.
+4. **Quality of Service**: Ensuring appropriate service levels for different types of applications.
+
+## Conclusion
+
+The Transport Layer plays a vital role in ensuring reliable, efficient communication between applications across networks. By providing services like process-to-process delivery, error control, and flow control, it bridges the gap between the lower-level network functions and the higher-level application requirements.
+
+In the following sections, we'll explore the various protocols and mechanisms used at the Transport Layer in more detail.

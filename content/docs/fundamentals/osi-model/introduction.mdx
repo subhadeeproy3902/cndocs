@@ -18,7 +18,7 @@ There are 7 layers in the OSI Model, and each layer has its specific role in han
 1. **Physical Layer**
 2. **[Data Link Layer](/docs/fundamentals/osi-model/data-link-layer)**
 3. **[Network Layer](/docs/fundamentals/osi-model/network-layer)**
-4. **Transport Layer**
+4. **[Transport Layer](/docs/fundamentals/osi-model/transport-layer)**
 5. **Session Layer**
 6. **Presentation Layer**
 7. **Application Layer**
@@ -84,19 +84,22 @@ The **Network Layer** ensures **data transfer between different networks** and h
 
 ## Layer 4 – Transport Layer
 
-The **Transport Layer** ensures **complete and reliable end-to-end delivery** of data. Data here is referred to as **Segments**.
+The **Transport Layer** ensures **complete and reliable end-to-end delivery** of data. Data here is referred to as **Segments**. Learn more in the [Transport Layer](/docs/fundamentals/osi-model/transport-layer) section.
 
 ### Functions of the Transport Layer:
 
 - **Segmentation and Reassembly**: Breaks data into segments; reassembles at receiver.
 - **Service Point Addressing**: Uses **port numbers** to identify services/processes.
+- **[Process-to-Process Communication](/docs/fundamentals/osi-model/transport-layer/process-to-process)**: Enables communication between specific applications.
+- **[Congestion Control](/docs/fundamentals/osi-model/transport-layer/congestion-control)**: Prevents network overload.
+- **[Quality of Service](/docs/fundamentals/osi-model/transport-layer/quality-of-service)**: Ensures appropriate service levels for different applications.
 
 ### Services:
 
-- **Connection-Oriented** (e.g., TCP)
-- **Connectionless** (e.g., UDP)
+- **Connection-Oriented** (e.g., [TCP](/docs/fundamentals/osi-model/transport-layer/tcp))
+- **Connectionless** (e.g., [UDP](/docs/fundamentals/osi-model/transport-layer/udp))
 
-**Protocols:** TCP, UDP, NetBIOS, PPTP
+**Protocols:** [TCP](/docs/fundamentals/osi-model/transport-layer/tcp), [UDP](/docs/fundamentals/osi-model/transport-layer/udp), [SCTP](/docs/fundamentals/osi-model/transport-layer/sctp), NetBIOS, PPTP
 
 ## Layer 5 – Session Layer
 
@@ -200,7 +203,7 @@ When data is transmitted between two devices, it travels through all 7 layers fr
 | **1 – Physical Layer** | Establishing physical connections between devices | Bits | USB, SONET/SDH, etc. |
 | **2 – Data Link Layer** | Node to node delivery of message | Frames | Ethernet, PPP, etc. |
 | **3 – Network Layer** | Transmission of data from one host to another across different networks | Packets | IP, ICMP, IGMP, OSPF, ARP, RARP, BOOTP, etc. |
-| **4 – Transport Layer** | Takes service from Network Layer and provides it to the Application Layer | Segments (TCP) / Datagrams (UDP) | TCP, UDP, SCTP, etc. |
+| **4 – Transport Layer** | Takes service from Network Layer and provides it to the Application Layer | Segments (TCP) / Datagrams (UDP) | [TCP](/docs/fundamentals/osi-model/transport-layer/tcp), [UDP](/docs/fundamentals/osi-model/transport-layer/udp), [SCTP](/docs/fundamentals/osi-model/transport-layer/sctp), etc. |
 | **5 – Session Layer** | Establishes connection, maintains sessions, ensures authentication and security | Data | NetBIOS, RPC, PPTP, etc. |
 | **6 – Presentation Layer** | Translates and formats data from Application Layer for transmission | Data | TLS/SSL, MIME, JPEG, PNG, ASCII, etc. |
 | **7 – Application Layer** | Identifies client and synchronizes communication | Data | FTP, SMTP, DNS, DHCP, etc. |

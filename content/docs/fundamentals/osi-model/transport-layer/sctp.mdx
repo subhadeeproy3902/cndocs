@@ -1,0 +1,180 @@
+---
+title: Stream Control Transmission Protocol (SCTP)
+description: Learn about the Stream Control Transmission Protocol (SCTP), a transport layer protocol that combines features of TCP and UDP to provide reliable message-oriented data transfer.
+---
+
+# Stream Control Transmission Protocol (SCTP)
+
+The Stream Control Transmission Protocol (SCTP) is a transport layer protocol that was developed to overcome some of the limitations of both TCP and UDP. It was standardized by the IETF (Internet Engineering Task Force) in 2000 and is defined in RFC 4960. SCTP combines the reliability of TCP with the message-oriented nature of UDP, while adding new features like multi-homing and multi-streaming.
+
+<img className="max-w-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20231201202518/Screenshot-2023-12-01-202359.png" alt="SCTP Multi-Streaming" />
+
+## Origins and Purpose
+
+SCTP was originally developed for transporting telephony signaling messages over IP networks. The protocol was designed by the IETF SIGTRAN (Signaling Transport) working group to address the limitations of existing transport protocols for carrying Signaling System 7 (SS7) messages over IP networks.
+
+While it was initially created for telecommunications signaling, SCTP has evolved into a general-purpose transport protocol suitable for a wide range of applications that require reliability, message orientation, and advanced features not available in TCP or UDP.
+
+## Key Features of SCTP
+
+SCTP introduces several innovative features that distinguish it from other transport protocols:
+
+### 1. Message-Oriented Delivery
+
+Unlike TCP, which treats data as a continuous stream of bytes, SCTP is message-oriented:
+
+- Preserves message boundaries, similar to UDP
+- Delivers complete messages to the application layer
+- Allows applications to work with logical message units rather than byte streams
+
+### 2. Multi-Streaming
+
+One of SCTP's most distinctive features is its ability to support multiple independent streams within a single connection (association):
+
+- Each stream is a sequence of messages that can be delivered independently
+- Eliminates head-of-line blocking that occurs in TCP
+- If a message is lost in one stream, it only affects that stream, not others
+- Allows for prioritization of different types of data
+
+### 3. Multi-Homing
+
+SCTP supports multi-homing, allowing endpoints to have multiple IP addresses:
+
+- An SCTP endpoint can use multiple network interfaces
+- Provides path redundancy and increased reliability
+- If one network path fails, SCTP can automatically switch to an alternative path
+- Improves fault tolerance without application intervention
+
+### 4. Reliable Data Transfer
+
+Like TCP, SCTP provides reliable data transfer:
+
+- Detects lost, duplicated, or corrupted data
+- Uses selective acknowledgments (SACK) for efficient loss recovery
+- Retransmits lost or corrupted messages
+- Delivers messages in sequence within each stream
+
+### 5. Connection-Oriented with Four-Way Handshake
+
+SCTP establishes connections (called "associations") using a four-way handshake:
+
+1. **INIT**: Initiator sends an INIT chunk
+2. **INIT-ACK**: Responder acknowledges with an INIT-ACK chunk containing a cookie
+3. **COOKIE-ECHO**: Initiator echoes the cookie back
+4. **COOKIE-ACK**: Responder acknowledges the cookie
+
+This process helps protect against SYN flooding attacks that can affect TCP.
+
+### 6. Partial Reliability Extension (PR-SCTP)
+
+SCTP can be configured to provide partial reliability:
+
+- Allows the sender to specify a "lifetime" for messages
+- Messages that cannot be delivered within their lifetime are discarded
+- Useful for time-sensitive applications where outdated data is no longer valuable
+
+### 7. Congestion Control
+
+SCTP implements congestion control mechanisms similar to TCP:
+
+- Slow start and congestion avoidance
+- Fast retransmit and fast recovery
+- Separate congestion control for each destination address in multi-homed scenarios
+
+## SCTP Packet Format
+
+SCTP uses a chunk-based packet structure:
+
+### Common Header
+
+Every SCTP packet begins with a common header containing:
+
+- Source Port (16 bits)
+- Destination Port (16 bits)
+- Verification Tag (32 bits)
+- Checksum (32 bits)
+
+### Chunks
+
+Following the common header are one or more chunks. Each chunk has:
+
+- Chunk Type (8 bits)
+- Chunk Flags (8 bits)
+- Chunk Length (16 bits)
+- Chunk Value (variable length)
+
+Different types of chunks include:
+- DATA: Contains user data
+- INIT: Initiates an association
+- SACK: Selective acknowledgment
+- HEARTBEAT: Verifies reachability of an address
+- ERROR: Reports error conditions
+- SHUTDOWN: Initiates graceful association termination
+
+## Advantages of SCTP
+
+SCTP offers several advantages over traditional transport protocols:
+
+1. **Improved Reliability**: Multi-homing provides path redundancy and fault tolerance.
+
+2. **Reduced Head-of-Line Blocking**: Multi-streaming allows independent delivery of message streams.
+
+3. **Message Orientation**: Preserves application message boundaries, simplifying application design.
+
+4. **Enhanced Security**: Four-way handshake provides protection against certain types of attacks.
+
+5. **Flexible Reliability**: Can be configured for full or partial reliability based on application needs.
+
+6. **Graceful Degradation**: Can continue functioning even when some network paths fail.
+
+7. **Ordered or Unordered Delivery**: Supports both ordered delivery (like TCP) and unordered delivery (like UDP) as needed.
+
+## Limitations and Challenges
+
+Despite its advantages, SCTP faces several challenges:
+
+1. **Limited Support in Middleware**: Many applications and frameworks are designed specifically for TCP or UDP.
+
+2. **Network Equipment Compatibility**: Some firewalls, NATs, and load balancers may not properly handle SCTP traffic.
+
+3. **Operating System Support**: While supported in many operating systems, SCTP is not as universally implemented as TCP and UDP.
+
+4. **Application Awareness**: Applications need to be specifically designed or modified to take advantage of SCTP's features.
+
+5. **Complexity**: SCTP is more complex than TCP or UDP, which can make implementation and debugging more challenging.
+
+## Use Cases for SCTP
+
+SCTP is particularly well-suited for:
+
+1. **Telecommunications Signaling**: Its original purpose, carrying SS7 and other signaling protocols over IP networks.
+
+2. **Real-Time Applications**: Voice, video, and other applications that benefit from multi-streaming and partial reliability.
+
+3. **High-Availability Systems**: Applications requiring continuous operation even during network failures.
+
+4. **Database Replication**: Where multiple streams of data need to be transferred reliably and independently.
+
+5. **Web Services**: Particularly those requiring multiple simultaneous transactions.
+
+6. **IoT Applications**: Where devices may have multiple network interfaces and require reliable communication.
+
+## Comparison with TCP and UDP
+
+| Feature | SCTP | TCP | UDP |
+|---------|------|-----|-----|
+| Connection Oriented | Yes | Yes | No |
+| Reliability | Full or Partial | Full | None |
+| Message Boundaries | Preserved | Not Preserved | Preserved |
+| Delivery Order | Ordered or Unordered | Ordered | Unordered |
+| Multi-Streaming | Yes | No | No |
+| Multi-Homing | Yes | No | No |
+| Flow Control | Yes | Yes | No |
+| Congestion Control | Yes | Yes | No |
+| Header Size | 12 bytes + chunks | 20 bytes | 8 bytes |
+
+## Conclusion
+
+Stream Control Transmission Protocol (SCTP) represents an evolution in transport layer protocols, combining the best features of TCP and UDP while adding innovative capabilities like multi-streaming and multi-homing. While it hasn't achieved the same level of ubiquity as TCP and UDP, SCTP offers significant advantages for applications that can benefit from its unique features.
+
+As networks become more complex and applications more demanding, SCTP's combination of reliability, flexibility, and fault tolerance makes it an increasingly relevant option for modern networked applications, particularly those requiring high availability and real-time communication.

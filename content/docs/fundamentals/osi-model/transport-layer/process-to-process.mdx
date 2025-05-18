@@ -1,0 +1,141 @@
+---
+title: Process-to-Process Communication
+description: Learn about process-to-process communication in the Transport Layer, including addressing, multiplexing, and demultiplexing.
+---
+
+# Process-to-Process Communication
+
+Process-to-process communication is a fundamental function of the Transport Layer in the OSI model. While the Network Layer handles communication between hosts using IP addresses, the Transport Layer enables communication between specific applications or processes running on those hosts using port numbers.
+
+## The Need for Process-to-Process Communication
+
+In a typical computer system, multiple applications or processes may be running simultaneously and communicating over the network. For example, a user might be browsing the web, checking email, and streaming music all at the same time. The operating system needs a way to direct incoming data to the correct application.
+
+This is where process-to-process communication comes in. It ensures that:
+
+1. Data from a web server goes to the web browser, not the email client
+2. Email messages go to the email application, not the music streaming app
+3. Music streaming data goes to the media player, not the web browser
+
+## Port Numbers
+
+The Transport Layer uses port numbers to identify specific applications or processes. A port number is a 16-bit number, ranging from 0 to 65535, that acts as an endpoint for communication.
+
+When combined with an IP address, a port number creates a complete address called a socket. A socket uniquely identifies a specific process on a specific host.
+
+### Types of Ports
+
+Port numbers are divided into three ranges:
+
+1. **Well-Known Ports (0-1023)**
+   - Reserved for common services and protocols
+   - Assigned and controlled by IANA (Internet Assigned Numbers Authority)
+   - Examples:
+     - HTTP: Port 80
+     - HTTPS: Port 443
+     - FTP: Port 21
+     - SSH: Port 22
+     - SMTP: Port 25
+
+2. **Registered Ports (1024-49151)**
+   - Registered with IANA for specific services
+   - Can be used by ordinary user processes
+   - Examples:
+     - MySQL: Port 3306
+     - PostgreSQL: Port 5432
+     - MongoDB: Port 27017
+
+3. **Dynamic/Private Ports (49152-65535)**
+   - Not registered with IANA
+   - Used for temporary or private purposes
+   - Typically assigned dynamically to client applications when they initiate connections
+
+## Sockets
+
+A socket is the combination of an IP address and a port number, represented as `IP_address:port_number` (e.g., `192.168.1.1:80`). Sockets provide the interface between the application layer and the transport layer.
+
+There are two main types of sockets:
+
+1. **Stream Sockets**: Used with TCP for reliable, connection-oriented communication
+2. **Datagram Sockets**: Used with UDP for connectionless communication
+
+## Multiplexing and Demultiplexing
+
+The Transport Layer performs two key operations to enable process-to-process communication:
+
+### Multiplexing
+
+Multiplexing occurs at the sender's side. It allows multiple applications to use the network services simultaneously by:
+
+1. Collecting data from different application processes
+2. Adding transport headers with appropriate port numbers
+3. Passing the segments to the Network Layer
+
+<img className="max-w-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/CN_Multiplexing-1.jpg" alt="Multiplexing and Demultiplexing" />
+
+### Demultiplexing
+
+Demultiplexing occurs at the receiver's side. It involves:
+
+1. Receiving segments from the Network Layer
+2. Examining the port numbers in the segment headers
+3. Delivering the data to the appropriate application process
+
+## Connection-Oriented vs. Connectionless Communication
+
+Process-to-process communication can be either connection-oriented or connectionless:
+
+### Connection-Oriented Communication (TCP)
+
+In connection-oriented communication:
+
+1. A connection is established before data transfer begins (three-way handshake)
+2. Data is transferred in an ordered, reliable manner
+3. The connection is terminated when communication is complete
+
+This approach is used by TCP and provides reliable delivery but with higher overhead.
+
+### Connectionless Communication (UDP)
+
+In connectionless communication:
+
+1. No connection is established before data transfer
+2. Each packet (datagram) is handled independently
+3. There is no guarantee of delivery or ordering
+
+This approach is used by UDP and provides faster, lower-overhead communication but without reliability guarantees.
+
+## Socket Programming
+
+Socket programming is the practical implementation of process-to-process communication. It involves creating and using sockets to establish communication between processes.
+
+A basic client-server interaction using sockets typically involves:
+
+1. **Server Side**:
+   - Create a socket
+   - Bind the socket to an address and port
+   - Listen for incoming connections
+   - Accept connections
+   - Send/receive data
+   - Close the connection
+
+2. **Client Side**:
+   - Create a socket
+   - Connect to the server's address and port
+   - Send/receive data
+   - Close the connection
+
+## Challenges in Process-to-Process Communication
+
+Several challenges can arise in process-to-process communication:
+
+1. **Port Conflicts**: Multiple applications trying to use the same port
+2. **Security Concerns**: Unauthorized access to ports and services
+3. **NAT Traversal**: Communicating through Network Address Translation
+4. **Firewall Restrictions**: Blocked ports preventing communication
+
+## Conclusion
+
+Process-to-process communication is a critical function of the Transport Layer that enables specific applications on different hosts to communicate with each other. By using port numbers and sockets, the Transport Layer ensures that data is delivered to the correct application, regardless of how many applications are running on a host.
+
+This functionality forms the foundation for all network applications, from web browsers and email clients to file transfer utilities and streaming services. Understanding process-to-process communication is essential for developing networked applications and troubleshooting network issues.
