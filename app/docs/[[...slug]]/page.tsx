@@ -2,8 +2,6 @@ import { source } from "@/lib/source";
 import {
   DocsPage,
   DocsBody,
-  DocsTitle,
-  DocsDescription,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 import defaultMdxComponents from "fumadocs-ui/mdx";
@@ -19,6 +17,7 @@ import { buttonVariants } from "@/components/ui/button";
 import type { MDXComponents } from "mdx/types";
 import { type ComponentProps, type FC } from "react";
 import type { Metadata } from "next";
+import DocActions from "@/components/doc-actions";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -94,6 +93,7 @@ export default async function Page(props: {
               >,
             }}
           />
+          <DocActions title={page.data.title} path={path} />
         </DocsBody>
       </DocsPage>
   );
