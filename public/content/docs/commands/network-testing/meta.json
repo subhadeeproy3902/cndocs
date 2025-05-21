@@ -1,0 +1,5 @@
+{
+  "title": "Network Testing",
+  "icon": "Network",
+  "pages": ["ping", "traceroute", "mtr", "telnet", "netcat", "curl", "wget"]
+}

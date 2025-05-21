@@ -1,0 +1,368 @@
+---
+title: "tcpflow Command"
+description: "A comprehensive guide to capturing and reconstructing TCP streams"
+icon: "stream"
+draft: false
+toc: true
+---
+
+# tcpflow Command
+
+## Introduction
+
+`tcpflow` is a powerful network forensics tool that captures data transmitted as part of TCP connections (flows) and stores each flow in a separate file for analysis. Unlike packet analyzers like Wireshark or tcpdump that focus on individual packets, tcpflow reconstructs the actual data streams, making it invaluable for protocol analysis, network debugging, and digital forensics.
+
+The key strength of tcpflow lies in its ability to reassemble TCP streams regardless of packet order, retransmissions, or other network anomalies. This makes it particularly useful for analyzing application-layer protocols, extracting files transferred over the network, and investigating network-based attacks.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/tcpflow-command.png" alt="tcpflow Command Output" />
+
+## Basic Concepts
+
+Before diving into tcpflow usage, it's important to understand some key concepts:
+
+### TCP Flows
+
+A TCP flow represents the data exchanged between two endpoints (IP address and port pairs) during a TCP connection. Each TCP flow consists of two unidirectional data streams - one from client to server and another from server to client.
+
+### Flow Reconstruction
+
+tcpflow uses TCP sequence numbers to correctly order packets and reconstruct the original data streams, even when packets arrive out of order or are retransmitted.
+
+### Flow Storage
+
+By default, tcpflow stores each flow in a separate file named according to the connection's endpoints, making it easy to identify and analyze specific connections.
+
+## Installation
+
+tcpflow is available in the repositories of most Linux distributions.
+
+### Debian/Ubuntu-based Systems
+
+```bash
+sudo apt update
+sudo apt install tcpflow
+```
+
+### Red Hat/CentOS/Fedora Systems
+
+```bash
+# For CentOS/RHEL with EPEL repository enabled
+sudo yum install epel-release
+sudo yum install tcpflow
+
+# For Fedora
+sudo dnf install tcpflow
+```
+
+### Arch Linux
+
+```bash
+sudo pacman -S tcpflow
+```
+
+### From Source
+
+To compile from source:
+
+```bash
+git clone --recursive https://github.com/simsong/tcpflow.git
+cd tcpflow
+./bootstrap.sh
+./configure
+make
+sudo make install
+```
+
+## Basic Syntax
+
+The basic syntax of the tcpflow command is:
+
+```bash
+tcpflow [options] [expression]
+```
+
+Where:
+- **options**: Various flags that modify the behavior of tcpflow
+- **expression**: A tcpdump-style filter expression to select which packets to capture
+
+## Basic Usage
+
+### Capturing Live Traffic
+
+To capture all TCP traffic on all interfaces:
+
+```bash
+sudo tcpflow -i any
+```
+
+This will create files for each TCP flow in the current directory.
+
+### Capturing Traffic on a Specific Interface
+
+To capture traffic on a specific network interface:
+
+```bash
+sudo tcpflow -i eth0
+```
+
+### Filtering Traffic
+
+tcpflow uses the same filter syntax as tcpdump. For example, to capture only HTTP traffic:
+
+```bash
+sudo tcpflow -i any 'tcp port 80'
+```
+
+To capture traffic to or from a specific host:
+
+```bash
+sudo tcpflow -i any 'host 192.168.1.100'
+```
+
+### Reading from a Packet Capture File
+
+To process a previously captured pcap file:
+
+```bash
+tcpflow -r capture.pcap
+```
+
+## Understanding Output Files
+
+By default, tcpflow creates files named according to the pattern:
+
+```
+[timestamp]sourceIP.sourcePort-destinationIP.destinationPort[--VLAN][cNNNN]
+```
+
+For example:
+- `192.168.1.100.12345-93.184.216.34.80`: Traffic from 192.168.1.100 port 12345 to 93.184.216.34 port 80
+- `1620000000T192.168.1.100.12345-93.184.216.34.80`: Same flow with a timestamp prefix
+- `192.168.1.100.12345-93.184.216.34.80c0005`: The 6th connection between these endpoints
+
+### HTTP Processing
+
+When using the `-a` option for automatic protocol analysis, tcpflow will create additional files for HTTP connections:
+
+```bash
+sudo tcpflow -a -i any 'tcp port 80'
+```
+
+This will create files like:
+- `192.168.1.100.12345-93.184.216.34.80`: The raw TCP flow
+- `192.168.1.100.12345-93.184.216.34.80-HTTP`: HTTP headers
+- `192.168.1.100.12345-93.184.216.34.80-HTTPBODY`: HTTP body content
+- `192.168.1.100.12345-93.184.216.34.80-HTTPBODY-GZIP`: Decompressed content (if gzipped)
+
+## Advanced Features
+
+### Customizing Output Filenames
+
+To customize the output filename format:
+
+```bash
+sudo tcpflow -F '%A.%a-%B.%b' -i any
+```
+
+Format specifiers include:
+- `%A`: Source IP address
+- `%a`: Source port
+- `%B`: Destination IP address
+- `%b`: Destination port
+- `%T`: Timestamp
+- `%V`: VLAN number
+
+### Storing Files in a Specific Directory
+
+To store output files in a specific directory:
+
+```bash
+sudo tcpflow -o /path/to/output/directory -i any
+```
+
+### Generating Reports
+
+tcpflow can generate a DFXML (Digital Forensics XML) report with metadata about all captured flows:
+
+```bash
+sudo tcpflow -o output_dir -X report.xml -i any
+```
+
+### Calculating MD5 Hashes
+
+To calculate MD5 hashes for all captured flows:
+
+```bash
+sudo tcpflow -o output_dir -md5 -i any
+```
+
+### Capturing Only the First N Bytes
+
+To limit the amount of data captured for each flow:
+
+```bash
+sudo tcpflow -C 1024 -i any
+```
+
+This captures only the first 1024 bytes of each flow.
+
+### Console Output
+
+To display captured data on the console instead of writing to files:
+
+```bash
+sudo tcpflow -c -i any
+```
+
+### Preserving TCP Timestamps
+
+To include timestamps in the output:
+
+```bash
+sudo tcpflow -T -i any
+```
+
+## Practical Examples
+
+### Capturing and Analyzing HTTP Traffic
+
+To capture HTTP traffic and automatically process it:
+
+```bash
+sudo tcpflow -a -o http_capture -i any 'tcp port 80'
+```
+
+This captures all HTTP traffic, processes it, and stores the files in the `http_capture` directory.
+
+### Extracting Files from Network Traffic
+
+To extract files transferred over HTTP:
+
+```bash
+sudo tcpflow -a -e http -o extracted_files -i any 'tcp port 80'
+```
+
+The `-e http` option enables HTTP file extraction.
+
+### Monitoring Multiple Services
+
+To monitor traffic for multiple services:
+
+```bash
+sudo tcpflow -i any 'tcp port 80 or tcp port 443 or tcp port 25'
+```
+
+This captures HTTP, HTTPS, and SMTP traffic.
+
+### Forensic Analysis of Captured Traffic
+
+For forensic analysis with comprehensive metadata:
+
+```bash
+sudo tcpflow -a -r evidence.pcap -o case_evidence -X report.xml -md5
+```
+
+This processes a pcap file, extracts all flows, generates MD5 hashes, and creates a DFXML report.
+
+### Capturing Email Traffic
+
+To capture and analyze email traffic:
+
+```bash
+sudo tcpflow -a -i any 'tcp port 25 or tcp port 110 or tcp port 143'
+```
+
+This captures SMTP, POP3, and IMAP traffic.
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-a` | Enable automatic protocol analysis |
+| `-c` | Console output (don't create files) |
+| `-C N` | Only capture the first N bytes of each flow |
+| `-e proto` | Extract objects for the specified protocol |
+| `-F format` | Specify a custom filename format |
+| `-h` | Display help information |
+| `-i interface` | Specify the network interface to use |
+| `-md5` | Calculate MD5 checksums for each flow |
+| `-o outdir` | Write all output to the specified directory |
+| `-r file` | Read packets from a pcap file |
+| `-R` | Do not check for duplicate flows |
+| `-s snaplen` | Capture snaplen bytes per packet |
+| `-T` | Include timestamp in filename |
+| `-v` | Verbose operation |
+| `-V` | Print version and exit |
+| `-w file` | Write packets not processed to file |
+| `-X file` | Write information about flows to XML file |
+
+## Comparison with Similar Tools
+
+### tcpflow vs. tcpdump
+
+- **tcpdump**: Focuses on capturing and displaying individual packets
+- **tcpflow**: Reconstructs and stores complete TCP streams
+
+### tcpflow vs. Wireshark
+
+- **Wireshark**: GUI-based, provides detailed packet analysis and protocol decoding
+- **tcpflow**: Command-line tool, focuses on stream reconstruction and storage
+
+### tcpflow vs. netsniff-ng
+
+- **netsniff-ng**: High-performance packet capture toolkit with multiple tools
+- **tcpflow**: Specialized for TCP stream reconstruction and analysis
+
+## Troubleshooting
+
+### Common Issues
+
+#### Permission Denied
+
+If you see "permission denied" errors:
+
+```
+Solution: Run tcpflow with sudo or as root
+```
+
+#### No Packets Captured
+
+If tcpflow isn't capturing any packets:
+
+```
+Solutions:
+1. Check your filter expression
+2. Verify you're using the correct interface
+3. Ensure you have permission to capture on the interface
+```
+
+#### Out of Disk Space
+
+tcpflow can quickly fill disk space when capturing high-volume traffic:
+
+```
+Solutions:
+1. Use the -C option to limit bytes captured per flow
+2. Use more specific filter expressions
+3. Monitor disk usage and clean up regularly
+```
+
+## Best Practices
+
+### Security Considerations
+
+1. **Sensitive Data**: Be aware that tcpflow captures and stores the complete content of TCP connections, which may include sensitive information like passwords or personal data
+2. **Legal Implications**: Only capture traffic on networks you own or have explicit permission to monitor
+3. **Secure Storage**: Store capture files securely and delete them when no longer needed
+
+### Performance Optimization
+
+1. **Use Specific Filters**: Narrow your capture with specific filter expressions
+2. **Limit Capture Size**: Use the `-C` option to limit the amount of data captured per flow
+3. **Choose the Right Storage Location**: Use a fast disk with sufficient space for output files
+
+## Conclusion
+
+tcpflow is a powerful tool for network analysis and forensics that goes beyond traditional packet capture by reconstructing complete TCP streams. Its ability to reassemble data regardless of network conditions makes it invaluable for protocol analysis, security investigations, and network debugging.
+
+Whether you're extracting files transferred over HTTP, analyzing application protocols, or conducting network forensics, tcpflow provides the capabilities needed to work with TCP data at the stream level rather than the packet level. By storing each flow in a separate file, it simplifies the process of identifying and analyzing specific connections, making it an essential tool in any network analyst's toolkit.

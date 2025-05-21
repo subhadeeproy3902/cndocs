@@ -1,0 +1,215 @@
+---
+title: Traffic Shaping Algorithms
+description: Learn about traffic shaping algorithms in the Transport Layer, including Leaky Bucket and Token Bucket algorithms for controlling data flow and improving Quality of Service.
+---
+
+# Traffic Shaping Algorithms
+
+Traffic shaping is a bandwidth management technique used in computer networks to control the volume of traffic being sent into a network in a specified period (bandwidth throttling), or the maximum rate at which the traffic is sent (rate limiting). Traffic shaping is an important component of Quality of Service (QoS) mechanisms that helps prevent network congestion and ensures fair resource allocation.
+
+## Purpose of Traffic Shaping
+
+Traffic shaping serves several important purposes in network management:
+
+1. **Congestion Prevention**: By regulating the rate of data transmission, traffic shaping helps prevent network congestion before it occurs.
+
+2. **Bandwidth Allocation**: It ensures fair distribution of available bandwidth among different users or applications.
+
+3. **QoS Implementation**: Traffic shaping is essential for implementing Quality of Service policies, allowing prioritization of critical traffic.
+
+4. **Service Level Agreement (SLA) Compliance**: It helps service providers meet the performance guarantees specified in SLAs.
+
+5. **Cost Control**: In networks with usage-based billing, traffic shaping can help control costs by limiting bandwidth consumption.
+
+## Traffic Shaping vs. Traffic Policing
+
+While both traffic shaping and traffic policing control the rate of traffic, they use different approaches:
+
+### Traffic Shaping
+
+- **Buffers** excess traffic and releases it later
+- **Delays** packets to conform to a specified rate
+- **Smooths** traffic flow, reducing burstiness
+- **Preserves** packets by queuing them rather than dropping them
+- Typically implemented at the **egress** (outgoing) point
+
+### Traffic Policing
+
+- **Drops or remarks** excess traffic
+- Does **not delay** packets (no buffering)
+- Does **not smooth** traffic flow
+- Can result in **packet loss** during bursts
+- Can be implemented at both **ingress** (incoming) and **egress** points
+
+## Common Traffic Shaping Algorithms
+
+Two of the most widely used traffic shaping algorithms are the Leaky Bucket Algorithm and the Token Bucket Algorithm.
+
+## Leaky Bucket Algorithm `{leaky-bucket}`
+
+The Leaky Bucket algorithm is a simple yet effective method for traffic shaping that regulates data flow in a network, similar to how a physical leaky bucket controls water flow.
+
+### Concept and Analogy
+
+Imagine a bucket with a small hole at the bottom:
+
+- Water (data packets) pours into the bucket at a variable rate
+- Water leaks out of the bucket at a constant rate
+- If the bucket overflows, water (excess packets) is discarded
+- The bucket has a finite capacity (buffer size)
+
+This mechanism ensures a constant output rate regardless of the input rate's variability.
+
+### How Leaky Bucket Works
+
+1. **Packet Arrival**: When a packet arrives, the algorithm checks if the bucket (buffer) has enough space.
+2. **Buffer Check**: If there is space, the packet is added to the bucket; otherwise, it is discarded.
+3. **Constant Output**: Packets are removed from the bucket and forwarded at a constant rate.
+4. **Smoothing Effect**: Bursty input traffic is converted into a steady, constant-rate output.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/leakyTap-1.png" alt="Leaky Bucket Algorithm" />
+
+### Implementation
+
+The Leaky Bucket algorithm can be implemented using a FIFO queue with a fixed service rate:
+
+```
+// Pseudocode for Leaky Bucket Algorithm
+initialize bucket_size, output_rate, current_bucket_level = 0
+
+function process_packet(packet):
+    if current_bucket_level + packet.size <= bucket_size:
+        // Add packet to bucket
+        current_bucket_level += packet.size
+        return ACCEPT
+    else:
+        // Bucket would overflow
+        return DROP
+
+// This function runs at regular intervals
+function leak():
+    if current_bucket_level > 0:
+        bytes_to_transmit = min(output_rate, current_bucket_level)
+        transmit(bytes_to_transmit)
+        current_bucket_level -= bytes_to_transmit
+```
+
+### Advantages of Leaky Bucket
+
+1. **Simplicity**: Easy to understand and implement
+2. **Constant Output Rate**: Provides a smooth, predictable output regardless of input burstiness
+3. **Buffer Control**: Limits the amount of memory used for buffering
+4. **Congestion Prevention**: Helps prevent network congestion by regulating traffic flow
+
+### Limitations of Leaky Bucket
+
+1. **Lack of Flexibility**: The constant output rate cannot adapt to network conditions
+2. **Potential for Packet Loss**: Packets are dropped when the bucket is full
+3. **Inefficient Bandwidth Usage**: Cannot take advantage of available bandwidth during quiet periods
+4. **No Burst Accommodation**: Cannot temporarily allow higher rates even when the network could handle it
+
+## Token Bucket Algorithm `{token-bucket}`
+
+The Token Bucket algorithm is another popular traffic shaping method that offers more flexibility than the Leaky Bucket algorithm by allowing for controlled traffic bursts.
+
+### Concept and Analogy
+
+Imagine a bucket that is filled with tokens at a constant rate:
+
+- Tokens are added to the bucket at a fixed rate (token rate)
+- The bucket has a maximum capacity (burst size)
+- To send a packet, a sender must remove a token from the bucket
+- If there are no tokens, the packet must wait or be discarded
+- Excess tokens are discarded when the bucket is full
+
+This mechanism allows for burstiness while still maintaining an average rate limit.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20240116162804/Blank-diagram-(7).png" alt="Token Bucket Algorithm" />
+
+### How Token Bucket Works
+
+1. **Token Generation**: Tokens are generated at a constant rate and added to the bucket.
+2. **Token Storage**: The bucket stores tokens up to its maximum capacity (burst size).
+3. **Packet Transmission**: When a packet arrives, it can only be transmitted if enough tokens are available.
+4. **Token Consumption**: Each transmitted packet consumes a number of tokens proportional to its size.
+5. **Burst Handling**: During idle periods, tokens accumulate, allowing for temporary traffic bursts later.
+
+### Implementation
+
+The Token Bucket algorithm can be implemented as follows:
+
+```
+// Pseudocode for Token Bucket Algorithm
+initialize token_rate, bucket_capacity, current_tokens = bucket_capacity, last_update_time = current_time()
+
+function process_packet(packet):
+    // Update token count based on elapsed time
+    now = current_time()
+    time_elapsed = now - last_update_time
+    new_tokens = time_elapsed * token_rate
+    current_tokens = min(current_tokens + new_tokens, bucket_capacity)
+    last_update_time = now
+    
+    if current_tokens >= packet.size:
+        // Enough tokens available
+        current_tokens -= packet.size
+        return TRANSMIT
+    else:
+        // Not enough tokens
+        return DELAY_OR_DROP
+```
+
+### Advantages of Token Bucket
+
+1. **Burst Tolerance**: Allows for temporary traffic bursts, utilizing network capacity more efficiently
+2. **Flexibility**: Can be configured for different average rates and burst sizes
+3. **Idle Credit**: Accumulates tokens during idle periods, rewarding intermittent users
+4. **Dual-Rate Control**: Controls both average and peak rates
+5. **Adaptability**: Can be combined with other QoS mechanisms for more sophisticated traffic management
+
+### Limitations of Token Bucket
+
+1. **Complexity**: Slightly more complex to implement than Leaky Bucket
+2. **Parameter Tuning**: Requires careful selection of token rate and bucket size parameters
+3. **Potential for Congestion**: Large burst sizes can still lead to temporary network congestion
+4. **Memory Usage**: Tracking token counts and timestamps requires additional memory
+
+## Comparison of Leaky Bucket and Token Bucket
+
+| Feature | Leaky Bucket | Token Bucket |
+|---------|-------------|--------------|
+| **Traffic Pattern** | Constant rate output | Variable rate with controlled bursts |
+| **Burst Handling** | Smooths out bursts | Allows controlled bursts |
+| **Implementation** | FIFO queue with constant service rate | Counter-based with token generation rate |
+| **Parameters** | Bucket size and output rate | Token rate and bucket capacity |
+| **Flexibility** | Less flexible | More flexible |
+| **Bandwidth Utilization** | May underutilize available bandwidth | Better utilization of available bandwidth |
+| **Use Cases** | Strict rate limiting, traffic smoothing | Applications that benefit from controlled bursts |
+
+## Applications of Traffic Shaping Algorithms
+
+Traffic shaping algorithms are used in various network scenarios:
+
+1. **Internet Service Providers (ISPs)**: Manage subscriber bandwidth and implement fair usage policies
+2. **Enterprise Networks**: Prioritize business-critical applications over less important traffic
+3. **Cloud Services**: Ensure fair resource allocation among multiple tenants
+4. **Content Delivery Networks (CDNs)**: Control the rate of content distribution
+5. **Mobile Networks**: Manage limited wireless bandwidth efficiently
+6. **VoIP and Video Streaming**: Ensure consistent quality for real-time applications
+7. **Rate Limiting APIs**: Protect web services from overuse or abuse
+
+## Implementation Considerations
+
+When implementing traffic shaping algorithms, several factors should be considered:
+
+1. **Traffic Characteristics**: Understanding the nature of the traffic (bursty vs. steady, real-time vs. non-real-time)
+2. **Network Capacity**: Aligning shaping parameters with available network resources
+3. **Application Requirements**: Considering the QoS needs of different applications
+4. **Scalability**: Ensuring the implementation can handle the required number of flows
+5. **Monitoring and Adjustment**: Continuously monitoring performance and adjusting parameters as needed
+
+## Conclusion
+
+Traffic shaping algorithms like Leaky Bucket and Token Bucket play a crucial role in network management by controlling data flow and preventing congestion. While Leaky Bucket provides a constant output rate that smooths traffic, Token Bucket offers more flexibility by allowing controlled bursts.
+
+The choice between these algorithms depends on specific network requirements and traffic characteristics. In many cases, these algorithms are used in combination with other QoS mechanisms to provide comprehensive traffic management solutions that ensure fair resource allocation and optimal network performance.

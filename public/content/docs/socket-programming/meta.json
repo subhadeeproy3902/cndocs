@@ -1,0 +1,13 @@
+{
+  "title": "II. Socket Programming",
+  "description": "Dive into the world of socket programming.",
+  "icon": "BookB",
+  "root": true,
+  "pages": [
+    "index",
+    "socket-fundamentals",
+    "models",
+    "techniques",
+    "error-handling"
+  ]
+}

@@ -1,0 +1,99 @@
+---
+title: "Introduction"
+description: "Learn about Media Access Control (MAC), its functions, addressing, and importance in network communication"
+---
+
+# Introduction
+
+Media Access Control (MAC) refers to a set of rules that determine how devices access and transmit data over a shared network medium. In simple terms, MAC is a protocol that enables multiple devices to communicate efficiently on the same network without interfering with each other's transmissions.
+
+## What is MAC?
+
+MAC (Media Access Control) is a sublayer of the Data Link Layer in the OSI model. It provides addressing and channel access control mechanisms that make it possible for several devices to communicate within a multi-point network, typically a local area network (LAN) or metropolitan area network (MAN).
+
+When a device is connected to a network, it obtains a unique MAC address. This address identifies the device on the network and helps direct data packets to their intended destinations. The MAC address, also known as the hardware address, is hard-wired to the network interface card (NIC) of the device.
+
+## History of MAC
+
+The concept of Media Access Control addresses was created by scientists at Xerox PARC (Palo Alto Research Center) in the 1970s. They developed the Ethernet protocol, which included the use of unique hardware addresses for network devices.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/mac-representation.jpg" alt="Representation of MAC Address" />
+
+Over time, various terms have been used interchangeably with MAC address, including:
+- Hardware address
+- Physical address
+- Ethernet hardware address
+- Burned-in address (BIA, especially for Cisco Router Switches)
+
+## Characteristics of MAC Addresses
+
+MAC addresses have several important characteristics that make them effective for network communication:
+
+1. **Global Uniqueness**: Each MAC address is globally unique, allowing for the identification of individual devices within a connected network.
+
+2. **Fixed Length**: A MAC address is 6 bytes (48 bits) in length. According to IEEE 802 standards, this address can be written in three common formats:
+   - Six two-digit hexadecimals separated by hyphens (-): 45-67-89-AB-12-CD
+   - Six two-digit hexadecimals separated by colons (:): 45:67:89:AB:DE:23
+   - Three four-digit hexadecimals separated by dots (.): ABCD.4567.1238
+
+3. **Structured Format**: The MAC address consists of two parts:
+   - The left 24 bits (3 bytes) are called the Organizationally Unique Identifier (OUI), assigned by the Internet Assigned Number Authority (IANA) to the manufacturer.
+   - The right 24 bits (3 bytes) are called the Network Interface Controller Specific (NICS) part, which is assigned by the manufacturer to uniquely identify the device.
+
+4. **Data Link Layer Operation**: MAC addresses operate at the Data Link Layer (Layer 2) of the OSI model. Devices that function at this layer include NIC cards, bridges, and switches.
+
+## Functions of MAC
+
+The MAC sublayer performs several critical functions in network communication:
+
+1. **Addressing**: Provides a unique identifier (MAC address) for each device on the network.
+
+2. **Channel Access Control**: Determines when devices can transmit data on a shared medium to avoid collisions.
+
+3. **Frame Delimiting and Recognition**: Identifies the beginning and end of frames and recognizes which frames are intended for a particular device.
+
+4. **Error Detection**: Performs error checking on received frames to ensure data integrity.
+
+5. **Physical Addressing**: Manages the physical addressing scheme used to identify devices on the network.
+
+6. **Frame Formatting**: Defines the format of the data frames that are transmitted over the network.
+
+## Advantages of MAC
+
+MAC addressing and protocols offer several benefits for network communication:
+
+1. **No Attachment Cost**: Devices can connect to the network without additional costs associated with the attachment.
+
+2. **Policy Control**: Routers and switches can implement policies based on MAC addresses, allowing or denying equipment regardless of who is attaching it.
+
+3. **Network Diagnostics**: MAC addresses make it easier to diagnose network issues related to IP addressing because each device has a unique identifier.
+
+4. **Reliability**: Network administrators can reliably identify senders and receivers of data on the network using MAC addresses, which don't change over time (unlike dynamic IP addresses).
+
+## Disadvantages of MAC
+
+Despite its advantages, MAC addressing also has some limitations:
+
+1. **Limited Address Space**: Since the first three bytes (OUI) of a MAC address are reserved for the manufacturer, there can only be 2^24 unique addresses per OUI by the same manufacturer.
+
+2. **Vulnerability to Spoofing**: MAC address filtering can be circumvented through spoofing, where an intruder disguises their device by using a permitted MAC address.
+
+3. **Security Concerns**: An intruder can potentially gain access to a network by constantly changing their MAC address until they find one that is permitted.
+
+## MAC in Modern Networking
+
+In modern networks, MAC addresses continue to play a crucial role in:
+
+1. **Local Network Communication**: Enabling devices on the same network to communicate directly.
+
+2. **Switching**: Allowing switches to build and maintain MAC address tables for efficient frame forwarding.
+
+3. **Security**: Supporting MAC filtering as a basic security measure to control network access.
+
+4. **Network Troubleshooting**: Helping identify specific devices during network diagnostics.
+
+## Conclusion
+
+Media Access Control (MAC) is a fundamental component of network communication that enables devices to be uniquely identified and to share network resources efficiently. Through MAC addressing and protocols, devices can communicate on a local network without interference, making it an essential element of modern networking infrastructure.
+
+Understanding MAC addresses and how they work is crucial for network administration, security, and troubleshooting. While MAC addressing has some limitations, its benefits in terms of unique device identification and local network communication make it an indispensable part of networking technology.

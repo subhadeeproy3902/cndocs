@@ -1,0 +1,132 @@
+---
+title: Network Topologies
+description: Learn about the different types of network topologies.
+icon: Network
+---
+
+# 📡 Network Topologies
+
+A **network topology** is the structural layout that defines how nodes (computers, switches, routers, etc.) are interconnected in a network and how data is transmitted among them. It can be **physical** (hardware layout) or **logical** (data flow). Understanding network topologies is essential for designing efficient, scalable, and fault-tolerant networks.
+
+## Types of Network Topologies
+
+### 1. Bus Topology
+
+All nodes share a common backbone cable. Bus topology connects all devices along a single shared backbone (cable). Each node taps into this main bus for communication. When one device sends data, it travels along the bus and is received by all nodes (only the intended recipient processes it). Bus networks are simple to install for small networks. However, the single backbone is a major vulnerability: if the cable fails, the entire network goes down. Performance also degrades under heavy traffic, since only one device can transmit at a time without causing collisions.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://online.visual-paradigm.com/repository/images/22a4cea8-bf0f-44bc-b6a8-287908e33174.png" alt="Bus Topology" />
+
+**Advantages:**
+- Simple and cost-effective
+- Easy to extend (up to a limit)
+
+**Disadvantages:**
+- A single cable failure can shut down the network
+- Limited cable length and nodes
+
+**Use Cases:** Small LANs, temporary networks, test environments
+
+### 2. Star Topology
+
+All nodes connect to a central hub or switch. In a star topology, each device is individually connected to a central hub or switch. The central node acts as a repeater or switch: when one node sends data, it goes to the hub and then is forwarded to the destination. Star networks are robust and easy to troubleshoot because each link is independent. If one peripheral link fails, only that node is affected; the rest of the network remains online.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Star_Topology.png" alt="Star Topology" />
+
+**Advantages:**
+- Easy to manage and troubleshoot
+- Failure of one node doesn’t affect others
+
+**Disadvantages:**
+- If the hub/switch fails, the network is disrupted
+- Requires more cable
+
+**Use Cases:** Homes, schools, enterprise LANs
+
+### 3. Ring Topology
+
+Each node connects to two neighbors in a closed loop. In a ring topology, each device connects to exactly two other devices, forming a circular (ring) loop. Data travels around the ring in one direction (though dual-ring variations allow bidirectional flow). Because each node regenerates and forwards data, ring networks can offer orderly access control (e.g. token passing) and relatively high data rates. Collisions are rare since only one token circulates at a time.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpVEzGD5PM6qDeIgjAYpobf2hmRPbsdS26eeIngEFEPOAFfOKT-t8oH1Hvg0Xrw0i0PzBce-cbxxVVZF0P6AgmP-TvbqCWU0UL3kxxLjOO2HKom9UOu2XUPtDVKp74HJ9FnIetBgT65BaT/s533/Ring+Topology.png" alt="Ring Topology" />
+
+**Advantages:**
+- Predictable performance
+- Easy to locate faults
+
+**Disadvantages:**
+- A break in the ring can bring down the whole network
+- Adding/removing nodes disrupts the network
+
+**Use Cases:** FDDI networks, MANs
+
+### 4. Mesh Topology
+
+Nodes are interconnected with many redundant links. In a mesh topology, every node is connected with a direct link to one or more others. In a full mesh, each node has a link to every other node; in a partial mesh, only some nodes are fully connected. Mesh networks provide multiple paths for data, so they are highly fault-tolerant. If one link or device fails, data can be routed via alternate paths.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20241021160145691259/Mesh-Topology-768.png" alt="Mesh Topology" />
+
+**Advantages:**
+- High fault tolerance
+- Supports heavy traffic loads
+
+**Disadvantages:**
+- Expensive and complex to install
+- More cabling and configuration required
+
+**Use Cases:** Military networks, financial systems, backbone networks
+
+### 5. Tree Topology
+
+A hierarchy of nodes radiating from a root node (a hybrid of star networks). Tree topology combines characteristics of star and bus layouts. It has a hierarchical structure: one root node at the top, intermediate hubs/switches branching out below it, and leaf nodes (end devices) at the bottom. In effect, a tree is a collection of star networks connected together. This allows easy expansion by adding branches, but the network remains segmented into manageable pieces.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://www.pynetlabs.com/wp-content/uploads/2023/12/Bus-Tree-Topology.jpeg" alt="Tree Topology" />
+
+**Advantages:**
+- Easy to expand
+- Fault isolation possible at branch level
+
+**Disadvantages:**
+- Backbone failure disables the entire structure
+- Cabling complexity increases with growth
+
+**Use Cases:** Corporate offices, university campuses
+
+### 6. Hybrid Topology
+
+Multiple topologies in one network – an example of a hybrid topology combining star, ring, bus, and mesh segments. A hybrid topology mixes two or more different topologies to leverage their advantages. Essentially, different parts of the network use different schemes and connect together. For example, one department might use a star while another uses a ring, all linked via a central bus or backbone. Hybrid designs are very flexible and can be optimized for each part of the network’s needs.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://media.geeksforgeeks.org/wp-content/uploads/20230526072928/Hybrid-Topology-1-660.png" alt="Hybrid Topology" />
+
+**Advantages:**
+- Scalable and reliable
+- High performance and fault tolerance
+
+**Disadvantages:**
+- Complex and expensive to design/maintain
+- Troubleshooting can be difficult
+
+**Use Cases:** Large enterprises, data centers, ISPs
+
+## Summary Table
+
+| Topology  | Cost     | Fault Tolerance | Scalability | Use Case              |
+|-----------|----------|------------------|-------------|------------------------|
+| Bus       | Low      | Low              | Low         | Small LANs             |
+| Star      | Medium   | Medium-High      | Medium      | Offices, Homes         |
+| Ring      | Medium   | Medium           | Medium      | WANs, MANs             |
+| Mesh      | High     | Very High        | High        | Secure/Redundant Systems |
+| Tree      | Medium   | Medium-High      | High        | Institutions, Campuses |
+| Hybrid    | High     | Very High        | Very High   | Enterprises, Datacenters |
+
+## Choosing the Right Topology
+
+When choosing a network topology, consider the following:
+
+- **Size** of your network
+- **Budget** for equipment and installation
+- **Redundancy** and fault tolerance requirements
+- **Performance** needs (latency, throughput)
+- **Scalability** for future growth
+
+## Conclusion
+
+A well-designed network topology plays a crucial role in the performance, reliability, and scalability of any computer network. Understanding the advantages and trade-offs of each topology allows network engineers to choose the most suitable architecture based on specific requirements.

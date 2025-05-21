@@ -1,0 +1,138 @@
+---
+title: Flow Control and Error Control Protocols
+description: Learn about flow control and error control mechanisms in the Data Link Layer that ensure reliable and efficient data transmission between network devices.
+---
+
+# Flow Control and Error Control Protocols
+
+Flow control and error control are essential mechanisms in the Data Link Layer that ensure reliable and efficient data transmission between network devices. These protocols manage the rate of data transmission and handle errors that may occur during transmission.
+
+## Flow Control
+
+Flow control is a technique used to regulate the flow of data between a sender and a receiver to prevent the sender from overwhelming the receiver with data. This is particularly important when the sender can transmit data at a higher rate than the receiver can process it.
+
+### Need for Flow Control
+
+Flow control is necessary for several reasons:
+
+1. **Different Processing Speeds**: The sender and receiver may have different processing capabilities. Without flow control, a fast sender could overwhelm a slow receiver.
+
+2. **Limited Buffer Space**: Receivers have limited buffer space to store incoming data. If data arrives faster than it can be processed, the buffer may overflow, leading to data loss.
+
+3. **Network Congestion**: Flow control helps prevent network congestion by regulating the rate at which data is sent into the network.
+
+### Types of Flow Control
+
+There are two main types of flow control mechanisms:
+
+#### 1. Feedback-Based Flow Control
+
+In feedback-based flow control, the receiver provides feedback to the sender about its status, allowing the sender to adjust its transmission rate accordingly. This can be further divided into:
+
+- **Stop-and-Wait Flow Control**: The sender sends a frame and waits for an acknowledgment before sending the next frame.
+
+- **Sliding Window Flow Control**: The sender can send multiple frames before receiving an acknowledgment, up to a specified window size.
+
+#### 2. Rate-Based Flow Control
+
+In rate-based flow control, the sender regulates its transmission rate based on predetermined parameters, without explicit feedback from the receiver. This is often used in real-time applications where feedback may be delayed or impractical.
+
+## Error Control
+
+Error control is a technique used to detect and correct errors that may occur during data transmission. These errors can be caused by various factors such as noise, attenuation, or distortion in the communication channel.
+
+### Need for Error Control
+
+Error control is necessary for several reasons:
+
+1. **Unreliable Communication Channels**: Communication channels are often subject to noise and interference, which can corrupt the transmitted data.
+
+2. **Data Integrity**: Error control ensures that the data received is identical to the data sent, maintaining data integrity.
+
+3. **Reliable Communication**: Error control is essential for reliable communication, especially in applications where data accuracy is critical.
+
+### Types of Error Control Mechanisms
+
+There are several error control mechanisms used in the Data Link Layer:
+
+#### 1. Error Detection
+
+Error detection mechanisms identify when errors have occurred during transmission. Common error detection techniques include:
+
+- **Parity Check**: Adds a parity bit to detect errors.
+- **Cyclic Redundancy Check (CRC)**: Uses polynomial division to detect errors.
+- **Checksum**: Adds the binary data and sends the complement of the sum as the checksum.
+
+#### 2. Error Correction
+
+Error correction mechanisms not only detect errors but also correct them without requiring retransmission. Common error correction techniques include:
+
+- **Hamming Code**: Can detect and correct single-bit errors.
+- **Forward Error Correction (FEC)**: Adds redundant data to allow the receiver to correct errors without retransmission.
+
+#### 3. Retransmission
+
+If an error is detected and cannot be corrected, the affected data may need to be retransmitted. This is handled by Automatic Repeat reQuest (ARQ) protocols, which include:
+
+- **Stop-and-Wait ARQ**: The sender waits for an acknowledgment before sending the next frame.
+- **Go-Back-N ARQ**: The sender can send multiple frames before receiving an acknowledgment, but if an error is detected, all frames from the error onwards must be retransmitted.
+- **Selective Repeat ARQ**: The sender can send multiple frames before receiving an acknowledgment, but only the frames with errors need to be retransmitted.
+
+## Flow and Error Control Protocols
+
+Several protocols implement both flow control and error control mechanisms to ensure reliable and efficient data transmission. These protocols are often referred to as ARQ (Automatic Repeat reQuest) protocols.
+
+### 1. Stop-and-Wait ARQ
+
+Stop-and-Wait ARQ is the simplest form of ARQ protocol. In this protocol:
+
+- The sender sends a frame and waits for an acknowledgment.
+- The receiver sends an acknowledgment (ACK) if the frame is received correctly.
+- If the frame is corrupted, the receiver discards it and does not send an acknowledgment.
+- If the sender does not receive an acknowledgment within a timeout period, it retransmits the frame.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/i1sX4vZVaCl02vhnQ9iB583o5uHwnk5LQHjx6UOGY1c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9TdG9wX1dhaXQu/anBn" alt="Stop-and-Wait ARQ" />
+
+### 2. Go-Back-N ARQ
+
+Go-Back-N ARQ allows the sender to transmit multiple frames before receiving an acknowledgment, up to a specified window size. In this protocol:
+
+- The sender can send up to N frames without receiving an acknowledgment.
+- The receiver acknowledges each frame individually.
+- If a frame is corrupted or lost, the receiver discards it and all subsequent frames, even if they are received correctly.
+- The sender must retransmit the corrupted frame and all subsequent frames.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/MMaAXPUrLCrRzr-FFzafJMCY08k_lanaV5p5wiZnmBM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9iaW5h/cnl0ZXJtcy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDcvR28tYmFjay1u/LXByb3RvY29sLTEu/anBn" alt="Go-Back-N ARQ" />
+
+### 3. Selective Repeat ARQ
+
+Selective Repeat ARQ also allows the sender to transmit multiple frames before receiving an acknowledgment, but it only retransmits the frames that are corrupted or lost. In this protocol:
+
+- The sender can send up to N frames without receiving an acknowledgment.
+- The receiver acknowledges each frame individually.
+- If a frame is corrupted or lost, the receiver requests retransmission of only that frame.
+- The sender retransmits only the frames that are corrupted or lost.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/5j-rIg9WQYQJUlDVJ2Q-mX_TRWxDArslwAjVbcaK0AI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dHV0b3JpYWxzcG9p/bnQuY29tL2RhdGFf/Y29tbXVuaWNhdGlv/bl9jb21wdXRlcl9u/ZXR3b3JrL2ltYWdl/cy9zZWxlY3RpdmVf/cmVwZWF0LmpwZw" alt="Selective Repeat ARQ" />
+
+### 4. Sliding Window Protocol
+
+The Sliding Window Protocol is a generalized form of flow control that encompasses both Go-Back-N and Selective Repeat ARQ. It allows the sender to transmit multiple frames before receiving an acknowledgment, up to a specified window size. The window "slides" as acknowledgments are received, allowing new frames to be sent.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/tIT-iyxri_GuznfZZvRFhha9Yt2anEvu6tVWn_pcPrI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L2Nkbi11/cGxvYWRzL1NsaWRp/bmdfV2luZG93X1By/b3RvY29sXzEuanBn" alt="Sliding Window Protocol" />
+
+### 5. Piggybacking
+
+Piggybacking is a technique used to improve the efficiency of bidirectional communication. Instead of sending separate acknowledgment frames, the receiver can "piggyback" the acknowledgment on a data frame that it needs to send to the sender.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/LVLiPcnHfYtoPj2Ooo9YpUwSvNIwAfondOTG83TT3aE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMzAzMzEx/MjUzMjQvcGlnZ3li/YWNraW5nLnBuZw" alt="Piggybacking" />
+
+## Detailed Topics
+
+In the following sections, we will explore these flow and error control protocols in more detail:
+
+1. [Stop and Wait ARQ](/docs/fundamentals/osi-model/data-link-layer/flow-error-control/stop-and-wait) - The simplest form of ARQ protocol
+2. [Go Back N ARQ](/docs/fundamentals/osi-model/data-link-layer/flow-error-control/go-back-n) - An ARQ protocol that allows multiple frames to be in transit
+3. [Selective Repeat ARQ](/docs/fundamentals/osi-model/data-link-layer/flow-error-control/selective-repeat) - An ARQ protocol that only retransmits corrupted frames
+4. [Sliding Window Protocol](/docs/fundamentals/osi-model/data-link-layer/flow-error-control/sliding-window) - A generalized form of flow control
+5. [Piggybacking](/docs/fundamentals/osi-model/data-link-layer/flow-error-control/piggybacking) - A technique to improve the efficiency of bidirectional communication

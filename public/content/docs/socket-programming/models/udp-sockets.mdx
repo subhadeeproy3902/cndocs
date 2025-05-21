@@ -1,0 +1,476 @@
+---
+title: "Creating Basic UDP Sockets"
+description: "Learn how to implement UDP client-server communication using sockets in C"
+---
+
+# Creating Basic UDP Sockets
+
+UDP (User Datagram Protocol) sockets provide connectionless, message-oriented communication between applications. Unlike TCP, UDP does not establish a connection before sending data, making it faster but less reliable. In this section, we'll learn how to create basic UDP client and server applications using the Socket API in C.
+
+## UDP Socket Characteristics
+
+Before diving into the implementation, let's review the key characteristics of UDP sockets:
+
+- **Connectionless**: No connection is established before sending data
+- **Message-oriented**: Data is sent in discrete packets (datagrams)
+- **Unreliable**: No guarantee of delivery, ordering, or duplicate protection
+- **Lightweight**: Minimal overhead compared to TCP
+- **Fast**: Lower latency due to no connection establishment or flow control
+- **Preserves message boundaries**: Each send/receive operation corresponds to a single datagram
+
+## UDP Server Implementation
+
+A UDP server typically follows these steps:
+
+1. Create a socket
+2. Bind the socket to an address and port
+3. Receive and send datagrams
+4. Close the socket when done
+
+Let's implement a basic UDP echo server that receives datagrams from clients and sends them back:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+
+int main() {
+    int server_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_received;
+    
+    // Create UDP socket
+    server_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (server_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address structure
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;  // Accept datagrams on any interface
+    server_addr.sin_port = htons(PORT);
+    
+    // Bind socket to address and port
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("UDP Server listening on port %d...\n", PORT);
+    
+    // Receive and echo datagrams
+    while (1) {
+        // Receive datagram from client
+        bytes_received = recvfrom(server_fd, buffer, BUFFER_SIZE - 1, 0,
+                                 (struct sockaddr *)&client_addr, &client_len);
+        
+        if (bytes_received < 0) {
+            perror("recvfrom failed");
+            continue;
+        }
+        
+        buffer[bytes_received] = '\0';  // Null-terminate the string
+        
+        printf("Received from %s:%d: %s\n", 
+               inet_ntoa(client_addr.sin_addr), 
+               ntohs(client_addr.sin_port),
+               buffer);
+        
+        // Echo back to client
+        sendto(server_fd, buffer, bytes_received, 0,
+              (struct sockaddr *)&client_addr, client_len);
+    }
+    
+    close(server_fd);
+    return 0;
+}
+```
+
+### Key Components of the UDP Server
+
+1. **Socket Creation**:
+   ```c
+   server_fd = socket(AF_INET, SOCK_DGRAM, 0);
+   ```
+   Creates a UDP socket using the IPv4 address family.
+
+2. **Binding**:
+   ```c
+   bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+   ```
+   Associates the socket with a specific address and port.
+
+3. **Receiving Datagrams**:
+   ```c
+   recvfrom(server_fd, buffer, BUFFER_SIZE - 1, 0,
+           (struct sockaddr *)&client_addr, &client_len);
+   ```
+   Receives a datagram and stores the sender's address.
+
+4. **Sending Datagrams**:
+   ```c
+   sendto(server_fd, buffer, bytes_received, 0,
+         (struct sockaddr *)&client_addr, client_len);
+   ```
+   Sends a datagram to the specified address.
+
+## UDP Client Implementation
+
+A UDP client typically follows these steps:
+
+1. Create a socket
+2. Send datagrams to the server
+3. Receive responses
+4. Close the socket when done
+
+Let's implement a basic UDP client that sends messages to the server and receives responses:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define BUFFER_SIZE 1024
+#define SERVER_IP "127.0.0.1"
+
+int main() {
+    int sock_fd;
+    struct sockaddr_in server_addr;
+    socklen_t server_len = sizeof(server_addr);
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_received;
+    
+    // Create UDP socket
+    sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock_fd < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address structure
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    
+    // Convert IP address from string to binary form
+    if (inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr) <= 0) {
+        perror("Invalid address/ Address not supported");
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("UDP Client ready to communicate with server at %s:%d\n", SERVER_IP, PORT);
+    
+    // Send and receive datagrams
+    while (1) {
+        printf("Enter message (or 'exit' to quit): ");
+        fgets(buffer, BUFFER_SIZE, stdin);
+        
+        // Remove newline character
+        buffer[strcspn(buffer, "\n")] = '\0';
+        
+        // Check if user wants to exit
+        if (strcmp(buffer, "exit") == 0) {
+            break;
+        }
+        
+        // Send datagram to server
+        sendto(sock_fd, buffer, strlen(buffer), 0,
+              (struct sockaddr *)&server_addr, server_len);
+        
+        // Set timeout for receiving response
+        struct timeval tv;
+        tv.tv_sec = 5;  // 5 seconds timeout
+        tv.tv_usec = 0;
+        setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+        
+        // Receive response from server
+        bytes_received = recvfrom(sock_fd, buffer, BUFFER_SIZE - 1, 0,
+                                 (struct sockaddr *)&server_addr, &server_len);
+        
+        if (bytes_received > 0) {
+            buffer[bytes_received] = '\0';  // Null-terminate the string
+            printf("Server response: %s\n", buffer);
+        } else if (bytes_received == -1) {
+            perror("recvfrom failed");
+        }
+    }
+    
+    close(sock_fd);
+    return 0;
+}
+```
+
+### Key Components of the UDP Client
+
+1. **Socket Creation**:
+   ```c
+   sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
+   ```
+   Creates a UDP socket using the IPv4 address family.
+
+2. **Address Conversion**:
+   ```c
+   inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr);
+   ```
+   Converts the server's IP address from string to binary form.
+
+3. **Sending Datagrams**:
+   ```c
+   sendto(sock_fd, buffer, strlen(buffer), 0,
+         (struct sockaddr *)&server_addr, server_len);
+   ```
+   Sends a datagram to the specified server address.
+
+4. **Setting Timeout**:
+   ```c
+   struct timeval tv;
+   tv.tv_sec = 5;  // 5 seconds timeout
+   tv.tv_usec = 0;
+   setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+   ```
+   Sets a timeout for receiving responses, which is important for UDP since there's no guarantee of delivery.
+
+5. **Receiving Datagrams**:
+   ```c
+   recvfrom(sock_fd, buffer, BUFFER_SIZE - 1, 0,
+           (struct sockaddr *)&server_addr, &server_len);
+   ```
+   Receives a datagram from the server.
+
+## Compiling and Running
+
+To compile the server and client programs:
+
+```bash
+gcc -o udp_server udp_server.c
+gcc -o udp_client udp_client.c
+```
+
+To run the programs:
+
+1. Start the server in one terminal:
+   ```bash
+   ./udp_server
+   ```
+
+2. Start the client in another terminal:
+   ```bash
+   ./udp_client
+   ```
+
+3. Enter messages in the client terminal and observe the echo responses from the server.
+
+## Differences Between UDP and TCP
+
+| Feature | UDP | TCP |
+|---------|-----|-----|
+| Connection | Connectionless | Connection-oriented |
+| Reliability | Unreliable | Reliable |
+| Ordering | No guarantee | Guaranteed |
+| Speed | Faster | Slower |
+| Header Size | 8 bytes | 20+ bytes |
+| Flow Control | No | Yes |
+| Use Case | Speed over reliability | Reliability over speed |
+
+## Common UDP Socket Issues and Solutions
+
+### Datagram Loss
+
+**Issue**: Datagrams may be lost during transmission.
+
+**Solutions**:
+- Implement application-level acknowledgments
+- Retry sending important datagrams
+- Use sequence numbers to detect loss
+
+```c
+// Client-side implementation of acknowledgment and retry
+int retry_count = 0;
+int max_retries = 3;
+int ack_received = 0;
+
+while (!ack_received && retry_count < max_retries) {
+    // Send datagram with sequence number
+    sprintf(buffer, "%d:%s", seq_num, message);
+    sendto(sock_fd, buffer, strlen(buffer), 0,
+          (struct sockaddr *)&server_addr, server_len);
+    
+    // Wait for acknowledgment
+    struct timeval tv;
+    tv.tv_sec = 1;  // 1 second timeout
+    tv.tv_usec = 0;
+    setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    
+    bytes_received = recvfrom(sock_fd, buffer, BUFFER_SIZE - 1, 0,
+                             (struct sockaddr *)&server_addr, &server_len);
+    
+    if (bytes_received > 0) {
+        buffer[bytes_received] = '\0';
+        if (sscanf(buffer, "ACK:%d", &ack_seq) == 1 && ack_seq == seq_num) {
+            ack_received = 1;
+        }
+    } else {
+        retry_count++;
+        printf("Retry %d of %d...\n", retry_count, max_retries);
+    }
+}
+```
+
+### Datagram Size Limitations
+
+**Issue**: UDP datagrams have a maximum size (typically around 65,507 bytes).
+
+**Solutions**:
+- Keep datagrams small
+- Implement application-level fragmentation for large messages
+- Use TCP for large data transfers
+
+```c
+// Application-level fragmentation
+#define MAX_DATAGRAM_SIZE 1024
+#define HEADER_SIZE 16  // For fragment info
+
+void send_large_message(int sock_fd, const char *message, size_t length,
+                       struct sockaddr *dest_addr, socklen_t dest_len) {
+    int fragment_count = (length + MAX_DATAGRAM_SIZE - 1) / MAX_DATAGRAM_SIZE;
+    char buffer[MAX_DATAGRAM_SIZE + HEADER_SIZE];
+    
+    for (int i = 0; i < fragment_count; i++) {
+        size_t offset = i * MAX_DATAGRAM_SIZE;
+        size_t fragment_size = (i == fragment_count - 1) ? 
+                              (length - offset) : MAX_DATAGRAM_SIZE;
+        
+        // Add fragment header
+        sprintf(buffer, "FRAG:%d/%d:", i + 1, fragment_count);
+        size_t header_len = strlen(buffer);
+        
+        // Copy fragment data
+        memcpy(buffer + header_len, message + offset, fragment_size);
+        
+        // Send fragment
+        sendto(sock_fd, buffer, header_len + fragment_size, 0,
+              dest_addr, dest_len);
+    }
+}
+```
+
+### No Flow Control
+
+**Issue**: UDP has no built-in flow control, which can lead to buffer overflows.
+
+**Solutions**:
+- Implement application-level flow control
+- Use rate limiting
+- Add delays between sending large amounts of data
+
+```c
+// Simple rate limiting
+#define RATE_LIMIT 100  // Datagrams per second
+#define INTERVAL_USEC 10000  // 10ms
+
+void rate_limited_send(int sock_fd, const char *buffer, size_t length,
+                      struct sockaddr *dest_addr, socklen_t dest_len) {
+    static struct timespec last_send = {0, 0};
+    struct timespec now, diff, sleep_time;
+    
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    
+    // Calculate time since last send
+    diff.tv_sec = now.tv_sec - last_send.tv_sec;
+    diff.tv_nsec = now.tv_nsec - last_send.tv_nsec;
+    if (diff.tv_nsec < 0) {
+        diff.tv_sec--;
+        diff.tv_nsec += 1000000000;
+    }
+    
+    // If sending too fast, sleep
+    if (diff.tv_sec == 0 && diff.tv_nsec < INTERVAL_USEC * 1000) {
+        sleep_time.tv_sec = 0;
+        sleep_time.tv_nsec = INTERVAL_USEC * 1000 - diff.tv_nsec;
+        nanosleep(&sleep_time, NULL);
+    }
+    
+    // Send datagram
+    sendto(sock_fd, buffer, length, 0, dest_addr, dest_len);
+    
+    // Update last send time
+    clock_gettime(CLOCK_MONOTONIC, &last_send);
+}
+```
+
+## Advanced UDP Socket Options
+
+### SO_RCVBUF and SO_SNDBUF
+
+Sets the receive and send buffer sizes:
+
+```c
+int rcvbuf = 256 * 1024;  // 256KB
+int sndbuf = 256 * 1024;  // 256KB
+setsockopt(sock_fd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+setsockopt(sock_fd, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+```
+
+### SO_BROADCAST
+
+Enables sending broadcast messages:
+
+```c
+int broadcast = 1;
+setsockopt(sock_fd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast));
+
+// Send to broadcast address
+struct sockaddr_in broadcast_addr;
+memset(&broadcast_addr, 0, sizeof(broadcast_addr));
+broadcast_addr.sin_family = AF_INET;
+broadcast_addr.sin_port = htons(PORT);
+broadcast_addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+
+sendto(sock_fd, message, strlen(message), 0,
+      (struct sockaddr *)&broadcast_addr, sizeof(broadcast_addr));
+```
+
+### IP_MULTICAST_TTL
+
+Sets the Time-To-Live (TTL) for multicast packets:
+
+```c
+int ttl = 64;
+setsockopt(sock_fd, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
+```
+
+## When to Use UDP
+
+UDP is ideal for applications where:
+
+1. **Speed is critical**: Real-time applications like gaming, VoIP, or live streaming
+2. **Small, frequent messages**: DNS queries, DHCP, NTP
+3. **Broadcast or multicast**: When sending to multiple recipients
+4. **Stateless communication**: When maintaining connection state is unnecessary
+5. **Loss tolerance**: When occasional packet loss is acceptable
+
+## Conclusion
+
+In this section, we've learned how to implement basic UDP client-server communication using sockets in C. UDP sockets provide connectionless, message-oriented communication that is faster but less reliable than TCP.
+
+UDP is well-suited for applications where speed is more important than reliability, such as real-time applications, streaming media, and online gaming. However, it requires additional application-level mechanisms to handle issues like packet loss, ordering, and flow control.
+
+In the next section, we'll explore client-server architecture in more detail and learn how to design robust networked applications.

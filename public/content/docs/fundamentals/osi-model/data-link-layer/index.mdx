@@ -1,0 +1,96 @@
+---
+title: Data Link Layer
+description: Learn about the Data Link Layer in the OSI model, its sub-layers, functions, protocols, and devices.
+---
+
+# Data Link Layer in OSI Model
+
+The Data Link Layer is the second layer from the bottom in the OSI (Open System Interconnection) network architecture model. It is responsible for the node-to-node delivery of data within the same local network. Its major role is to ensure error-free transmission of information. The Data Link Layer is also responsible for encoding, decoding, and organizing the outgoing and incoming data.
+
+This layer is considered one of the most complex layers of the OSI model as it hides all the underlying complexities of the hardware from the other layers above it.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/_1VfySgw6V5YfgYrFCeJRMXrUUgC4-KHOcG2pv621NQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bGlmZXdpcmUuY29t/L3RobWIvZi0wUUlJ/MGJLbmJobEJPOHJ3/eVpnSThKTVY4PS8x/NTAweDAvZmlsdGVy/czpub191cHNjYWxl/KCk6bWF4X2J5dGVz/KDE1MDAwMCk6c3Ry/aXBfaWNjKCkvbGF5/ZXJzLW9mLXRoZS1v/c2ktbW9kZWwtaWxs/dXN0cmF0ZWQtODE4/MDE3LWZpbmFsdjEt/My1jdC05ZDNlMWJm/NDRhNTU0ZTNkYjMx/ZjcwNjIwMWZjNjlm/Ni5wbmc" alt="Data Link Layer in OSI Model" />
+
+## Sub-Layers of The Data Link Layer
+
+The Data Link Layer is further divided into two sub-layers:
+
+### Logical Link Control (LLC)
+
+This sublayer of the data link layer deals with:
+- Multiplexing
+- Flow of data among applications and other services
+- Providing error messages and acknowledgments
+
+### Media Access Control (MAC)
+
+The MAC sublayer:
+- Manages device interaction
+- Is responsible for addressing frames
+- Controls physical media access
+- Receives packets from the Network layer and divides them into frames
+- Sends frames bit-by-bit to the underlying physical layer
+
+## Functions of The Data Link Layer
+
+The Data Link Layer performs several critical functions:
+
+1. **Framing**: Divides the stream of bits received from the network layer into manageable data units called frames.
+
+2. **Physical Addressing**: Adds a header to the frame to identify the sender and/or receiver of the frame.
+
+3. **Flow Control**: Prevents a fast sender from overwhelming a slow receiver by regulating the data flow.
+
+4. **Error Control**: Detects and retransmits damaged or lost frames, and prevents duplication of frames.
+
+5. **Access Control**: Determines which device has control over the link when multiple devices are connected to the same physical medium.
+
+## Protocols in Data Link Layer
+
+Several protocols operate at the Data Link Layer:
+
+- **Synchronous Data Link Protocol (SDLC)**: A protocol developed by IBM for use in Systems Network Architecture (SNA) environments.
+
+- **High-Level Data Link Protocol (HDLC)**: A bit-oriented code-transparent synchronous data link layer protocol developed by the International Organization for Standardization (ISO).
+
+- **Serial Line Interface Protocol (SLIP)**: A mostly obsolete protocol used for point-to-point serial connections using TCP/IP.
+
+- **Point to Point Protocol (PPP)**: A protocol used for establishing a direct connection between two nodes. It can provide connection authentication, transmission encryption, and compression.
+
+- **Link Access Procedure (LAP)**: A family of data link layer protocols for use on point-to-point and multipoint communications links.
+
+- **Link Control Protocol (LCP)**: A protocol that establishes, configures, and tests data-link connections for use by PPP.
+
+- **Network Control Protocol (NCP)**: A protocol that establishes and configures different network-layer protocols for use by PPP.
+
+## Devices Operating at the Data Link Layer
+
+### 1. Switch
+- A key device in the Data Link Layer
+- Uses MAC addresses to forward data frames to the correct device within a network
+- Works in local area networks (LANs) to connect multiple devices
+
+### 2. Bridge
+- Connects two or more LANs, creating a single, unified network
+- Operates at the Data Link Layer by forwarding frames based on MAC addresses
+- Used to reduce network traffic and segment a network
+
+### 3. Network Interface Card (NIC)
+- A hardware component in devices like computers and printers
+- Responsible for adding the MAC address to frames and ensuring proper communication with the network
+- Operates at the Data Link Layer by preparing and sending frames over the physical medium
+
+### 4. Wireless Access Point (WAP)
+- Allows wireless devices to connect to a wired network
+- Operates at the Data Link Layer by managing wireless MAC addresses
+- Uses protocols like Wi-Fi (IEEE 802.11) to communicate with devices
+
+## Key Topics in Data Link Layer
+
+In the following sections, we will explore several important aspects of the Data Link Layer:
+
+1. [Error Detection and Correction](/docs/fundamentals/osi-model/data-link-layer/error-detection-correction) - Methods to identify and fix transmission errors
+2. [Flow Control and Error Control Protocols](/docs/fundamentals/osi-model/data-link-layer/flow-error-control) - Techniques to manage data flow and handle errors
+3. [Medium Access Control](/docs/fundamentals/osi-model/data-link-layer/medium-access) - Protocols for managing access to shared communication channels
+
+Each of these topics plays a crucial role in ensuring reliable and efficient data transmission at the Data Link Layer.

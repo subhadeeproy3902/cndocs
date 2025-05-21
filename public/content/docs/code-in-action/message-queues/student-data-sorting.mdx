@@ -1,0 +1,318 @@
+---
+title: "Student Data Sorting with Message Queues"
+description: "A project demonstrating distributed sorting using System V IPC message queues"
+---
+
+# Student Data Sorting with Message Queues
+
+This project demonstrates the use of System V IPC message queues for inter-process communication and distributed sorting. It consists of three separate programs that work together to sort student data by different criteria.
+
+## Problem Statement
+
+Create a message queue. One process will take name and roll number of 'N' students and send those to message queue. Second process will read the names, sort those and send back to message queue; third process will do the same on roll numbers. Then first process will read the entire data and print.
+
+## Overview
+
+```
++-------------------+     +-------------------+     +-------------------+
+|                   |     |                   |     |                   |
+| Process 1 (p1.c)  |---->| Process 2 (p2.c)  |---->| Process 1 (p1.c)  |
+| Input & Display   |     | Sort by Name      |     | Display Results   |
+|                   |     |                   |     |                   |
++-------------------+     +-------------------+     +-------------------+
+         |                                                  ^
+         |                                                  |
+         v                                                  |
++-------------------+                                       |
+|                   |                                       |
+| Process 3 (p3.c)  |---------------------------------------+
+| Sort by Roll      |
+|                   |
++-------------------+
+```
+
+The system consists of three processes that communicate through a message queue:
+
+1. **Process 1 (p1.c)**: Takes student data input, sends to other processes, and displays sorted results
+2. **Process 2 (p2.c)**: Sorts student data by name
+3. **Process 3 (p3.c)**: Sorts student data by roll number
+
+## Components
+
+### Header File (msgq.h)
+
+First, we define a common header file that will be included by all programs. This header contains the message queue structure and constants.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <unistd.h>
+
+#define MAX_STUDENTS 100
+#define NAME_SIZE 32
+#define MQ_KEY 1234
+
+typedef struct {
+    char name[NAME_SIZE];
+    int roll;
+} Student;
+
+typedef struct {
+    long mtype;
+    Student students[MAX_STUDENTS];
+    int count;
+} Message;
+```
+
+The header defines:
+- `MAX_STUDENTS`: Maximum number of students (100)
+- `NAME_SIZE`: Maximum size of student name (32 characters)
+- `MQ_KEY`: IPC key for the message queue (1234)
+- `Student`: Structure to store student data (name and roll number)
+- `Message`: Structure for message queue communication (message type, student array, count)
+
+### Main Process (p1.c)
+
+The main process takes student data input, sends it to the other processes for sorting, and then displays the sorted results.
+
+```c
+#include "msgq.h"
+
+void receive_sorted_data(int mqid) {
+    Message msg;
+
+    
+    msgrcv(mqid, &msg, sizeof(msg) - sizeof(long), 12, 0);
+    printf("\nSorted by Name:\n");
+    for (int i = 0; i < msg.count; i++)
+        printf("%s\n", msg.students[i].name);
+
+    msgrcv(mqid, &msg, sizeof(msg) - sizeof(long), 13, 0);
+    printf("\nSorted by Roll Number:\n");
+    for (int i = 0; i < msg.count; i++)
+        printf("%d\n", msg.students[i].roll);
+}
+
+int main() {
+    Message msg;
+    int mqid = msgget(MQ_KEY, IPC_CREAT|0666);
+    
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+    printf("\n");
+
+    Student students[n];
+    for (int i = 0; i < n; i++) {
+        printf("Enter roll and name separated by space: ");
+        scanf("%d %[^\n]s", &students[i].roll, students[i].name);
+    }   
+
+    msg.mtype = 21;
+    msg.count = n;
+    memcpy(msg.students, students, n * sizeof(Student));
+    msgsnd(mqid, &msg, sizeof(msg) - sizeof(long), 0);
+    
+    printf("\nMsg sent to P2.\n");
+    
+    msg.mtype = 31;
+    msg.count = n;
+    memcpy(msg.students, students, n * sizeof(Student));
+    msgsnd(mqid, &msg, sizeof(msg) - sizeof(long), 0);    
+
+    printf("Msg sent to P3.\n");
+    
+    receive_sorted_data(mqid);
+
+    msgctl(mqid, IPC_RMID, NULL);
+
+    return 0;
+}
+```
+
+Key operations in this program:
+- Takes input for N students (name and roll number)
+- Sends the data to Process 2 with message type 21
+- Sends the data to Process 3 with message type 31
+- Receives sorted data from Process 2 (message type 12) and Process 3 (message type 13)
+- Displays the sorted results
+- Cleans up the message queue using `msgctl()`
+
+### Name Sorting Process (p2.c)
+
+This process sorts the student data by name using the qsort() function.
+
+```c
+#include "msgq.h"
+
+int compare_name(const void *a, const void *b) {
+    return strcmp(((Student *)a)->name, ((Student *)b)->name);
+}
+
+int main() {
+    int mqid = msgget(MQ_KEY, IPC_CREAT|0666);
+    Message msg;
+
+    msgrcv(mqid, (void *)&msg, sizeof(msg) - sizeof(long), 21, 0);
+    printf("Received from P1: \n");
+    for (int i = 0; i < msg.count; i++)
+        printf("%s\n", msg.students[i].name);
+
+    qsort(msg.students, msg.count, sizeof(Student), compare_name);
+    printf("Students have been sorted according to their names\n");
+    msg.mtype=12;
+    msgsnd(mqid, (void *)&msg, sizeof(msg) - sizeof(long), 0);
+    printf("\nMsg sent to P1.\n");
+    
+    return 0;
+}
+```
+
+Key operations in this program:
+- Receives student data from Process 1 (message type 21)
+- Defines a comparison function for sorting by name
+- Sorts the data using qsort()
+- Sends the sorted data back to Process 1 with message type 12
+
+### Roll Number Sorting Process (p3.c)
+
+This process sorts the student data by roll number using the qsort() function.
+
+```c
+#include "msgq.h"
+
+int compare_roll(const void *a, const void *b) {
+    return ((Student *)a)->roll - ((Student *)b)->roll;
+}
+
+int main() {
+    int mqid = msgget(MQ_KEY, IPC_CREAT|0666);
+    Message msg;
+
+    msgrcv(mqid, (void *)&msg, sizeof(msg) - sizeof(long), 31, 0);
+    printf("Received from P3: \n");
+    for (int i = 0; i < msg.count; i++)
+        printf("%d\n", msg.students[i].roll);
+
+    qsort(msg.students, msg.count, sizeof(Student), compare_roll);
+    
+    printf("Students have been sorted according to their roll\n");
+    msg.mtype=13;
+    msgsnd(mqid, (void *)&msg, sizeof(msg) - sizeof(long), 0);
+    printf("\nMsg sent to P1.\n");
+
+    return 0;
+}
+```
+
+Key operations in this program:
+- Receives student data from Process 1 (message type 31)
+- Defines a comparison function for sorting by roll number
+- Sorts the data using qsort()
+- Sends the sorted data back to Process 1 with message type 13
+
+## Message Flow
+
+```
++-------------+     +-------------+     +-------------+
+|             |     |             |     |             |
+| Process 1   |---->| Process 2   |---->| Process 1   |
+| (p1.c)      |  ^  | (p2.c)      |  |  | (p1.c)      |
+|             |  |  |             |  |  |             |
++-------------+  |  +-------------+  |  +-------------+
+       |         |                   |
+       |         |                   |
+       v         |                   |
++-------------+  |                   |
+|             |  |                   |
+| Process 3   |--+                   |
+| (p3.c)      |                      |
+|             |                      |
++-------------+                      |
+                                     |
+Message Types:                       |
+- 21: P1 -> P2 (unsorted)            |
+- 31: P1 -> P3 (unsorted)            |
+- 12: P2 -> P1 (name sorted)         |
+- 13: P3 -> P1 (roll sorted) --------+
+```
+
+The system uses message types to route messages between processes:
+- Message type 21: From Process 1 to Process 2 (unsorted data)
+- Message type 31: From Process 1 to Process 3 (unsorted data)
+- Message type 12: From Process 2 to Process 1 (name-sorted data)
+- Message type 13: From Process 3 to Process 1 (roll-sorted data)
+
+## Compilation and Execution
+
+To compile the programs:
+
+```bash
+gcc -o p1 p1.c
+gcc -o p2 p2.c
+gcc -o p3 p3.c
+```
+
+To run the system, open three terminal windows and execute:
+
+```bash
+# Terminal 1
+./p3
+
+# Terminal 2
+./p2
+
+# Terminal 3
+./p1
+```
+
+## Example Output
+
+<img className="rounded-xl mx-auto" src="/images/message-queues/2.png" alt="Student Data Sorting Output" />
+
+## System V IPC Message Queue Functions
+
+The programs use the following System V IPC functions:
+
+1. `msgget(key, flags)`: Creates a new message queue or gets the ID of an existing queue
+   - `key`: A unique identifier for the message queue
+   - `flags`: Control flags (e.g., `IPC_CREAT` to create a new queue)
+   - Returns: Message queue ID on success, -1 on failure
+
+2. `msgsnd(msgid, msgp, msgsz, flags)`: Sends a message to a queue
+   - `msgid`: Message queue ID
+   - `msgp`: Pointer to the message structure
+   - `msgsz`: Size of the message data
+   - `flags`: Control flags (e.g., `IPC_NOWAIT` for non-blocking operation)
+   - Returns: 0 on success, -1 on failure
+
+3. `msgrcv(msgid, msgp, msgsz, msgtyp, flags)`: Receives a message from a queue
+   - `msgid`: Message queue ID
+   - `msgp`: Pointer to the message structure
+   - `msgsz`: Size of the message data buffer
+   - `msgtyp`: Type of message to receive
+   - `flags`: Control flags (e.g., `IPC_NOWAIT` for non-blocking operation)
+   - Returns: Number of bytes received on success, -1 on failure
+
+4. `msgctl(msgid, cmd, buf)`: Controls message queue operations
+   - `msgid`: Message queue ID
+   - `cmd`: Command (e.g., `IPC_RMID` to remove the queue)
+   - `buf`: Buffer for information (can be NULL for some commands)
+   - Returns: 0 on success, -1 on failure
+
+## Conclusion
+
+This project demonstrates the use of System V IPC message queues for distributed sorting. The message queue provides a reliable way for processes to exchange data asynchronously. The message type field allows for selective message reception, enabling each process to handle only the messages intended for it.
+
+The implementation showcases:
+- Creating and using message queues
+- Sending messages with different types
+- Selective message reception based on message type
+- Distributed processing of data
+- Proper cleanup of IPC resources
+
+These concepts are fundamental to understanding inter-process communication in Unix/Linux systems and can be applied to more complex distributed applications.

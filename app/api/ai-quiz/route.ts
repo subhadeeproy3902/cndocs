@@ -68,11 +68,10 @@ export async function POST(request: NextRequest) {
       prompt: `Generate a comprehensive quiz based on the following content about ${title}.
       The content is: ${content}
 
-      Create exactly 15 questions with the following distribution:
-      - 8 multiple-choice questions (type: 'multiple-choice')
-      - 3 true/false questions (type: 'true-false')
-      - 2 fill-in-the-blank questions (type: 'fill-blank')
-      - 2 matching questions (type: 'matching')
+      Create any number of questions (but equal to or more than 5) depending on the content length and flexibility with the following distribution:
+      - multiple-choice questions (type: 'multiple-choice')
+      - true/false questions (type: 'true-false')
+      - fill-in-the-blank questions (type: 'fill-blank')
 
       Guidelines for each question type:
 
@@ -94,14 +93,8 @@ export async function POST(request: NextRequest) {
          - Include a detailed explanation for the correct answer
          - Assign a difficulty level (easy, medium, or hard)
 
-      4. Matching questions:
-         - Create 4 pairs of terms and definitions to be matched
-         - Each pair should have a term and its corresponding definition
-         - Include a detailed explanation for the correct matches
-         - Assign a difficulty level (easy, medium, or hard)
-
       Make sure the questions:
-      - Cover different aspects of the content
+      - Strictly cover only the given aspects of the content
       - Vary in difficulty (include easy, medium, and hard questions)
       - Test both factual recall and conceptual understanding
       - Are clear, concise, and unambiguous

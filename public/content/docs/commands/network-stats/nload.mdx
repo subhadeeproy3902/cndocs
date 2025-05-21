@@ -1,0 +1,351 @@
+---
+title: "nload"
+description: "A comprehensive guide to monitoring real-time network traffic with nload"
+draft: false
+toc: true
+---
+
+# nload Command
+
+## Introduction
+
+`nload` is a console-based network monitoring utility that displays the current network traffic usage in real time. Unlike more complex tools that break down traffic by connection or process, nload focuses on providing a simple, clear visualization of the total incoming and outgoing bandwidth on network interfaces.
+
+The tool presents network traffic using easy-to-read graphs and provides additional statistics such as total transferred data, min/max/average bandwidth usage, and more. This makes nload particularly useful for quickly assessing network performance and identifying bandwidth issues without the complexity of more detailed analysis tools.
+
+nload is designed with simplicity in mind, making it ideal for:
+- System administrators who need to quickly check network utilization
+- Users troubleshooting network performance issues
+- Server monitoring in environments where graphical tools aren't available
+- Quick verification of bandwidth usage during network operations
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/nload-interface.png" alt="nload Interface" />
+
+## Installation
+
+nload is available in the standard repositories of most Linux distributions.
+
+### Debian/Ubuntu-based Systems
+
+```bash
+sudo apt update
+sudo apt install nload
+```
+
+### Red Hat/CentOS/Fedora Systems
+
+```bash
+# For CentOS/RHEL with EPEL repository enabled
+sudo yum install epel-release
+sudo yum install nload
+
+# For Fedora
+sudo dnf install nload
+```
+
+### Arch Linux
+
+```bash
+sudo pacman -S nload
+```
+
+### From Source
+
+If nload is not available in your distribution's repositories, you can compile it from source:
+
+```bash
+# Install dependencies
+sudo apt install build-essential ncurses-dev
+
+# Download source
+wget http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz
+
+# Extract and compile
+tar -xzf nload-0.7.4.tar.gz
+cd nload-0.7.4
+./configure
+make
+sudo make install
+```
+
+## Basic Usage
+
+To start nload with default settings, simply run:
+
+```bash
+nload
+```
+
+Unlike some other network monitoring tools, nload doesn't require root privileges for basic functionality.
+
+### Monitoring Specific Interfaces
+
+By default, nload displays the first available network interface. To specify a particular interface:
+
+```bash
+nload eth0  # Monitor the eth0 interface
+```
+
+To monitor multiple interfaces, you can specify them as additional arguments:
+
+```bash
+nload eth0 wlan0  # Monitor both eth0 and wlan0
+```
+
+When monitoring multiple interfaces, you can switch between them using the left and right arrow keys.
+
+## Understanding the Display
+
+The nload display consists of two main sections for each network interface:
+
+### Incoming Traffic (Top Section)
+
+- **Graph**: Visual representation of incoming bandwidth usage over time
+- **Current**: Current incoming bandwidth
+- **Average**: Average incoming bandwidth since nload started
+- **Min/Max**: Minimum and maximum incoming bandwidth observed
+- **Total**: Total amount of data received since nload started
+
+### Outgoing Traffic (Bottom Section)
+
+- **Graph**: Visual representation of outgoing bandwidth usage over time
+- **Current**: Current outgoing bandwidth
+- **Average**: Average outgoing bandwidth since nload started
+- **Min/Max**: Minimum and maximum outgoing bandwidth observed
+- **Total**: Total amount of data sent since nload started
+
+### Status Bar
+
+At the bottom of the screen, nload displays:
+- The currently displayed device
+- Total number of devices being monitored
+- Navigation hints
+
+## Command-Line Options
+
+nload offers several command-line options to customize its behavior:
+
+### Display Options
+
+```bash
+# Set the refresh interval to 500 milliseconds (default is 500)
+nload -t 500
+
+# Set the number of data points in the traffic graphs to 20 (default is 60)
+nload -a 20
+
+# Set the scaling factor for the traffic graphs (default is 0)
+nload -i 10
+
+# Set the maximum bandwidth for the traffic graphs (in Kbit/s)
+nload -m 10000
+
+# Show multiple interfaces in multiple windows
+nload -m devices
+```
+
+### Unit Options
+
+```bash
+# Display traffic in bits per second (default)
+nload -u b
+
+# Display traffic in bytes per second
+nload -u B
+
+# Display traffic in kilobits per second
+nload -u k
+
+# Display traffic in kilobytes per second
+nload -u K
+
+# Display traffic in megabits per second
+nload -u m
+
+# Display traffic in megabytes per second
+nload -u M
+
+# Display traffic in gigabits per second
+nload -u g
+
+# Display traffic in gigabytes per second
+nload -u G
+```
+
+### Output Format
+
+```bash
+# Set the number of digits after the decimal point (default is 2)
+nload -o 1
+```
+
+## Interactive Commands
+
+While nload is running, you can use various keyboard commands to control the display:
+
+### Navigation
+
+- `Left Arrow` or `h`: Switch to the previous network device
+- `Right Arrow` or `l`: Switch to the next network device
+- `F5` or `r`: Refresh the display immediately
+- `F6`: Cycle through the available units (bit/s, byte/s, etc.)
+- `q`: Quit nload
+
+### Display Settings
+
+- `F2`: Decrease the refresh interval
+- `F3`: Increase the refresh interval
+- `F4`: Change the number of data points in the traffic graphs
+
+## Practical Examples
+
+### Basic Monitoring
+
+To monitor the default network interface:
+
+```bash
+nload
+```
+
+### Monitoring Multiple Interfaces
+
+To monitor both wired and wireless interfaces:
+
+```bash
+nload eth0 wlan0
+```
+
+### Custom Refresh Rate
+
+For more responsive updates (200ms refresh):
+
+```bash
+nload -t 200
+```
+
+### Fixed Scale Graph
+
+To set a fixed maximum scale for the graph (useful for consistent visualization):
+
+```bash
+nload -m 100000  # Set max scale to 100 Mbit/s
+```
+
+### Bytes Instead of Bits
+
+To display traffic in bytes per second instead of bits:
+
+```bash
+nload -u B
+```
+
+### Combining Options
+
+You can combine multiple options for customized monitoring:
+
+```bash
+nload -t 100 -a 100 -m 10000 -u M eth0
+```
+
+This sets a 100ms refresh rate, 100 data points in the graph, a maximum scale of 10,000 Kbit/s, and displays traffic in megabytes per second for the eth0 interface.
+
+## Advanced Usage
+
+### Using nload in Scripts
+
+While nload is primarily an interactive tool, you can use it in non-interactive mode to get a snapshot of current network usage:
+
+```bash
+nload -n eth0
+```
+
+This will display a single update and exit, which can be useful for scripting.
+
+### Continuous Monitoring with Logging
+
+To log network usage over time, you can combine nload with other tools:
+
+```bash
+# Log network usage every 5 seconds
+while true; do nload eth0 -n | grep "Curr" >> network_log.txt; sleep 5; done
+```
+
+### Monitoring Remote Systems
+
+You can use nload over SSH to monitor remote systems:
+
+```bash
+ssh user@remote_server 'nload'
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### "Device not found"
+
+This occurs when specifying a non-existent interface:
+
+```
+Solution: Use 'ip a' to list available interfaces, then use the correct interface name
+```
+
+#### Low Resolution Graphs
+
+If the graphs appear too compressed or lack detail:
+
+```
+Solution: Increase the number of data points with -a option
+```
+
+#### Inaccurate Readings
+
+If readings seem inaccurate or inconsistent:
+
+```
+Solution: Ensure no other bandwidth-intensive processes are running in the background
+```
+
+## Comparison with Similar Tools
+
+### nload vs. iftop
+
+- **nload**: Shows total bandwidth usage on interfaces with graphs
+- **iftop**: Shows bandwidth usage broken down by connection
+
+### nload vs. bmon
+
+- **nload**: Simpler interface focused on bandwidth graphs
+- **bmon**: More detailed statistics and can monitor multiple interfaces simultaneously in one view
+
+### nload vs. nethogs
+
+- **nload**: Shows bandwidth usage by interface
+- **nethogs**: Shows bandwidth usage by process
+
+### nload vs. vnstat
+
+- **nload**: Real-time monitoring with no persistent data
+- **vnstat**: Collects and stores historical network usage data
+
+## Best Practices
+
+### Efficient Monitoring
+
+1. **Adjust refresh rate appropriately**: Lower refresh rates provide more detail but consume more CPU
+2. **Monitor specific interfaces**: Only monitor the interfaces relevant to your investigation
+3. **Set appropriate scales**: Use the `-m` option to set a fixed scale for consistent visualization
+
+### Performance Considerations
+
+1. **CPU usage**: nload is generally lightweight, but very low refresh intervals can increase CPU usage
+2. **Terminal performance**: Large graphs in small terminals may not display correctly
+3. **Remote monitoring**: When monitoring over SSH, consider network latency effects on refresh rates
+
+## Conclusion
+
+nload is a simple yet powerful tool for monitoring network traffic in real-time. Its straightforward interface and visual graphs make it ideal for quickly assessing network performance without the complexity of more detailed analysis tools.
+
+Whether you're troubleshooting network issues, monitoring server performance, or just curious about your current bandwidth usage, nload provides an intuitive way to visualize network traffic. Its lightweight nature and console-based interface make it particularly valuable in server environments where graphical tools aren't available or practical.
+
+While it doesn't provide the detailed connection-level or process-level information that some other tools offer, nload's focus on simplicity and clarity makes it an essential part of any system administrator's toolkit for quick network monitoring tasks.

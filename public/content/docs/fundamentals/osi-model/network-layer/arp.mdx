@@ -1,0 +1,100 @@
+---
+title: Address Resolution Protocol (ARP)
+description: Learn about the Address Resolution Protocol (ARP), how it maps IP addresses to MAC addresses, and its role in network communication.
+---
+
+# Address Resolution Protocol (ARP)
+
+Address Resolution Protocol (ARP) is a communication protocol used for discovering the link layer address, such as a MAC address, associated with a given network layer address, typically an IPv4 address. This mapping is critical for the functioning of the Internet Protocol over Ethernet networks.
+
+## How ARP Works
+
+When a device wants to communicate with another device on a local network, it needs both the IP address (logical address) and the MAC address (physical address) of the destination. The process works as follows:
+
+1. **Check ARP Cache**: The device first checks its ARP cache to see if it already has the MAC address for the target IP address.
+
+2. **ARP Request**: If the MAC address is not in the cache, the device broadcasts an ARP request packet to all devices on the local network. This packet contains:
+   - The sender's IP and MAC addresses
+   - The target IP address
+   - A request for the target's MAC address
+
+3. **ARP Reply**: The device with the matching IP address responds with an ARP reply containing its MAC address.
+
+4. **Update ARP Cache**: The original sender receives the reply and updates its ARP cache with the IP-to-MAC address mapping.
+
+5. **Communication**: Now with both the IP and MAC addresses, the sender can properly address frames to the destination device.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/eGoHe051HkVRcSGa7b6O2pxb0_E9rzNfjNSS-w8re08/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZWVrc2Zvcmdl/ZWtzLm9yZy93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMzA5MjAx/NjExMjYvVW50aXRs/ZWQtZHJhd2luZy0o/MSktKDIpLnBuZw" alt="ARP Process" />
+
+## ARP Packet Format
+
+An ARP packet consists of several fields:
+
+| Field | Size (bytes) | Description |
+|-------|--------------|-------------|
+| Hardware Type | 2 | Specifies the network link protocol type (1 for Ethernet) |
+| Protocol Type | 2 | Specifies the internetwork protocol (0x0800 for IPv4) |
+| Hardware Address Length | 1 | Length of hardware addresses (6 bytes for Ethernet) |
+| Protocol Address Length | 1 | Length of protocol addresses (4 bytes for IPv4) |
+| Operation | 2 | Specifies the operation (1 for request, 2 for reply) |
+| Sender Hardware Address | 6 | MAC address of sender |
+| Sender Protocol Address | 4 | IP address of sender |
+| Target Hardware Address | 6 | MAC address of target (all zeros in a request) |
+| Target Protocol Address | 4 | IP address of target |
+
+## ARP Cache
+
+The ARP cache (or ARP table) is a temporary database maintained by each device on a network. It contains mappings of IP addresses to MAC addresses:
+
+- **Dynamic Entries**: Created when an ARP reply is received. These entries typically expire after a timeout period (usually a few minutes).
+- **Static Entries**: Manually configured and do not expire.
+
+You can view the ARP cache on most operating systems:
+
+```bash
+# Windows
+arp -a
+
+# Linux/macOS
+arp -n
+```
+
+## Types of ARP
+
+1. **Gratuitous ARP**: A special type of ARP packet where the sender and target IP addresses are the same. It's used to:
+   - Announce a device's presence on a network
+   - Update outdated ARP cache entries on other devices
+   - Detect IP address conflicts
+
+2. **Proxy ARP**: A technique where one device answers ARP requests intended for another. This is used to:
+   - Enable communication between devices on different subnets
+   - Support devices that cannot respond to ARP requests themselves
+
+## ARP Spoofing/Poisoning
+
+ARP spoofing is a type of attack where an attacker sends falsified ARP messages to associate their MAC address with the IP address of another device, typically the default gateway. This allows the attacker to:
+
+- Intercept network traffic (man-in-the-middle attack)
+- Conduct denial-of-service attacks
+- Hijack sessions
+
+Protection measures include:
+
+- Using static ARP entries for critical devices
+- Implementing ARP inspection on switches
+- Using encryption protocols like HTTPS
+- Employing network monitoring tools
+
+## Limitations of ARP
+
+- **Security**: ARP has no authentication mechanism, making it vulnerable to spoofing.
+- **Scope**: ARP only works on local networks (broadcast domains).
+- **IPv6**: ARP is not used with IPv6, which uses Neighbor Discovery Protocol (NDP) instead.
+
+## Relationship with RARP
+
+While ARP maps IP addresses to MAC addresses, Reverse ARP (RARP) does the opposite—it maps MAC addresses to IP addresses. RARP has largely been replaced by more advanced protocols like DHCP and BOOTP.
+
+## Conclusion
+
+ARP is a fundamental protocol that bridges the gap between the Network Layer (Layer 3) and the Data Link Layer (Layer 2) in the OSI model. By mapping IP addresses to MAC addresses, it enables communication between devices on a local network. Despite its simplicity and security limitations, ARP remains an essential component of modern networks.

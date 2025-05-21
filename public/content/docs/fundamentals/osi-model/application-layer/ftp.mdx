@@ -1,0 +1,196 @@
+---
+title: "File Transfer Protocol (FTP)"
+description: "Learn about FTP, a standard network protocol used for transferring files between a client and server on a computer network"
+---
+
+# File Transfer Protocol (FTP)
+
+File Transfer Protocol (FTP) is one of the oldest and most widely used protocols for transferring files between computers over a network. Developed in the early 1970s, FTP continues to be an important tool for file sharing, website management, and data distribution.
+
+## What is FTP?
+
+FTP is a standard network protocol used for transferring files between a client and server on a computer network. It is built on a client-server architecture and uses separate control and data connections between the client and server.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/RZ-yhCEELR-yku2gMxwdfDxfxpRl2JX5I5NRJPMbh0Q/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kMmNl/c3QxeWs2aHgyZC5j/bG91ZGZyb250Lm5l/dC91bmluZXRzLTAw/MS9zdG9yZS8zMDU3/L2FydGljbGUlMjBp/bWFnZXMvZmlsZS10/cmFuc2Zlci1wcm90/b2NvbC1hcmNoaXRl/Y3R1cmUucG5n" alt="FTP Architecture" />
+
+## How FTP Works
+
+FTP operates using two channels between the client and server:
+
+### 1. Control Channel (Command)
+
+- Uses TCP port 21 by default
+- Handles commands and responses
+- Maintains the session throughout the file transfer process
+- Manages authentication and issues commands
+
+### 2. Data Channel (Transfer)
+
+- Uses TCP port 20 in active mode (or a dynamic port in passive mode)
+- Transfers the actual file data
+- Can be established in either active or passive mode
+- Closes after each file transfer operation is complete
+
+## FTP Connection Modes
+
+FTP supports two primary connection modes:
+
+### Active Mode
+
+1. Client connects to server's port 21 (control channel)
+2. Client sends the PORT command specifying which client port the server should connect to
+3. Server initiates a connection from its port 20 to the specified client port
+4. Data transfer occurs over this server-initiated connection
+
+**Challenges with Active Mode:**
+- Firewalls often block incoming connections to client machines
+- NAT (Network Address Translation) can interfere with the connection process
+
+### Passive Mode
+
+1. Client connects to server's port 21 (control channel)
+2. Client sends the PASV command
+3. Server responds with an IP address and port number where it will listen
+4. Client initiates a connection to that server IP and port
+5. Data transfer occurs over this client-initiated connection
+
+**Advantages of Passive Mode:**
+- Works better with firewalls and NAT
+- Client initiates all connections, avoiding incoming connection issues
+
+## FTP Commands and Responses
+
+FTP uses a simple command-response protocol:
+
+### Common FTP Commands
+
+| Command | Description |
+|---------|-------------|
+| USER | Specifies the username |
+| PASS | Specifies the password |
+| CWD | Changes the working directory |
+| LIST | Lists files and directories |
+| RETR | Retrieves (downloads) a file |
+| STOR | Stores (uploads) a file |
+| DELE | Deletes a file |
+| MKD | Creates a directory |
+| RMD | Removes a directory |
+| PASV | Enters passive mode |
+| PORT | Specifies port for active mode |
+| QUIT | Ends the session |
+
+### FTP Response Codes
+
+FTP servers respond with three-digit codes:
+
+| Code Range | Meaning |
+|------------|---------|
+| 1xx | Positive Preliminary reply |
+| 2xx | Positive Completion reply |
+| 3xx | Positive Intermediate reply |
+| 4xx | Transient Negative Completion reply |
+| 5xx | Permanent Negative Completion reply |
+
+Examples:
+- `220` - Service ready
+- `230` - User logged in
+- `331` - Username OK, need password
+- `425` - Can't open data connection
+- `550` - Requested action not taken
+
+## FTP Transfer Modes
+
+FTP supports different transfer modes for different types of files:
+
+### ASCII Mode
+
+- Used for text files
+- Performs line-ending conversions between different systems
+- May modify data during transfer to ensure compatibility
+
+### Binary Mode (Image Mode)
+
+- Used for non-text files (images, executables, compressed files)
+- Performs exact byte-for-byte copy without modifications
+- Preserves file integrity for all file types
+
+## Secure FTP Variants
+
+Standard FTP transmits data in plaintext, including usernames and passwords, making it vulnerable to eavesdropping. Several secure alternatives have been developed:
+
+### FTPS (FTP Secure)
+
+- Adds SSL/TLS encryption to FTP
+- Uses the same FTP protocol but with an encrypted connection
+- Typically uses ports 990 (control) and 989 (data) for implicit FTPS
+- Can also use standard FTP ports with explicit encryption (AUTH TLS)
+
+### SFTP (SSH File Transfer Protocol)
+
+- Not actually FTP, but a file transfer protocol built on SSH
+- Uses a single encrypted connection (typically port 22)
+- Provides authentication, integrity, and confidentiality
+- More firewall-friendly than FTPS
+
+### SCP (Secure Copy Protocol)
+
+- Based on SSH protocol
+- Designed for secure file transfers
+- Limited functionality compared to SFTP
+- Good for simple, secure file copying operations
+
+## FTP Clients and Servers
+
+### Popular FTP Clients
+
+- **FileZilla** - Cross-platform, open-source FTP client
+- **WinSCP** - Windows SFTP, SCP, and FTP client
+- **Cyberduck** - Mac and Windows client with cloud storage support
+- **Command-line FTP** - Built into most operating systems
+
+### Popular FTP Servers
+
+- **vsftpd** - Very Secure FTP Daemon for Unix-like systems
+- **ProFTPD** - Highly configurable FTP server for Unix-like systems
+- **FileZilla Server** - Windows FTP server
+- **IIS FTP** - Microsoft's FTP server integrated with IIS
+
+## Common FTP Use Cases
+
+1. **Website Management**
+   - Uploading and managing website files
+   - Updating content on web servers
+
+2. **Software Distribution**
+   - Distributing software packages and updates
+   - Providing download repositories
+
+3. **Data Exchange**
+   - Sharing large files between organizations
+   - Transferring data between systems
+
+4. **Backup and Archiving**
+   - Transferring backup files to remote servers
+   - Archiving data to centralized storage
+
+## Advantages and Limitations of FTP
+
+### Advantages
+
+- **Widely Supported** - Available on virtually all platforms
+- **Simple Protocol** - Easy to implement and use
+- **Efficient for Large Files** - Designed for file transfers
+- **Resume Support** - Many implementations support resuming interrupted transfers
+- **Directory Operations** - Supports listing, creating, and navigating directories
+
+### Limitations
+
+- **Security Concerns** - Basic FTP transmits data in plaintext
+- **Firewall Issues** - Complex connection model can cause problems with firewalls
+- **Limited Metadata** - Minimal support for file metadata
+- **No Built-in Compression** - Transfers files without compression
+- **No Integrity Checking** - Basic FTP doesn't verify file integrity after transfer
+
+## Conclusion
+
+Despite its age and security limitations, FTP remains a widely used protocol for file transfers due to its simplicity, wide support, and efficiency. For secure transfers, modern implementations like FTPS and SFTP provide the benefits of FTP with added security features. Understanding FTP and its secure variants is essential for anyone involved in network administration, web development, or system integration.

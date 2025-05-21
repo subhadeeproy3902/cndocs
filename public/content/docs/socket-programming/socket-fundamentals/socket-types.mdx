@@ -1,0 +1,194 @@
+---
+title: "Socket Types and Protocols"
+description: "Understanding the different types of sockets and the protocols they use for network communication"
+---
+
+# Socket Types and Protocols
+
+Socket programming involves different types of sockets, each designed for specific communication needs. Understanding these socket types and their underlying protocols is crucial for developing effective networked applications.
+
+## Socket Types
+
+The socket type determines the communication characteristics, such as reliability, ordering, and connection management. The main socket types are:
+
+### Stream Sockets (SOCK_STREAM)
+
+Stream sockets provide a reliable, connection-oriented, bidirectional byte stream communication channel.
+
+**Key characteristics:**
+- Connection-oriented (requires an established connection before data exchange)
+- Reliable data delivery (guaranteed delivery of all data in the correct order)
+- Flow control (prevents overwhelming the receiver)
+- Error detection and correction
+
+**Primary protocol:** TCP (Transmission Control Protocol)
+
+**Use cases:**
+- Web browsers and servers (HTTP/HTTPS)
+- Email clients and servers (SMTP, IMAP, POP3)
+- File transfers requiring reliability (FTP, SFTP)
+- Remote login (SSH, Telnet)
+- Any application where data integrity is critical
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://docs.oracle.com/cd/E19683-01/806-4125/images/7099.epsi.gif" alt="Stream Socket Communication" />
+
+### Datagram Sockets (SOCK_DGRAM)
+
+Datagram sockets provide connectionless, message-oriented communication.
+
+**Key characteristics:**
+- Connectionless (no need to establish a connection before sending data)
+- Message-oriented (preserves message boundaries)
+- Unreliable (no guarantee of delivery, ordering, or duplicate protection)
+- Faster than stream sockets due to lower overhead
+- Each packet is routed independently
+
+**Primary protocol:** UDP (User Datagram Protocol)
+
+**Use cases:**
+- DNS (Domain Name System) queries
+- Streaming media (audio/video)
+- Online gaming
+- VoIP (Voice over IP)
+- IoT applications with simple data requirements
+- Applications where speed is more important than reliability
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://docs.oracle.com/cd/E23824_01/html/821-1602/figures/7098.png" alt="Datagram Socket Communication" />
+
+### Raw Sockets (SOCK_RAW)
+
+Raw sockets provide direct access to the underlying network protocols, bypassing the transport layer.
+
+**Key characteristics:**
+- Direct access to network layer protocols (IP, ICMP, etc.)
+- Requires elevated privileges to create (usually root/administrator)
+- Allows custom protocol implementation
+- Provides access to packet headers
+
+**Use cases:**
+- Network monitoring and analysis tools
+- Custom protocol development
+- Security tools (packet sniffers, intrusion detection)
+- ICMP applications (ping, traceroute)
+
+### Sequenced Packet Sockets (SOCK_SEQPACKET)
+
+Sequenced packet sockets combine features of both stream and datagram sockets.
+
+**Key characteristics:**
+- Connection-oriented like stream sockets
+- Message-oriented like datagram sockets
+- Reliable and ordered delivery
+- Preserves message boundaries
+
+**Primary protocol:** SCTP (Stream Control Transmission Protocol)
+
+**Use cases:**
+- Telecommunications signaling
+- Applications requiring reliable message delivery with preserved boundaries
+- Fault-tolerant distributed systems
+
+## Transport Protocols
+
+The transport protocol determines how data is transmitted over the network. The most common protocols used with sockets are:
+
+### TCP (Transmission Control Protocol)
+
+TCP is a connection-oriented protocol that provides reliable, ordered delivery of data.
+
+**Key features:**
+- Three-way handshake for connection establishment
+- Acknowledgment and retransmission of lost packets
+- Flow control using sliding window
+- Congestion control
+- In-order delivery of data
+
+**TCP Socket Establishment:**
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://wat-user-images.s3.amazonaws.com/1642843418224%2F2cDnqtQfqo%2Fthreeway.jpg" alt="TCP Three-Way Handshake" />
+
+1. **SYN**: Client sends a SYN packet to the server
+2. **SYN-ACK**: Server responds with a SYN-ACK packet
+3. **ACK**: Client sends an ACK packet to complete the connection
+
+### UDP (User Datagram Protocol)
+
+UDP is a connectionless protocol that provides simple, unreliable datagram delivery.
+
+**Key features:**
+- No connection establishment or termination
+- No acknowledgment, retransmission, or timeout
+- No flow or congestion control
+- Minimal header overhead
+- No guarantee of delivery, ordering, or duplicate protection
+
+**UDP Communication:**
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://pythontic.com/udp-client-server-overview.png" alt="UDP Communication" />
+
+### SCTP (Stream Control Transmission Protocol)
+
+SCTP is a transport layer protocol that combines features of both TCP and UDP.
+
+**Key features:**
+- Connection-oriented with multi-homing support
+- Message-oriented like UDP
+- Reliable and ordered delivery like TCP
+- Multiple streams within a single connection
+- Built-in heartbeat mechanism
+- Protection against SYN flooding attacks
+
+### ICMP (Internet Control Message Protocol)
+
+ICMP is used for diagnostic and control purposes in IP networks.
+
+**Key features:**
+- Error reporting
+- Network diagnostics
+- Not typically used for general data transfer
+- Used by tools like ping and traceroute
+
+## Comparison of Socket Types and Protocols
+
+| Feature | TCP (Stream) | UDP (Datagram) | SCTP (Sequenced Packet) | Raw |
+|---------|-------------|----------------|-------------------------|-----|
+| Connection | Connection-oriented | Connectionless | Connection-oriented | Depends on protocol |
+| Reliability | Reliable | Unreliable | Reliable | Depends on protocol |
+| Ordering | Ordered | Unordered | Ordered | Depends on protocol |
+| Message Boundaries | No (byte stream) | Yes | Yes | Yes |
+| Flow Control | Yes | No | Yes | No |
+| Speed | Slower | Faster | Medium | Fastest |
+| Header Size | Larger (20+ bytes) | Smaller (8 bytes) | Larger | Minimal |
+| Use Case | Reliable data transfer | Fast, simple transfers | Reliable messaging | Custom protocols |
+
+## Choosing the Right Socket Type
+
+When developing a networked application, choosing the right socket type depends on your specific requirements:
+
+1. **Use TCP (Stream Sockets) when:**
+   - Data must arrive completely and in order
+   - The application cannot tolerate data loss
+   - You need built-in flow and congestion control
+   - Example: File transfer, web browsing, email
+
+2. **Use UDP (Datagram Sockets) when:**
+   - Speed is more important than reliability
+   - The application can tolerate some data loss
+   - You want to minimize overhead
+   - You need to preserve message boundaries
+   - Example: Live streaming, online gaming, DNS queries
+
+3. **Use SCTP (Sequenced Packet Sockets) when:**
+   - You need reliable message delivery with preserved boundaries
+   - Multi-homing or multi-streaming is required
+   - Example: Telecommunications signaling
+
+4. **Use Raw Sockets when:**
+   - You need direct access to network protocols
+   - You're implementing custom protocols
+   - You're developing network monitoring tools
+   - Example: Network analyzers, custom protocol implementations
+
+## Conclusion
+
+Understanding the different socket types and protocols is essential for designing effective networked applications. Each type has its strengths and weaknesses, making it suitable for specific use cases. In the next section, we'll explore the Socket API in detail and learn how to implement these different socket types in C.

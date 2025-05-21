@@ -1,0 +1,58 @@
+---
+title: Request Methods
+description: Actions on the Web
+---
+
+# Common HTTP Request Methods
+
+While there are several HTTP request methods, some are used much more frequently than others. Here are the most important ones:
+
+- **GET:**
+  This is the most common method and it's used to _retrieve_ data from the server.
+  When you type a URL into your browser and press Enter, you're usually making a GET request.
+  GET requests should only retrieve data and should _not_ have any side effects (like modifying data on the server); this is an important principle called _idempotency_.
+  GET requests can include parameters in the URL's query string.
+
+- **POST:**
+  This method is used to _send_ data to the server to create or update a resource. POST requests are often used for form submissions (like logging in, submitting a comment, or placing an order).
+  The data being sent is included in the _body_ of the request, not in the URL, allowing for sending larger amounts of data and keeping sensitive information (like passwords) out of the URL.
+  Unlike GET requests, POST requests are _not_ necessarily idempotent, meaning making the same POST request multiple times might have different effects (e.g., creating multiple copies of a resource).
+
+- **PUT:**
+  This method is used to _replace_ an existing resource with the data provided in the request.
+  It's like completely overwriting a file on the server. PUT requests are _idempotent_, so making the same PUT request multiple times should have the same effect as making it once.
+
+- **DELETE:**
+  This method is used to _delete_ a specified resource, and DELETE requests are also _idempotent_.
+
+- **PATCH:**
+  This method is used to _partially modify_ a resource. Unlike PUT, which replaces the entire resource, PATCH applies only the changes specified in the request.
+  For example, if you were updating a user profile, a PATCH request might only include the fields that have changed (like the user's email address), rather than sending the entire profile.
+
+- **HEAD:**
+  This method is similar to GET, but the server only returns the _headers_ of the response, not the actual content (the body).
+  It's useful for checking if a resource exists, getting metadata about the resource (like its size or last modified date), or testing the validity of a link, without actually downloading the resource itself.
+
+- **OPTIONS:**
+  This method is used to retrieve the communication options available for a resource or the server in general. The server responds with a list of the HTTP methods it supports for the specified resource.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://i.postimg.cc/V6ZhT87v/methods.webp" alt="HTTP Connection" />
+
+## Choosing the Right Method
+
+Choosing the correct HTTP request method is important for several reasons:
+
+- **Semantics:** Using the correct method makes your API (Application Programming Interface) more predictable and easier to understand. It clearly communicates the _intent_ of the request.
+- **Idempotency:** Understanding the idempotency of different methods is crucial for ensuring that your application behaves correctly, especially in situations where requests might be retried (e.g., due to network errors).
+- **Caching:** Browsers and other intermediaries can cache GET requests, improving performance. POST, PUT, and DELETE requests are typically not cached.
+- **Security:** Some security vulnerabilities can arise from using the wrong HTTP method. For example, using GET to perform actions that modify data on the server can be vulnerable to Cross-Site Request Forgery (CSRF) attacks.
+
+## Request Methods in Practice
+
+As a web developer, you'll use HTTP request methods constantly:
+
+- **Front-End Development:** When you create forms, you'll specify the HTTP method (usually GET or POST) to be used when the form is submitted. When you use JavaScript to make requests to the server (e.g., using `fetch` or `XMLHttpRequest`), you'll also specify the method.
+- **Back-End Development:** Your server-side code will need to handle different HTTP request methods. For example, you might have different code to handle a GET request (to retrieve data) and a POST request (to create or update data) for the same URL.
+- **API Design:** When designing APIs, you'll choose the appropriate HTTP method for each endpoint based on the action it performs.
+
+Understanding HTTP request methods is fundamental to building web applications that communicate effectively and follow best practices. They are the verbs of the web, defining the actions that clients can perform on resources.

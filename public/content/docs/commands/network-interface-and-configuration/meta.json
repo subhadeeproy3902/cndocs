@@ -1,0 +1,5 @@
+{
+  "title": "Network Interface and Configuration",
+  "icon": "Cog",
+  "pages": ["ifconfig", "ip", "hostname", "nmcli", "nmtui", "ethtool", "ifupdown"]
+}

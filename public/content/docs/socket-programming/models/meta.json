@@ -1,0 +1,11 @@
+{
+  "icon": "Package",
+  "pages": [
+    "tcp-sockets",
+    "udp-sockets",
+    "client-server",
+    "multicast",
+    "unix-sockets",
+    "raw-sockets"
+  ]
+}

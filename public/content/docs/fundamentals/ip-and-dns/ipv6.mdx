@@ -1,0 +1,80 @@
+---
+title: "What is IPv6?"
+description: "Learn about IPv6 addressing, its format, types, and advantages over IPv4"
+---
+
+# What is IPv6?
+
+The most common version of the Internet Protocol currently is IPv6. This protocol is being used and deployed more often, especially in mobile phone markets. IP addresses determine who and where you are in the network of billions of digital devices connected to the Internet. IPv6 is a network layer protocol which allows communication to take place over the network.
+
+IPv6 was designed by the Internet Engineering Task Force (IETF) in December 1998 with the purpose of superseding IPv4 due to the global exponentially growing internet of users.
+
+## IPv6 Overview
+
+The next generation Internet Protocol (IP) address standard, known as IPv6, is meant to work in cooperation with IPv4. To communicate with other devices, a computer, smartphone, home automation component, Internet of Things sensor, or any other Internet-connected device needs a numerical IP address.
+
+Because so many connected devices are being used, the original IP address scheme, known as IPv4, is running out of addresses. This new IP address version is being deployed to fulfill the need for more Internet addresses. With 128-bit address space, it allows 340 undecillion unique address space. IPv6 supports a theoretical maximum of 340,282,366,920,938,463,463,374,607,431,768,211,456 addresses.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/ipv6-address.webp" alt="IPv6 address format" />
+
+## Difference between IPv6 and IPv4
+
+| IPv6 | IPv4 |
+|------|------|
+| IPv6 has a 128-bit address length | IPv4 has a 32-bit address length |
+| It supports Auto and renumbering address configuration | It supports Manual and DHCP address configuration |
+| The address space of IPv6 is quite large - it can produce 3.4×10^38 address space | It can generate 4.29×10^9 address space |
+| Address representation of IPv6 is in hexadecimal | Address representation of IPv4 is in decimal |
+| In IPv6 checksum field is not available | In IPv4 checksum field is available |
+| IPv6 has a header of 40 bytes fixed | IPv4 has a header of 20-60 bytes |
+| IPv6 does not support VLSM | IPv4 supports VLSM (Variable Length subnet mask) |
+
+## Representation of IPv6
+
+An IPv6 address consists of eight groups of four hexadecimal digits separated by colons (:), with each hex digit representing four bits, making the total length of IPv6 128 bits. The structure is as follows:
+
+```
+gggg:gggg:gggg:ssss:xxxx:xxxx:xxxx:xxxx
+```
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/IPv6-Represantation.png" alt="IPv6 Representation" />
+
+The first 48 bits represent Global Routing Prefix. The next 16 bits represent the subnet ID and the last 64 bits represent the host ID. The first 64 bits represent the network portion and the last 64 bits represent the interface ID.
+
+- **Global Routing Prefix:** The portion of an IPv6 address used to identify a specific network or subnet within the larger IPv6 internet. It is assigned by an ISP or a regional internet registry (RIR).
+- **Subnet ID:** The portion of the address used within an organization to identify subnets. This usually follows the Global Routing Prefix.
+- **Host ID:** The last part of the address, used to identify a specific host on a network.
+
+Example: `3001:0da8:75a3:0000:0000:8a2e:0370:7334`
+
+## Types of IPv6 Address
+
+Now that we know about what is IPv6 address, let's take a look at its different types:
+
+- **Unicast Addresses:** Only one interface is specified by the unicast address. A packet moves from one host to the destination host when it is sent to a unicast address destination.
+- **Multicast Addresses:** It represents a group of IP devices and can only be used as the destination of a datagram.
+- **Anycast Addresses:** The multicast address and the anycast address are similar. The way the anycast address differs from other addresses is that it can deliver the same IP address to several servers or devices. Multiple interfaces or a collection of interfaces are assigned an anycast address.
+
+## Advantages of IPv6
+
+- **Faster Speeds:** IPv6 supports multicast rather than broadcast in IPv4. This feature allows bandwidth-intensive packet flows (like multimedia streams) to be sent to multiple destinations all at once.
+- **Stronger Security:** IPSecurity, which provides confidentiality and data integrity, is embedded into IPv6.
+- **Routing efficiency:** IPv6 improves routing efficiency and performance.
+- **Reliability:** IPv6 offers more reliable connections.
+- **Address Self-Configuration:** Devices can allocate addresses on their own.
+- **Simplified Header:** The IPv6 header is simpler than IPv4, which improves packet handling efficiency.
+- **Aggregation Support:** Enables simple aggregation of prefixes allocated to IP networks; this saves bandwidth by enabling the simultaneous transmission of large data packages.
+
+## Disadvantages of IPv6
+
+- **Conversion:** Due to widespread present usage of IPv4, it will take a long period to completely shift to IPv6.
+- **Communication:** IPv4 and IPv6 machines cannot communicate directly with each other.
+- **Not Backward Compatible:** IPv6 cannot be executed on IPv4-capable computers because it is not available on IPv4 systems.
+- **Conversion Time:** The conversion to IPv6 can be extremely time-consuming.
+- **Cross-protocol Communication:** There is no way for IPv4 and IPv6 to communicate with each other directly.
+
+## Conclusion
+
+IPv6 was designed to supersede IPv4 due to the global exponentially growing internet of users. While IPv4 uses a 32-bit address scheme allowing to store 2^32 addresses (more than 4 billion addresses), IPv6 uses a 128-bit address space, allowing 340 undecillion unique addresses. This massive increase in available addresses is crucial for the continued growth of the internet and the increasing number of connected devices worldwide.
+
+Despite some challenges in the transition from IPv4 to IPv6, the advantages of IPv6 in terms of address space, security, and efficiency make it the future of internet addressing.

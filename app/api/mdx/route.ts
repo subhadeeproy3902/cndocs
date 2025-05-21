@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { promises as fs } from "fs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,53 +9,91 @@ export async function POST(request: NextRequest) {
 
     if (!filePath) {
       console.log("MDX API error: Missing file path");
-      return NextResponse.json(
-        { error: 'Missing file path' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing file path" }, { status: 400 });
     }
 
-    // Normalize the path and check for directory traversal
-    const normalizedPath = path.normalize(filePath).replace(/^(\.\.(\/|\\))+/, '');
-    const fullPath = path.join(process.cwd(), 'content/docs', normalizedPath);
-    console.log("MDX API full path:", fullPath);
-    
-    // Check if the file exists
-    if (!fs.existsSync(fullPath)) {
-      console.log("MDX API error: File not found at path:", fullPath);
+    try {
+      // Normalize the path and remove .mdx extension if present
+      const normalizedPath = path
+        .normalize(filePath)
+        .replace(/^(\.\.(\/|\\))+/, "")
+        .replace(/\.mdx$/, "");
+
+      // Create an array of possible file paths to try
+      const possiblePaths = [
+        path.join("content/docs", normalizedPath + ".mdx"),
+        path.join("content/docs", normalizedPath, "index.mdx"),
+        path.join("public/content/docs", normalizedPath + ".mdx"),
+        path.join("public/content/docs", normalizedPath, "index.mdx")
+      ];
+
+      console.log("Trying possible paths:", possiblePaths);
+
+      // Try to read the file from any of the possible locations
+      let fileContent: string | undefined;
+      let foundPath: string | undefined;
+
+      for (const tryPath of possiblePaths) {
+        try {
+          fileContent = await fs.readFile(path.join(process.cwd(), tryPath), "utf8");
+          foundPath = tryPath;
+          console.log("Successfully read file from:", tryPath);
+          break;
+        } catch (err) {
+          console.log("File not found at:", tryPath);
+          continue;
+        }
+      }
+
+      if (!fileContent) {
+        console.error("File not found in any location");
+        return NextResponse.json(
+          {
+            message: `Document not found: ${filePath}. Please check the URL and try again.
+            Tried paths: ${possiblePaths.join(", ")}`,
+          },
+          { status: 404 }
+        );
+      }
+
+      // Extract frontmatter (content between --- markers)
+      const frontmatterMatch = fileContent.match(/---\n([\s\S]*?)\n---/);
+      const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
+
+      // Extract title and description from frontmatter
+      const titleMatch = frontmatter.match(/title:\s*"([^"]*)"/);
+      const descriptionMatch = frontmatter.match(/description:\s*"([^"]*)"/);
+
+      const title = titleMatch ? titleMatch[1] : "";
+      const description = descriptionMatch ? descriptionMatch[1] : "";
+
+      // Remove frontmatter from content
+      const content = fileContent.replace(/---\n[\s\S]*?\n---/, "").trim();
+
+      return NextResponse.json({
+        content,
+        title,
+        description,
+        filePath: foundPath // Return the actual path that was found
+      });
+
+    } catch (error) {
+      console.error("Error reading MDX file:", error);
       return NextResponse.json(
-        { message: `Document not found: ${filePath}. Please check the URL and try again.` },
-        { status: 404 }
+        { 
+          error: "Failed to read MDX file", 
+          details: error instanceof Error ? error.message : String(error)
+        },
+        { status: 500 }
       );
     }
-
-    // Read the file content
-    const fileContent = await fs.promises.readFile(fullPath, 'utf8');
-
-    // Extract frontmatter (content between --- markers)
-    const frontmatterMatch = fileContent.match(/---\n([\s\S]*?)\n---/);
-    const frontmatter = frontmatterMatch ? frontmatterMatch[1] : '';
-
-    // Extract title and description from frontmatter
-    const titleMatch = frontmatter.match(/title:\s*"([^"]*)"/);
-    const descriptionMatch = frontmatter.match(/description:\s*"([^"]*)"/);
-
-    const title = titleMatch ? titleMatch[1] : '';
-    const description = descriptionMatch ? descriptionMatch[1] : '';
-
-    // Remove frontmatter from content
-    const content = fileContent.replace(/---\n[\s\S]*?\n---/, '').trim();
-
-    return NextResponse.json({
-      content,
-      title,
-      description,
-      filePath
-    });
   } catch (error) {
-    console.error('Error reading MDX file:', error);
+    console.error("Error in MDX API:", error);
     return NextResponse.json(
-      { error: 'Failed to read MDX file' },
+      { 
+        error: "Internal server error", 
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

@@ -1,0 +1,18 @@
+{
+  "title": "I. Foundational Concepts",
+  "description": "Start with the basics of the web.",
+  "icon": "BookA",
+  "root": true,
+  "pages": [
+    "index",
+    "basics",
+    "osi-model",
+    "network-topologies",
+    "ip-and-dns",
+    "internet",
+    "tcp",
+    "mac",
+    "url",
+    "http"
+  ]
+}

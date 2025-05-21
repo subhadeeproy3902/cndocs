@@ -1,0 +1,135 @@
+---
+title: Bootstrap Protocol (BOOTP)
+description: Learn about the Bootstrap Protocol (BOOTP), its role in network configuration, and how it provides IP addresses and boot information to network devices.
+---
+
+# Bootstrap Protocol (BOOTP)
+
+The Bootstrap Protocol (BOOTP) is a network protocol used to automatically assign IP addresses and provide boot information to diskless workstations and other network devices. Developed as an enhancement to RARP, BOOTP addresses many of RARP's limitations by providing additional configuration information and working across routers.
+
+## Purpose and Function
+
+BOOTP was designed to serve several key purposes:
+
+1. **Automatic IP Configuration**: Provides IP addresses to devices that don't have permanent storage for network configuration.
+
+2. **Boot Information**: Delivers the location of boot files and servers to diskless workstations.
+
+3. **Additional Network Parameters**: Supplies subnet mask, default gateway, DNS server addresses, and other configuration details.
+
+4. **Cross-Router Operation**: Unlike RARP, BOOTP can work across routers, allowing centralized configuration servers.
+
+## How BOOTP Works
+
+The BOOTP process follows these steps:
+
+1. **BOOTP Request**: A client broadcasts a BOOTP request containing its MAC address.
+
+2. **Relay Agent (Optional)**: If the client and server are on different networks, a BOOTP relay agent (typically a router) forwards the request to the BOOTP server.
+
+3. **Server Processing**: The BOOTP server looks up the client's MAC address in its configuration database.
+
+4. **BOOTP Reply**: The server sends a reply containing the client's IP address and other configuration information.
+
+5. **Client Configuration**: The client configures itself using the received information and proceeds with the boot process.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://imgs.search.brave.com/eGImma31gALSXHJXPiyMvHM_ZXfAfirwVUlNG1TaVVY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR3/b3JrZW5jeWNsb3Bl/ZGlhLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxOS8wOC9i/b290cC1wcm90b2Nv/bC5qcGc" alt="BOOTP Process" />
+
+## BOOTP Packet Format
+
+BOOTP uses a specific packet format encapsulated in UDP:
+
+| Field | Size (bytes) | Description |
+|-------|--------------|-------------|
+| op | 1 | Operation code (1 for request, 2 for reply) |
+| htype | 1 | Hardware address type (1 for Ethernet) |
+| hlen | 1 | Hardware address length (6 for Ethernet) |
+| hops | 1 | Incremented by relay agents |
+| xid | 4 | Transaction ID |
+| secs | 2 | Seconds elapsed since client started booting |
+| flags | 2 | Flags field |
+| ciaddr | 4 | Client IP address (if known) |
+| yiaddr | 4 | 'Your' (client) IP address |
+| siaddr | 4 | Server IP address |
+| giaddr | 4 | Relay agent IP address |
+| chaddr | 16 | Client hardware address |
+| sname | 64 | Optional server host name |
+| file | 128 | Boot file name |
+| vend | 64 | Vendor-specific area (options) |
+
+## BOOTP Server Configuration
+
+A BOOTP server requires configuration that maps MAC addresses to IP addresses and other parameters:
+
+```
+# Example BOOTP configuration entry
+host client1 {
+  hardware ethernet 00:11:22:33:44:55;
+  fixed-address 192.168.1.100;
+  filename "boot/client1.img";
+  server-name "bootserver.example.com";
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.1.1;
+  option domain-name-servers 192.168.1.10;
+}
+```
+
+## BOOTP Relay Agents
+
+BOOTP relay agents are crucial for environments where clients and servers are on different networks:
+
+1. **Function**: They forward BOOTP requests from clients to servers across router boundaries.
+
+2. **Operation**: When a relay agent receives a BOOTP broadcast, it converts it to a unicast packet and forwards it to the configured BOOTP server.
+
+3. **Configuration**: Routers must be specifically configured to act as BOOTP relay agents, typically by specifying the IP address of the BOOTP server.
+
+## Advantages of BOOTP
+
+BOOTP offered several advantages over its predecessor, RARP:
+
+1. **Complete Configuration**: Provides not just an IP address but also subnet mask, default gateway, and other parameters.
+
+2. **Cross-Router Operation**: Works across different network segments through relay agents.
+
+3. **UDP/IP Based**: Operates at the Network and Transport layers, making it more flexible than RARP.
+
+4. **Vendor Extensions**: Supports vendor-specific options for additional configuration parameters.
+
+## Limitations of BOOTP
+
+Despite its improvements over RARP, BOOTP had its own limitations:
+
+1. **Static Allocation**: IP addresses are statically assigned based on MAC addresses, requiring manual configuration for each client.
+
+2. **Limited Address Reuse**: No mechanism for reclaiming unused addresses.
+
+3. **Manual Configuration**: Requires administrators to maintain a database of MAC-to-IP mappings.
+
+4. **Limited Options**: The original specification had a fixed-size options field, limiting extensibility.
+
+## Evolution to DHCP
+
+The Dynamic Host Configuration Protocol (DHCP) evolved from BOOTP to address its limitations:
+
+1. **Dynamic Allocation**: DHCP can assign IP addresses from a pool, rather than requiring static mappings.
+
+2. **Lease Time**: Addresses are assigned for a limited time, allowing reuse when no longer needed.
+
+3. **Extended Options**: DHCP expanded the options field to allow for more configuration parameters.
+
+4. **Backward Compatibility**: DHCP servers can respond to BOOTP requests, providing a migration path.
+
+## BOOTP vs. DHCP
+
+| Feature | BOOTP | DHCP |
+|---------|-------|------|
+| Address Allocation | Static (manual configuration) | Dynamic or static |
+| Lease Time | Permanent | Temporary with renewal |
+| Configuration | Per-device manual setup | Automatic from address pools |
+| Options | Limited (64 bytes) | Extensive and extensible |
+| Current Usage | Largely replaced by DHCP | Widely used |
+
+## Conclusion
+
+While BOOTP has largely been superseded by DHCP in modern networks, it played a crucial role in the evolution of network configuration protocols. By addressing the limitations of RARP and providing a foundation for DHCP, BOOTP helped enable the automatic configuration capabilities that are essential to today's large-scale networks. Understanding BOOTP provides valuable insight into the development of network protocols and the ongoing challenge of simplifying network configuration.

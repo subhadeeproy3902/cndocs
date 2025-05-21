@@ -1,0 +1,175 @@
+---
+title: Unicast Routing Protocols
+description: Learn about unicast routing protocols including Distance Vector, Link State, and Path Vector protocols, and how they determine optimal paths for data transmission.
+---
+
+# Unicast Routing Protocols
+
+Unicast routing protocols are mechanisms used by routers to determine the optimal path for forwarding packets from a source to a specific destination. These protocols enable routers to build and maintain routing tables, adapt to network changes, and ensure efficient data delivery across complex networks.
+
+## What is Unicast Routing?
+
+Unicast routing refers to the process of sending data from a single sender to a single specific recipient. This is in contrast to:
+
+- **Multicast**: Sending data to a group of recipients
+- **Broadcast**: Sending data to all devices on a network
+- **Anycast**: Sending data to the nearest of a group of potential recipients
+
+Unicast is the most common form of communication on the Internet, used for web browsing, email, file transfers, and most other applications.
+
+## Major Unicast Routing Protocol Categories
+
+Unicast routing protocols fall into three main categories:
+
+### 1. Distance Vector Routing Protocols
+
+Distance vector protocols determine the best path to a destination based on distance (usually hop count) and direction (vector). Routers exchange their entire routing tables with neighbors.
+
+**Key Characteristics:**
+- Simple implementation
+- Periodic updates of entire routing tables
+- Slow convergence
+- Vulnerable to routing loops
+- Limited scalability
+
+**Examples:**
+- **RIP (Routing Information Protocol)**: Uses hop count as metric, limited to 15 hops
+- **IGRP (Interior Gateway Routing Protocol)**: Cisco proprietary, uses composite metric
+- **EIGRP (Enhanced Interior Gateway Routing Protocol)**: Advanced distance vector protocol with some link-state features
+
+### 2. Link State Routing Protocols
+
+Link state protocols build a complete map of the network topology. Each router independently calculates the best path to all destinations using algorithms like Dijkstra's shortest path first.
+
+**Key Characteristics:**
+- More complex implementation
+- Sends updates only when topology changes
+- Fast convergence
+- Less vulnerable to routing loops
+- Better scalability
+- Higher resource requirements
+
+**Examples:**
+- **OSPF (Open Shortest Path First)**: Open standard, widely used in enterprise networks
+- **IS-IS (Intermediate System to Intermediate System)**: Used in large service provider networks
+
+### 3. Path Vector Routing Protocols
+
+Path vector protocols exchange path information between autonomous systems. They consider policy and administrative preferences in addition to technical metrics.
+
+**Key Characteristics:**
+- Used for inter-domain routing
+- Policy-based routing decisions
+- Very high scalability
+- Slow convergence
+- Complex configuration
+
+**Examples:**
+- **BGP (Border Gateway Protocol)**: The primary protocol for Internet routing
+
+## Distance Vector Routing in Detail
+
+### Basic Operation
+
+1. Each router maintains a routing table with distances to all known networks.
+2. Periodically, routers exchange their entire routing tables with directly connected neighbors.
+3. Upon receiving updates, routers update their own tables if a better path is found.
+4. The process continues until the network converges.
+
+### Bellman-Ford Algorithm
+
+Distance vector protocols typically use the Bellman-Ford algorithm:
+
+```
+For each destination D:
+  Distance to D = min(Distance to neighbor N + N's distance to D)
+```
+
+### Challenges and Solutions
+
+1. **Count to Infinity Problem**: When a network becomes unreachable, routers may incrementally increase the metric indefinitely.
+   - **Solution**: Split horizon, route poisoning, hold-down timers
+
+2. **Slow Convergence**: Updates propagate one hop at a time.
+   - **Solution**: Triggered updates, faster timers
+
+3. **Routing Loops**: Packets may circulate indefinitely between routers.
+   - **Solution**: TTL field in IP header, split horizon with poison reverse
+
+## Link State Routing in Detail
+
+### Basic Operation
+
+1. Each router discovers its neighbors and measures the cost to each.
+2. Each router creates a Link State Advertisement (LSA) describing its local connections.
+3. LSAs are flooded throughout the network so all routers receive all LSAs.
+4. Each router independently builds a complete map of the network.
+5. Each router runs Dijkstra's algorithm to calculate the shortest path to all destinations.
+
+### Dijkstra's Shortest Path First Algorithm
+
+Link state protocols use Dijkstra's algorithm to calculate the shortest path:
+
+1. Start with the router itself as the root of the shortest path tree.
+2. Find the node with the lowest cost that is not yet in the tree.
+3. Add this node to the tree.
+4. Update the cost to all neighbors of this node.
+5. Repeat steps 2-4 until all nodes are in the tree.
+
+### OSPF Protocol Features
+
+OSPF (Open Shortest Path First) is the most widely used link state protocol:
+
+1. **Areas**: Hierarchical design to improve scalability
+2. **Router Types**: Area Border Routers, Backbone Routers, Internal Routers, AS Boundary Routers
+3. **Designated Router**: Reduces flooding overhead on broadcast networks
+4. **Equal-Cost Multipath**: Supports load balancing across multiple equal-cost paths
+5. **Authentication**: Supports MD5 and simple password authentication
+
+## Path Vector Routing in Detail
+
+### Basic Operation
+
+1. Routers exchange information about paths to destinations.
+2. Each router prepends its own AS number to the path before advertising routes.
+3. Routing decisions are based on policies, path attributes, and AS path length.
+4. Loops are prevented by discarding routes that contain the local AS in the path.
+
+### BGP Protocol Features
+
+BGP (Border Gateway Protocol) is the primary path vector protocol:
+
+1. **Path Attributes**: Various attributes influence route selection (AS_PATH, LOCAL_PREF, MED, etc.)
+2. **Policy-Based Routing**: Administrators can implement complex routing policies
+3. **Route Filtering**: Allows control over route advertisement and acceptance
+4. **Route Aggregation**: Combines multiple routes to reduce routing table size
+5. **TCP-Based**: Uses TCP for reliable communication between peers
+
+## Routing Protocol Selection Factors
+
+When choosing a routing protocol, network administrators consider:
+
+1. **Network Size**: Distance vector for small networks, link state for medium, path vector for large
+2. **Convergence Time**: How quickly the protocol adapts to changes
+3. **Scalability**: Ability to handle growth in network size
+4. **Resource Requirements**: CPU, memory, and bandwidth needs
+5. **Administrative Control**: Flexibility in implementing routing policies
+6. **Vendor Support**: Availability across different hardware platforms
+
+## Routing Protocol Metrics
+
+Different protocols use different metrics to determine the best path:
+
+1. **Hop Count**: Number of routers between source and destination
+2. **Bandwidth**: Available data capacity of the path
+3. **Delay**: Time taken for a packet to travel the path
+4. **Reliability**: Error rate of the path
+5. **Load**: Current traffic on the path
+6. **Cost**: Arbitrary value assigned by administrator
+7. **MTU**: Maximum Transmission Unit of the path
+
+## Conclusion
+
+Unicast routing protocols are essential for the operation of modern networks, enabling routers to dynamically determine the best paths for data transmission. Each category of routing protocol—distance vector, link state, and path vector—has its strengths and weaknesses, making them suitable for different network environments and requirements.
+
+Understanding these protocols is crucial for network design, troubleshooting, and optimization. As networks continue to grow in size and complexity, routing protocols will continue to evolve to meet the challenges of scale, security, and performance.

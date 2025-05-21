@@ -1,0 +1,388 @@
+---
+title: "ss"
+description: "A comprehensive guide to the modern replacement for netstat"
+draft: false
+toc: true
+---
+
+# SS Command in Linux
+
+## Introduction
+
+The `ss` (Socket Statistics) command is a powerful utility for examining network connections on a Linux system. It serves as the modern replacement for the older `netstat` command, offering improved performance and additional features. The `ss` command provides detailed information about network sockets, allowing system administrators and network engineers to monitor and troubleshoot network connections effectively.
+
+Developed as part of the `iproute2` package, `ss` directly accesses kernel data structures rather than parsing `/proc` files, making it faster and more efficient than `netstat`, especially on systems with many connections. This direct access also allows `ss` to display more TCP states and socket information than its predecessor.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/ss-command.png" alt="SS Command Output Example" />
+
+## Basic Syntax
+
+The basic syntax of the ss command is:
+
+```bash
+ss [options] [filter]
+```
+
+Where:
+- **options**: Various flags that modify the behavior of the command
+- **filter**: Expressions to filter the output based on specific criteria
+
+## Installation
+
+The `ss` command is part of the `iproute2` package, which is installed by default on most modern Linux distributions. If it's not available, you can install it using your distribution's package manager:
+
+For Debian/Ubuntu-based systems:
+```bash
+sudo apt update
+sudo apt install iproute2
+```
+
+For Red Hat/CentOS/Fedora systems:
+```bash
+sudo yum install iproute2
+# or
+sudo dnf install iproute2
+```
+
+To verify the installation:
+```bash
+ss --version
+```
+
+## Basic Usage
+
+### Displaying All Connections
+
+To display all socket connections:
+
+```bash
+ss
+```
+
+This command shows a list of all non-listening sockets (TCP, UDP, etc.) that have established connections.
+
+### Displaying Listening Sockets
+
+To show only listening sockets:
+
+```bash
+ss -l
+```
+
+This is useful for identifying which services are actively waiting for connections on your system.
+
+### Displaying TCP Connections
+
+To display only TCP connections:
+
+```bash
+ss -t
+```
+
+### Displaying UDP Connections
+
+To display only UDP connections:
+
+```bash
+ss -u
+```
+
+### Displaying Both TCP and UDP Connections
+
+To display both TCP and UDP connections:
+
+```bash
+ss -tu
+```
+
+### Displaying All TCP, UDP, and Listening Sockets
+
+To display all TCP, UDP, and listening sockets:
+
+```bash
+ss -tual
+```
+
+## Advanced Usage
+
+### Displaying Numeric Addresses
+
+To display IP addresses and port numbers in numeric form without resolving hostnames or port names:
+
+```bash
+ss -n
+```
+
+This speeds up the command execution as it skips DNS lookups.
+
+### Displaying Process Information
+
+To show the process using each socket:
+
+```bash
+ss -p
+```
+
+This requires root privileges to display information for all processes. Without root privileges, it will only show information for processes owned by the current user.
+
+### Displaying Extended Information
+
+To display detailed socket information:
+
+```bash
+ss -e
+```
+
+This shows additional information such as internal TCP information, security context for SELinux, etc.
+
+### Displaying Memory Usage
+
+To display memory usage information for sockets:
+
+```bash
+ss -m
+```
+
+### Displaying Timer Information
+
+To show timer information:
+
+```bash
+ss -o
+```
+
+This displays information about timers such as keepalive timers, retransmit timers, etc.
+
+### Filtering by State
+
+To filter sockets by state:
+
+```bash
+ss state established
+```
+
+Common states include:
+- `established`: Connected sockets
+- `listening`: Listening sockets
+- `time-wait`: Sockets waiting after close
+- `close-wait`: Sockets waiting for termination
+- `syn-sent`: Sockets actively attempting to establish connection
+- `syn-recv`: Connection request received
+
+### Filtering by Address or Port
+
+To filter sockets by local address:
+
+```bash
+ss dst 192.168.1.1
+```
+
+To filter sockets by remote address:
+
+```bash
+ss src 192.168.1.1
+```
+
+To filter sockets by port:
+
+```bash
+ss dport = :80
+```
+
+This shows connections to destination port 80.
+
+```bash
+ss sport = :22
+```
+
+This shows connections from source port 22.
+
+### Combining Filters
+
+You can combine multiple filters:
+
+```bash
+ss -t state established dport = :443
+```
+
+This shows established TCP connections to port 443.
+
+## Practical Examples
+
+### Example 1: Checking for Listening Web Servers
+
+To check if a web server is running and listening on port 80 or 443:
+
+```bash
+ss -tlnp | grep -E ':80|:443'
+```
+
+The options used are:
+- `-t`: Show TCP sockets
+- `-l`: Show only listening sockets
+- `-n`: Don't resolve service names
+- `-p`: Show process using the socket
+
+### Example 2: Monitoring Established Connections
+
+To monitor all established connections:
+
+```bash
+watch -n 1 'ss -t state established'
+```
+
+This updates the display every second, showing all established TCP connections.
+
+### Example 3: Checking Connection Count by State
+
+To count connections by state:
+
+```bash
+ss -tan | awk 'NR>1 {print $1}' | sort | uniq -c
+```
+
+This command counts how many connections are in each state.
+
+### Example 4: Finding Processes Listening on a Specific Port
+
+To find which process is listening on port 3306 (MySQL):
+
+```bash
+sudo ss -tlnp | grep :3306
+```
+
+### Example 5: Checking for Connections to a Specific IP
+
+To check all connections to a specific IP address:
+
+```bash
+ss dst 192.168.1.100
+```
+
+### Example 6: Displaying Summary Statistics
+
+To display summary statistics about sockets:
+
+```bash
+ss -s
+```
+
+This shows counts of sockets by type and state.
+
+## Understanding the Output
+
+### Connection Output Format
+
+The standard connection output includes several columns:
+
+- **Netid**: The socket type (tcp, udp, raw, etc.)
+- **State**: The state of the socket (for TCP connections)
+- **Recv-Q**: The count of bytes not copied by the user program connected to this socket
+- **Send-Q**: The count of bytes not acknowledged by the remote host
+- **Local Address:Port**: The local end of the socket (address and port)
+- **Peer Address:Port**: The remote end of the socket (address and port)
+
+### Process Information Format
+
+When using the `-p` option, additional process information is displayed:
+
+- **users**: Shows the owner of the socket in the format `(program_name,pid,fd)`
+
+### Extended Information Format
+
+When using the `-e` option, additional socket information is displayed:
+
+- **uid**: User ID of the socket owner
+- **ino**: Inode number
+- **sk**: Internal socket identifier
+- Additional TCP parameters like congestion algorithm, window scaling, etc.
+
+## Comparison with Netstat
+
+The `ss` command is designed to replace `netstat`. Here's how they compare:
+
+### Advantages of SS over Netstat
+
+1. **Performance**: `ss` is faster, especially on systems with many connections
+2. **More Information**: `ss` can display more TCP states and socket information
+3. **Active Development**: `ss` is actively maintained, while `netstat` is considered deprecated
+4. **Direct Access**: `ss` directly accesses kernel data structures rather than parsing `/proc`
+
+### Equivalent Commands
+
+| Netstat Command | SS Equivalent |
+|-----------------|---------------|
+| `netstat -tulpn` | `ss -tulpn` |
+| `netstat -ant` | `ss -ant` |
+| `netstat -anp` | `ss -anp` |
+| `netstat -s` | `ss -s` (though with less detail) |
+| `netstat -r` | `ip route` (not `ss`) |
+| `netstat -i` | `ip -s link` (not `ss`) |
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-a` | Display all sockets (listening and non-listening) |
+| `-l` | Display only listening sockets |
+| `-t` | Display TCP sockets |
+| `-u` | Display UDP sockets |
+| `-x` | Display Unix domain sockets |
+| `-n` | Do not resolve service names |
+| `-p` | Show process using socket |
+| `-e` | Display detailed socket information |
+| `-m` | Display socket memory usage |
+| `-o` | Display timer information |
+| `-s` | Print summary statistics |
+| `-4` | Display only IPv4 sockets |
+| `-6` | Display only IPv6 sockets |
+| `-r` | Resolve numeric address/ports |
+| `-Z` | Display SELinux security context |
+
+## Troubleshooting with SS
+
+### Identifying Port Conflicts
+
+If an application fails to start because a port is already in use, you can identify the conflicting process:
+
+```bash
+sudo ss -tlnp | grep :8080
+```
+
+This shows which process is using port 8080.
+
+### Detecting Unusual Connections
+
+To check for unexpected or potentially malicious connections:
+
+```bash
+sudo ss -antp | grep ESTAB
+```
+
+Review the list for connections to unfamiliar IP addresses or unusual programs making network connections.
+
+### Checking for Network Bottlenecks
+
+High values in the Recv-Q or Send-Q columns may indicate network bottlenecks:
+
+```bash
+ss -tan | awk '$3 > 0 || $4 > 0'
+```
+
+This shows connections with non-zero queue values.
+
+### Verifying Service Availability
+
+To check if a service is properly listening on the expected port:
+
+```bash
+sudo ss -tlnp | grep nginx
+```
+
+This example checks if the Nginx web server is listening on its configured ports.
+
+## Conclusion
+
+The `ss` command is a powerful and versatile tool for examining network connections on Linux systems. Its improved performance and additional features make it a worthy successor to the older `netstat` command. By mastering the various options and filters available in `ss`, system administrators and network engineers can effectively monitor, troubleshoot, and analyze network connections.
+
+Whether you're checking for listening services, monitoring established connections, or investigating network issues, `ss` provides the detailed information needed to understand and manage your system's network activity. As `netstat` continues to be deprecated in modern Linux distributions, becoming proficient with `ss` is essential for anyone working with Linux networking.

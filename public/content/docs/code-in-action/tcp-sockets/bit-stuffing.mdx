@@ -1,0 +1,288 @@
+---
+title: "TCP Socket Bit Stuffing"
+description: "Implementation of bit stuffing using TCP sockets in C"
+---
+
+# TCP Socket Bit Stuffing Implementation
+
+In this document, we'll explore a client-server application that implements bit stuffing using TCP sockets. The client takes a bit-stream from the user and sends it to the server. The server performs bit stuffing on the received bit-stream and sends it back to the client. The client then displays the bit-stuffed result.
+
+## What is Bit Stuffing?
+
+Bit stuffing is a technique used in data link layer protocols to prevent specific bit patterns in the data from being interpreted as control signals. The most common scenario is when using flags to mark the beginning and end of frames. If the flag pattern appears in the data, it could cause synchronization issues.
+
+In our implementation, whenever five consecutive '1' bits are encountered, a '0' bit is inserted (stuffed) after them to break the pattern. This ensures that the bit pattern "111111" never appears in the transmitted data.
+
+## Code Implementation
+
+Let's examine the three main components of our implementation:
+
+### 1. Header File (custom.h)
+
+The header file contains common definitions and the bit stuffing function:
+
+```c
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#define MAX 100
+```
+
+The header file includes necessary libraries for socket programming and defines a constant `MAX` for buffer sizes. It also contains a bit stuffing function that can be used for reference, although the server implements the bit stuffing algorithm directly.
+
+### 2. Server Implementation (server.c)
+
+The server listens for client connections, receives bit-streams, performs bit stuffing, and sends the results back:
+
+```c
+#include "custom.h"
+
+int main(int ac, char **av) {
+    struct sockaddr_in saddr, caddr;
+    char sip_addr[MAX], bit[MAX];
+    
+    // Set server IP address
+    if (ac == 1) {
+        strcpy(sip_addr, "127.0.0.1");
+    } else {
+        strcpy(sip_addr, av[1]);
+    }
+    
+    // Create socket
+    int sid = socket(AF_INET, SOCK_STREAM, 0);
+    
+    // Configure server address
+    saddr.sin_family = AF_INET;
+    saddr.sin_addr.s_addr = inet_addr(sip_addr);
+    inet_aton(sip_addr, &(saddr.sin_addr));
+    saddr.sin_port = htons(1234);
+    
+    // Bind socket to address
+    int res = bind(sid, (struct sockaddr*)&saddr, sizeof(saddr));
+    if (res == -1) {
+        printf("SERVER CANNOT START...\n");
+        close(sid);
+        exit(1);
+    }
+    
+    // Listen for connections
+    listen(sid, 5);
+    
+    // Accept client connection
+    int len = sizeof(caddr);
+    int cid = accept(sid, (struct sockaddr *)&caddr, &len);
+    
+    // Main processing loop
+    while (1) {
+        // Receive bit-stream from client
+        read(cid, (void*)&bit, MAX);
+        
+        // Check for termination command
+        if (strcmp(bit, "end") == 0) {
+            printf("OOPS SERVER TERMINATED\n");
+            break;
+        }
+        
+        printf("SERVER RECEIVED %s FROM THE CLIENT...\n", bit);
+        
+        // Perform bit stuffing
+        int count = 0;
+        int i;
+        for (i = 0; i < strlen(bit); i++) {
+            if (bit[i] == '1') {
+                count++;
+            } 
+            if (bit[i] == '0') {
+                count = 0;
+            } 
+            if (count == 5) {
+                // Insert a '0' after five consecutive '1's
+                int j;
+                char prev = '0', curr;
+                for (j = i + 1; j < strlen(bit); j++) {
+                    int curr = bit[j];
+                    bit[j] = prev;
+                    prev = curr;
+                }
+                bit[j] = prev;
+                bit[j + 1] = '\0';
+            }
+        }
+        
+        // Send bit-stuffed result back to client
+        write(cid, (void*)&bit, strlen(bit) + 1);
+        printf("SERVER SENT %s TO THE CLIENT\n\n", bit);
+    }
+    
+    // Clean up
+    close(sid);
+    close(cid);
+    return 0;
+}
+```
+
+The server implementation follows these steps:
+1. Create a TCP socket
+2. Bind the socket to a specific address and port (1234)
+3. Listen for client connections
+4. Accept a client connection
+5. Receive bit-streams from the client
+6. Perform bit stuffing on the received bit-streams
+7. Send the bit-stuffed results back to the client
+8. Repeat until the client sends "end"
+9. Close the connections and exit
+
+### 3. Client Implementation (client.c)
+
+The client connects to the server, sends bit-streams, and displays the bit-stuffed results:
+
+```c
+#include "custom.h"
+
+int main(int ac, char **av) {
+    struct sockaddr_in saddr, caddr;
+    char sip_addr[MAX], bit[MAX], ans[MAX];
+    
+    // Set server IP address
+    if (ac == 1) {
+        strcpy(sip_addr, "127.0.0.1");
+    } else {
+        strcpy(sip_addr, av[1]);
+    }
+    
+    // Create socket
+    int sid = socket(AF_INET, SOCK_STREAM, 0);
+    
+    // Configure server address
+    saddr.sin_family = AF_INET;
+    saddr.sin_addr.s_addr = inet_addr(sip_addr);
+    inet_aton(sip_addr, &(saddr.sin_addr));
+    saddr.sin_port = htons(1234);
+    
+    // Connect to server
+    int res = connect(sid, (struct sockaddr*)&saddr, sizeof(saddr));
+    if (res == -1) {
+        printf("CANNOT Connect to the Server...\n");
+        close(sid);
+        exit(1);
+    }
+    
+    // Main processing loop
+    while (1) {
+        // Get bit-stream from user
+        printf("Enter a BIT STREAM: ");
+        scanf("%s", bit);
+        getchar();
+        
+        // Check bit-stream length
+        if (strlen(bit) > 32) {
+            printf("Input Should be 32 bits...");
+            continue;
+        }
+        
+        // Send bit-stream to server
+        write(sid, (void*)&bit, strlen(bit) + 1);
+        
+        // Check for termination command
+        if (strcmp(bit, "end") == 0) {
+            printf("Client Terminated...\n");
+            break;
+        }
+        
+        printf("\nClient Sent %s to the Server\n", bit);
+        
+        // Receive bit-stuffed result from server
+        read(sid, ans, MAX);
+        printf("Bit Stuffed Result RECEIVED from the Server: %s\n\n", ans);
+    }
+    
+    // Clean up
+    close(sid);
+    return 0;
+}
+```
+
+The client implementation follows these steps:
+1. Create a TCP socket
+2. Connect to the server
+3. Get a bit-stream from the user
+4. Send the bit-stream to the server
+5. Receive the bit-stuffed result from the server
+6. Display the bit-stuffed result
+7. Repeat until the user enters "end"
+8. Close the connection and exit
+
+## Bit Stuffing Algorithm
+
+The bit stuffing algorithm used in this implementation is straightforward:
+
+1. Scan through the input bit-stream
+2. Keep track of consecutive '1' bits
+3. When five consecutive '1' bits are encountered, insert a '0' bit after them
+4. Reset the count when a '0' bit is encountered
+
+This algorithm ensures that the bit pattern "111111" never appears in the transmitted data.
+
+> A better understanding function is provided below:
+
+```c
+char *bit_stuffing(char *input) {
+    char *output = (char*)malloc(MAX*sizeof(char));
+    int i, j=0, count = 0;
+    int flag = 0;
+    for(i=0; i<strlen(input); i++) {   
+        output[j++] = input[i];
+        if(input[i] == '1') {
+            count++;
+            if(count == 5 && flag) {
+                output[j++] = '0';
+                count = 0;
+                flag = 0;
+            }
+        } else {
+            count = 0;
+            flag = 1;
+        }
+    }
+    output[j] = '\0';
+    return output;
+}
+```
+
+## Compiling and Running
+
+To compile the server and client programs:
+
+```bash
+gcc -o server server.c
+gcc -o client client.c
+```
+
+To run the programs:
+
+1. Start the server in one terminal:
+   ```bash
+   ./server
+   ```
+
+2. Start the client in another terminal:
+   ```bash
+   ./client
+   ```
+
+## Example Usage
+
+Here's an example of using the application:
+
+<img className="rounded-xl" src="/images/tcp-bit-stuff/1.png" alt="TCP Bit Stuffing Example" />
+
+## Conclusion
+
+This implementation demonstrates how to use TCP sockets to create a client-server application that performs bit stuffing. The client sends bit-streams to the server, which performs bit stuffing and sends the results back to the client. This is a simple example of how data link layer protocols can be implemented using socket programming.
+
+Bit stuffing is an important technique in data communication, as it helps prevent specific bit patterns in the data from being interpreted as control signals. This implementation provides a practical example of how bit stuffing works and how it can be implemented using TCP sockets.

@@ -1,0 +1,7 @@
+{
+  "title": "IV. Code in Action",
+  "description": "Explore real-world networking projects.",
+  "icon": "Code",
+  "root": true,
+  "pages": ["index", "message-queues", "unix-sockets", "tcp-sockets", "udp-sockets"]
+}

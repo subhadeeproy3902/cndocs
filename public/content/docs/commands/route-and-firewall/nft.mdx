@@ -1,0 +1,457 @@
+---
+title: "nft"
+description: "A comprehensive guide to the modern replacement for iptables using nftables"
+draft: false
+toc: true
+---
+
+# nft Command
+
+## Introduction
+
+The `nft` command is the user-space utility for the nftables framework, which is the modern replacement for iptables, ip6tables, arptables, and ebtables in Linux. Introduced in Linux kernel 3.13, nftables provides a more consistent and flexible syntax, improved performance, and a unified approach to packet filtering and classification.
+
+Unlike its predecessor iptables, which used separate tools for different protocol families, nftables uses a single tool (`nft`) and a unified syntax for all protocol families. This simplification, along with other architectural improvements, makes nftables more powerful and easier to use for network administrators and security professionals.
+
+## Basic Concepts
+
+Before diving into nft commands, it's important to understand some key concepts:
+
+### Tables
+
+Tables are the top-level containers in nftables. They group related chains together and are associated with a specific address family:
+
+- **ip**: IPv4 packets
+- **ip6**: IPv6 packets
+- **inet**: Both IPv4 and IPv6 packets
+- **arp**: ARP packets
+- **bridge**: Ethernet frames passing through bridges
+- **netdev**: Packets from ingress (and egress in newer kernels)
+
+### Chains
+
+Chains are containers for rules. There are two types of chains:
+
+- **Base chains**: Entry points for packets from the networking stack, with a specific hook and priority
+- **Regular chains**: Used for better organization and can be called from base chains
+
+### Rules
+
+Rules contain matches (conditions) and actions (statements) that determine what happens to packets.
+
+### Sets and Maps
+
+Sets are collections of elements used for efficient lookups. Maps associate keys with values for quick transformations.
+
+## Installation
+
+nftables is typically included in modern Linux distributions. If it's not installed, you can add it using your distribution's package manager:
+
+### Debian/Ubuntu-based Systems
+
+```bash
+sudo apt update
+sudo apt install nftables
+```
+
+### Red Hat/CentOS/Fedora Systems
+
+```bash
+# For CentOS/RHEL
+sudo yum install nftables
+
+# For Fedora
+sudo dnf install nftables
+```
+
+### Arch Linux
+
+```bash
+sudo pacman -S nftables
+```
+
+## Basic Syntax
+
+The basic syntax of the nft command is:
+
+```bash
+nft [options] [command] [expression]
+```
+
+Where:
+- **options**: Various flags that modify the behavior of nft
+- **command**: The action to perform (add, delete, list, etc.)
+- **expression**: The object to operate on (table, chain, rule, etc.)
+
+## Basic Usage
+
+### Listing Tables
+
+To list all tables:
+
+```bash
+nft list tables
+```
+
+To list tables of a specific family:
+
+```bash
+nft list tables ip
+```
+
+### Listing Chains
+
+To list all chains in a specific table:
+
+```bash
+nft list chains ip filter
+```
+
+### Listing Rules
+
+To list all rules in a specific table:
+
+```bash
+nft list table ip filter
+```
+
+To list all rules in a specific chain:
+
+```bash
+nft list chain ip filter input
+```
+
+### Listing the Entire Ruleset
+
+To list the entire ruleset:
+
+```bash
+nft list ruleset
+```
+
+## Managing Tables
+
+### Creating a Table
+
+To create a new table:
+
+```bash
+nft add table ip filter
+```
+
+This creates a table named "filter" in the "ip" family.
+
+### Deleting a Table
+
+To delete a table:
+
+```bash
+nft delete table ip filter
+```
+
+### Flushing a Table
+
+To remove all chains and rules from a table:
+
+```bash
+nft flush table ip filter
+```
+
+## Managing Chains
+
+### Creating a Base Chain
+
+To create a base chain:
+
+```bash
+nft add chain ip filter input { type filter hook input priority 0 \; policy accept \; }
+```
+
+This creates a base chain named "input" in the "filter" table with:
+- Hook: input (packets destined for the local system)
+- Priority: 0 (standard filter priority)
+- Default policy: accept
+
+### Creating a Regular Chain
+
+To create a regular chain (not attached to a hook):
+
+```bash
+nft add chain ip filter my_chain
+```
+
+### Deleting a Chain
+
+To delete a chain:
+
+```bash
+nft delete chain ip filter input
+```
+
+### Flushing a Chain
+
+To remove all rules from a chain:
+
+```bash
+nft flush chain ip filter input
+```
+
+## Managing Rules
+
+### Adding a Rule
+
+To add a rule to a chain:
+
+```bash
+nft add rule ip filter input tcp dport 22 accept
+```
+
+This adds a rule to accept incoming TCP packets on port 22 (SSH).
+
+### Inserting a Rule
+
+To insert a rule at the beginning of a chain:
+
+```bash
+nft insert rule ip filter input tcp dport 80 accept
+```
+
+### Deleting a Rule
+
+To delete a rule by its handle:
+
+```bash
+# First, list rules with handles
+nft --handle list chain ip filter input
+
+# Then delete by handle
+nft delete rule ip filter input handle 4
+```
+
+## Common Firewall Configurations
+
+### Setting Up a Basic Firewall
+
+Here's a basic firewall setup that allows established connections, SSH, and drops all other incoming traffic:
+
+```bash
+# Create a table and chains
+nft add table inet filter
+nft add chain inet filter input { type filter hook input priority 0 \; policy drop \; }
+nft add chain inet filter forward { type filter hook forward priority 0 \; policy drop \; }
+nft add chain inet filter output { type filter hook output priority 0 \; policy accept \; }
+
+# Allow established and related connections
+nft add rule inet filter input ct state established,related accept
+
+# Allow loopback traffic
+nft add rule inet filter input iifname lo accept
+
+# Allow SSH
+nft add rule inet filter input tcp dport 22 accept
+
+# Allow ICMP and ICMPv6
+nft add rule inet filter input ip protocol icmp accept
+nft add rule inet filter input ip6 nexthdr icmpv6 accept
+```
+
+### Allowing Specific Services
+
+#### HTTP and HTTPS
+
+To allow incoming HTTP and HTTPS traffic:
+
+```bash
+nft add rule inet filter input tcp dport { 80, 443 } accept
+```
+
+#### DNS
+
+To allow outgoing DNS queries:
+
+```bash
+nft add rule inet filter output udp dport 53 accept
+nft add rule inet filter output tcp dport 53 accept
+```
+
+### Network Address Translation (NAT)
+
+#### Setting Up Masquerading (Source NAT)
+
+To enable NAT for outgoing traffic from a private network:
+
+```bash
+nft add table nat
+nft add chain nat postrouting { type nat hook postrouting priority 100 \; }
+nft add rule nat postrouting ip saddr 192.168.1.0/24 oifname eth0 masquerade
+```
+
+#### Port Forwarding (Destination NAT)
+
+To forward incoming traffic on port 80 to an internal server:
+
+```bash
+nft add table nat
+nft add chain nat prerouting { type nat hook prerouting priority -100 \; }
+nft add rule nat prerouting iifname eth0 tcp dport 80 dnat to 192.168.1.100
+```
+
+## Advanced Features
+
+### Using Sets
+
+Sets allow efficient matching against multiple values:
+
+```bash
+# Create a set
+nft add set ip filter blocked_ips { type ipv4_addr \; }
+
+# Add elements to the set
+nft add element ip filter blocked_ips { 192.168.1.1, 192.168.1.2 }
+
+# Use the set in a rule
+nft add rule ip filter input ip saddr @blocked_ips drop
+```
+
+### Using Maps
+
+Maps associate keys with values:
+
+```bash
+# Create a map
+nft add map ip filter port_map { type inet_service : verdict \; }
+
+# Add elements to the map
+nft add element ip filter port_map { 22 : accept, 80 : accept, 443 : accept }
+
+# Use the map in a rule
+nft add rule ip filter input tcp dport vmap @port_map
+```
+
+### Rate Limiting
+
+To limit the rate of incoming connections:
+
+```bash
+nft add rule inet filter input tcp dport 22 limit rate 3/minute accept
+```
+
+This limits SSH connections to 3 per minute.
+
+## Saving and Restoring Rules
+
+nftables rules are not persistent by default and will be lost after a system reboot. To save and restore rules:
+
+### Saving Rules
+
+To save the current ruleset to a file:
+
+```bash
+nft list ruleset > /etc/nftables.conf
+```
+
+### Restoring Rules
+
+To restore rules from a file:
+
+```bash
+nft -f /etc/nftables.conf
+```
+
+### Enabling the nftables Service
+
+To make nftables rules persistent across reboots:
+
+```bash
+# Save current rules
+nft list ruleset > /etc/nftables.conf
+
+# Enable and start the service
+sudo systemctl enable nftables
+sudo systemctl start nftables
+```
+
+## Comparison with iptables
+
+### Advantages of nftables over iptables
+
+1. **Unified Framework**: One tool for all protocol families
+2. **Improved Performance**: Better packet classification algorithm
+3. **Atomic Rule Updates**: Multiple rule changes can be applied atomically
+4. **Simplified Syntax**: More consistent and readable syntax
+5. **Dynamic Rule Updates**: Rules can be updated without flushing the entire table
+6. **Better Set Support**: Native support for sets and maps
+7. **Simplified Dual-Stack Configuration**: The inet family handles both IPv4 and IPv6
+
+### Equivalent Commands
+
+| iptables Command | nftables Equivalent |
+|------------------|---------------------|
+| `iptables -L` | `nft list table ip filter` |
+| `iptables -A INPUT -p tcp --dport 22 -j ACCEPT` | `nft add rule ip filter input tcp dport 22 accept` |
+| `iptables -P INPUT DROP` | `nft add chain ip filter input { type filter hook input priority 0 \; policy drop \; }` |
+| `iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -j MASQUERADE` | `nft add rule ip nat postrouting ip saddr 192.168.1.0/24 masquerade` |
+
+## Troubleshooting
+
+### Common Issues
+
+#### Rules Not Taking Effect
+
+If your rules don't seem to be taking effect, check:
+
+1. Rule order: Rules are processed in order, and processing stops at the first match
+2. Default policies: Check your chain default policies
+3. Conflicting rules: Look for rules that might be conflicting with each other
+
+#### Syntax Errors
+
+If you encounter syntax errors:
+
+1. Check the syntax carefully, especially quotes and escape characters
+2. Use the `-c` option to check syntax without applying changes:
+   ```bash
+   nft -c 'add rule ip filter input tcp dport 22 accept'
+   ```
+
+#### Debugging
+
+To see more detailed information about what nftables is doing:
+
+```bash
+nft --debug=all list ruleset
+```
+
+### Monitoring nftables Traffic
+
+To monitor packets matching specific rules:
+
+```bash
+# Add a counter to a rule
+nft add rule ip filter input tcp dport 22 counter accept
+
+# Check the counter
+nft list chain ip filter input -a
+```
+
+## Best Practices
+
+### Security Recommendations
+
+1. **Default Deny**: Start with a default deny policy and explicitly allow only necessary traffic
+2. **Least Privilege**: Allow only the minimum access required for services to function
+3. **Stateful Filtering**: Use connection tracking to allow related and established connections
+4. **Regular Audits**: Regularly review and audit your firewall rules
+5. **Documentation**: Document your firewall rules and the purpose of each rule
+
+### Performance Optimization
+
+1. **Use Sets for Multiple Values**: Instead of multiple rules for similar matches, use sets
+2. **Minimize Chain Traversal**: Organize rules to minimize the number of rules that need to be evaluated
+3. **Use Appropriate Families**: Use the inet family for dual-stack configurations
+
+## Conclusion
+
+nftables, through the `nft` command, provides a powerful and flexible framework for packet filtering, classification, and manipulation in Linux. Its unified approach, improved performance, and consistent syntax make it a superior alternative to the legacy iptables framework.
+
+While the transition from iptables to nftables may require learning a new syntax and concepts, the benefits in terms of flexibility, performance, and maintainability make it well worth the effort. As Linux distributions continue to adopt nftables as the default firewall solution, mastering the `nft` command becomes increasingly important for system administrators and security professionals.

@@ -1,0 +1,377 @@
+---
+title: "iftop"
+description: "A comprehensive guide to monitoring real-time bandwidth usage by connection with iftop"
+draft: false
+toc: true
+---
+
+# iftop Command
+
+## Introduction
+
+`iftop` is a free and open-source command-line system monitoring utility that displays a frequently-updated list of network bandwidth usage broken down by individual host connections. Unlike other bandwidth monitoring tools that show bandwidth usage by process or interface, iftop focuses on showing the bandwidth consumed by individual TCP/IP connections.
+
+The name "iftop" is derived from "interface top," similar to how the popular "top" command displays process activity. Just as "top" provides real-time information about processes, iftop provides real-time information about network connections.
+
+iftop is particularly useful for network administrators and system engineers who need to:
+- Identify which connections are consuming the most bandwidth
+- Monitor network usage patterns in real-time
+- Troubleshoot network congestion issues
+- Detect unusual network activity
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/iftop-interface.png" alt="iftop Interface" />
+
+## Installation
+
+iftop is not typically installed by default on most Linux distributions, but it's available in the standard repositories.
+
+### Debian/Ubuntu-based Systems
+
+```bash
+sudo apt update
+sudo apt install iftop
+```
+
+### Red Hat/CentOS/Fedora Systems
+
+```bash
+# For CentOS/RHEL with EPEL repository enabled
+sudo yum install epel-release
+sudo yum install iftop
+
+# For Fedora
+sudo dnf install iftop
+```
+
+### Arch Linux
+
+```bash
+sudo pacman -S iftop
+```
+
+### From Source
+
+If iftop is not available in your distribution's repositories, you can compile it from source:
+
+```bash
+# Install dependencies
+sudo apt install build-essential libpcap-dev libncurses5-dev
+
+# Download source
+wget http://www.ex-parrot.com/~pdw/iftop/download/iftop-0.17.tar.gz
+
+# Extract and compile
+tar -zxvf iftop-0.17.tar.gz
+cd iftop-0.17
+./configure
+make
+sudo make install
+```
+
+## Basic Usage
+
+To start iftop with default settings, simply run:
+
+```bash
+sudo iftop
+```
+
+Root privileges (sudo) are required because iftop needs to put the network interface into promiscuous mode to capture packets.
+
+### Specifying a Network Interface
+
+By default, iftop monitors the first available network interface. To specify a particular interface, use the `-i` option:
+
+```bash
+sudo iftop -i eth0  # Monitor the eth0 interface
+sudo iftop -i wlan0 # Monitor the wlan0 interface
+```
+
+### Understanding the Display
+
+The iftop display consists of several sections:
+
+1. **Header**: Shows the interface being monitored and the total bandwidth usage
+2. **Connection List**: Shows individual connections sorted by bandwidth usage
+3. **Statistics Bars**: Shows graphical representation of traffic over time
+4. **Summary**: Shows cumulative bandwidth statistics
+5. **Legend**: Shows the meaning of various symbols and abbreviations
+
+#### Connection List Format
+
+Each line in the connection list shows:
+
+```
+Source Host <=> Destination Host    TX    RX    TOTAL
+```
+
+Where:
+- **Source Host**: The local or source IP address/hostname
+- **Destination Host**: The remote or destination IP address/hostname
+- **TX**: Data transmitted from source to destination
+- **RX**: Data received from destination to source
+- **TOTAL**: Total bandwidth (TX + RX)
+
+#### Traffic Statistics
+
+At the bottom of the display, iftop shows three rows of cumulative statistics:
+
+1. **TX**: Total transmitted bandwidth
+2. **RX**: Total received bandwidth
+3. **TOTAL**: Combined bandwidth
+
+Each row shows three values:
+- **Last 2s**: Average over the last 2 seconds
+- **Last 10s**: Average over the last 10 seconds
+- **Last 40s**: Average over the last 40 seconds
+
+## Advanced Options
+
+### Filtering Traffic
+
+iftop allows you to filter the displayed traffic using Berkeley Packet Filter (BPF) syntax, similar to tcpdump:
+
+```bash
+# Show only HTTP traffic
+sudo iftop -f 'port 80 or port 443'
+
+# Show traffic to/from a specific host
+sudo iftop -f 'host 192.168.1.100'
+
+# Show traffic between two specific subnets
+sudo iftop -f 'net 192.168.1.0/24 and net 10.0.0.0/8'
+```
+
+### Display Options
+
+iftop offers several options to customize the display:
+
+```bash
+# Don't show bar graphs
+sudo iftop -b
+
+# Show traffic in bytes rather than bits
+sudo iftop -B
+
+# Don't perform hostname lookups
+sudo iftop -n
+
+# Don't perform port lookups
+sudo iftop -N
+
+# Show port numbers
+sudo iftop -P
+
+# Sort by source address
+sudo iftop -S
+
+# Sort by destination address
+sudo iftop -D
+```
+
+### Bandwidth Scale
+
+By default, iftop automatically scales the bandwidth units. You can force specific units:
+
+```bash
+# Display bandwidth in bytes
+sudo iftop -B
+
+# Display bandwidth in bits
+sudo iftop -b
+```
+
+### Packet Direction
+
+You can filter traffic based on direction:
+
+```bash
+# Show only incoming traffic
+sudo iftop -t
+
+# Show only outgoing traffic
+sudo iftop -s
+```
+
+## Interactive Commands
+
+While iftop is running, you can use various keyboard commands to control the display:
+
+### Display Controls
+
+- `h`: Display help
+- `q`: Quit iftop
+- `p`: Pause the display
+- `b`: Toggle the display of the bar graphs
+- `B`: Toggle the display of bandwidth in bytes/bits
+- `n`: Toggle hostname resolution
+- `N`: Toggle port resolution
+- `s`: Toggle display of source host
+- `d`: Toggle display of destination host
+- `t`: Cycle through the display modes (2-line, 1-line, and classic)
+
+### Sorting Controls
+
+- `o`: Cycle through the sort options
+- `1`: Sort by first column (source/destination)
+- `2`: Sort by second column (source/destination)
+- `3`: Sort by third column (bandwidth)
+
+### Filtering Controls
+
+- `l`: Set a filter code (using BPF syntax)
+- `L`: Clear the filter
+- `f`: Edit the filter code
+
+### Scrolling
+
+- `j` or `↓`: Scroll down
+- `k` or `↑`: Scroll up
+- `Space`: Scroll down one page
+
+## Practical Examples
+
+### Monitoring Specific Interface Traffic
+
+To monitor traffic on a specific network interface:
+
+```bash
+sudo iftop -i eth0
+```
+
+### Identifying Bandwidth-Heavy Services
+
+To identify which services are consuming the most bandwidth:
+
+```bash
+sudo iftop -P
+```
+
+This shows port numbers, helping you identify the services.
+
+### Monitoring Traffic to External Networks
+
+To monitor traffic between your local network and the internet:
+
+```bash
+sudo iftop -f 'not src and dst net 192.168.0.0/16'
+```
+
+This filters out internal traffic within your local 192.168.0.0/16 network.
+
+### Monitoring Specific Protocol Traffic
+
+To monitor only HTTP and HTTPS traffic:
+
+```bash
+sudo iftop -f 'tcp port 80 or tcp port 443'
+```
+
+### Detecting Unusual Network Activity
+
+To detect potential data exfiltration or unusual connections:
+
+```bash
+sudo iftop -t -P
+```
+
+This shows outgoing connections with port numbers, helping identify unexpected outbound traffic.
+
+### Monitoring DNS Traffic
+
+To monitor DNS queries and responses:
+
+```bash
+sudo iftop -f 'udp port 53'
+```
+
+### Combining Multiple Options
+
+You can combine multiple options for more specific monitoring:
+
+```bash
+sudo iftop -i eth0 -n -P -B -f 'not port 22'
+```
+
+This monitors the eth0 interface, doesn't resolve hostnames, shows port numbers, displays bandwidth in bytes, and excludes SSH traffic.
+
+## Troubleshooting
+
+### Common Issues
+
+#### "Error opening interface: Permission denied"
+
+This occurs when running iftop without sufficient privileges:
+
+```
+Solution: Run iftop with sudo or as root
+```
+
+#### "Interface not found"
+
+This happens when specifying a non-existent interface:
+
+```
+Solution: Use 'ip a' to list available interfaces, then use the correct interface name
+```
+
+#### "No suitable devices found"
+
+This can occur when no network interfaces are available for monitoring:
+
+```
+Solution: Check network interface status with 'ip link'
+```
+
+#### High CPU Usage
+
+iftop can consume significant CPU resources on busy networks:
+
+```
+Solution: Use more specific filters to reduce the amount of traffic being analyzed
+```
+
+## Comparison with Similar Tools
+
+### iftop vs. nethogs
+
+- **iftop**: Shows bandwidth usage by connection (host pairs)
+- **nethogs**: Shows bandwidth usage by process
+
+### iftop vs. nload
+
+- **iftop**: Shows bandwidth usage by connection
+- **nload**: Shows total bandwidth usage on an interface without breaking it down by connection
+
+### iftop vs. bmon
+
+- **iftop**: Focuses on connection-level bandwidth usage
+- **bmon**: Provides more detailed interface statistics and can monitor multiple interfaces simultaneously
+
+### iftop vs. tcpdump
+
+- **iftop**: Provides a real-time visual display of bandwidth usage
+- **tcpdump**: Captures and displays packet contents for detailed analysis
+
+## Best Practices
+
+### Efficient Monitoring
+
+1. **Use specific filters**: Narrow down the traffic you're monitoring to reduce resource usage
+2. **Monitor specific interfaces**: Only monitor the interfaces relevant to your investigation
+3. **Disable name resolution**: Use the `-n` option to disable hostname resolution for better performance
+4. **Use appropriate update intervals**: Adjust the update interval based on your monitoring needs
+
+### Security Considerations
+
+1. **Be mindful of sensitive data**: iftop can display connection information that might include sensitive destinations
+2. **Use in trusted environments**: Running network monitoring tools should be done in environments where you have authorization
+3. **Consider encryption**: Remember that iftop only shows connection metadata, not the content of encrypted traffic
+
+## Conclusion
+
+iftop is a powerful and flexible tool for real-time network bandwidth monitoring at the connection level. Its ability to break down bandwidth usage by individual connections makes it invaluable for network troubleshooting, performance optimization, and security monitoring.
+
+By mastering iftop's various options and filters, system administrators and network engineers can gain valuable insights into network traffic patterns and quickly identify bandwidth-intensive connections or potential network issues.
+
+Whether you're diagnosing network congestion, monitoring server traffic, or investigating unusual network activity, iftop provides the visibility needed to understand what's happening on your network at the connection level.

@@ -1,0 +1,292 @@
+---
+title: "ip"
+description: "A comprehensive guide to the ip command - the modern replacement for ifconfig"
+draft: false
+toc: true
+---
+
+# IP Command in Linux: The Modern Replacement for ifconfig
+
+## Introduction
+
+The `ip` command is a powerful and versatile networking utility in Linux systems that serves as the modern replacement for traditional networking tools like `ifconfig`, `route`, and `arp`. Part of the `iproute2` package, the `ip` command provides a unified interface for configuring and managing various aspects of network settings in modern Linux distributions.
+
+Unlike its predecessors, the `ip` command offers more features, better performance, and a more consistent syntax for managing network interfaces, routing tables, addresses, and more. This comprehensive documentation explores the capabilities, syntax, and practical applications of the `ip` command.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/ip-command.png" alt="IP Command Output Example" />
+
+## Basic Syntax
+
+The general syntax of the `ip` command follows this pattern:
+
+```bash
+ip [OPTIONS] OBJECT {COMMAND | help}
+```
+
+Where:
+- **OPTIONS**: Additional parameters that modify the behavior of the command
+- **OBJECT**: The networking component you want to interact with (e.g., link, address, route)
+- **COMMAND**: The action you want to perform on the specified object
+- **help**: Displays help information about the specified object or command
+
+## Common Objects in the IP Command
+
+The `ip` command works with several objects, each representing a different aspect of network configuration:
+
+| Object | Description | Equivalent Legacy Command |
+|--------|-------------|---------------------------|
+| `link` | Network interfaces | `ifconfig` |
+| `address` (or `addr`) | Protocol addresses on network interfaces | `ifconfig`, `inet` |
+| `route` | Routing table entries | `route` |
+| `neigh` | ARP or NDISC cache entries | `arp` |
+| `tunnel` | Tunnel over IP | `iptunnel` |
+| `maddr` | Multicast addresses | `ipmaddr` |
+| `mroute` | Multicast routing cache entries | `iproute` |
+| `rule` | Rules in routing policy database | `ip rule` |
+
+## Key IP Command Operations
+
+### 1. Managing Network Interfaces with `ip link`
+
+The `ip link` object allows you to view and manage network interfaces at the link layer.
+
+#### Displaying Network Interfaces
+
+To list all network interfaces:
+
+```bash
+ip link show
+# or shorter form
+ip l
+```
+
+This command displays information about all network interfaces, including their state (UP/DOWN), MAC address, and other link-layer details.
+
+#### Activating or Deactivating an Interface
+
+To bring an interface up (activate it):
+
+```bash
+sudo ip link set dev eth0 up
+```
+
+To bring an interface down (deactivate it):
+
+```bash
+sudo ip link set dev eth0 down
+```
+
+#### Changing Interface Properties
+
+To change the MTU (Maximum Transmission Unit) of an interface:
+
+```bash
+sudo ip link set dev eth0 mtu 1500
+```
+
+To change the MAC address of an interface:
+
+```bash
+sudo ip link set dev eth0 address 00:11:22:33:44:55
+```
+
+### 2. Managing IP Addresses with `ip address`
+
+The `ip address` (or `ip addr`) object allows you to view and manage IP addresses assigned to network interfaces.
+
+#### Displaying IP Addresses
+
+To show IP addresses for all interfaces:
+
+```bash
+ip address show
+# or shorter form
+ip a
+```
+
+To show IP addresses for a specific interface:
+
+```bash
+ip address show dev eth0
+```
+
+#### Adding an IP Address to an Interface
+
+To add an IPv4 address to an interface:
+
+```bash
+sudo ip address add 192.168.1.100/24 dev eth0
+```
+
+To add an IPv6 address to an interface:
+
+```bash
+sudo ip address add 2001:db8::1/64 dev eth0
+```
+
+#### Removing an IP Address from an Interface
+
+To remove an IPv4 address from an interface:
+
+```bash
+sudo ip address del 192.168.1.100/24 dev eth0
+```
+
+### 3. Managing Routing with `ip route`
+
+The `ip route` object allows you to view and manage the routing table.
+
+#### Displaying Routes
+
+To show the routing table:
+
+```bash
+ip route show
+# or shorter form
+ip r
+```
+
+#### Adding a Route
+
+To add a default route (gateway):
+
+```bash
+sudo ip route add default via 192.168.1.1 dev eth0
+```
+
+To add a route to a specific network:
+
+```bash
+sudo ip route add 10.0.0.0/24 via 192.168.1.254 dev eth0
+```
+
+#### Deleting a Route
+
+To delete a route:
+
+```bash
+sudo ip route del 10.0.0.0/24
+```
+
+#### Finding the Route for a Specific Destination
+
+To find which route would be used to reach a specific IP address:
+
+```bash
+ip route get 8.8.8.8
+```
+
+### 4. Managing ARP Cache with `ip neigh`
+
+The `ip neigh` object allows you to view and manage the ARP (Address Resolution Protocol) cache.
+
+#### Displaying ARP Cache
+
+To show the ARP cache:
+
+```bash
+ip neigh show
+```
+
+#### Adding an ARP Entry
+
+To add a static ARP entry:
+
+```bash
+sudo ip neigh add 192.168.1.5 lladdr 00:11:22:33:44:55 dev eth0
+```
+
+#### Deleting an ARP Entry
+
+To delete an ARP entry:
+
+```bash
+sudo ip neigh del 192.168.1.5 dev eth0
+```
+
+## Advanced IP Command Features
+
+### 1. Network Namespaces
+
+Network namespaces allow for isolated network environments within a single Linux system. The `ip netns` command is used to manage these namespaces.
+
+```bash
+# Create a new namespace
+sudo ip netns add mynetns
+
+# List all namespaces
+ip netns list
+
+# Execute a command in a namespace
+sudo ip netns exec mynetns ip addr
+```
+
+### 2. Virtual Ethernet Interfaces
+
+Virtual Ethernet (veth) interfaces are used to create tunnels between network namespaces.
+
+```bash
+# Create a veth pair
+sudo ip link add veth0 type veth peer name veth1
+
+# Move one end to a namespace
+sudo ip link set veth1 netns mynetns
+```
+
+### 3. Traffic Control
+
+The `ip` command can be used with the `tc` (Traffic Control) subsystem to manage network traffic.
+
+```bash
+# Add a queueing discipline
+sudo tc qdisc add dev eth0 root netem delay 100ms
+
+# Show queueing disciplines
+tc qdisc show dev eth0
+```
+
+## Practical Examples
+
+### Example 1: Setting Up a Secondary IP Address
+
+```bash
+# Add a secondary IP address to eth0
+sudo ip addr add 192.168.2.10/24 dev eth0
+
+# Verify the configuration
+ip addr show dev eth0
+```
+
+### Example 2: Creating a Static Route for a Specific Network
+
+```bash
+# Add a route to the 10.0.0.0/8 network via a specific gateway
+sudo ip route add 10.0.0.0/8 via 192.168.1.254 dev eth0
+
+# Verify the route
+ip route show
+```
+
+### Example 3: Monitoring Interface Statistics
+
+```bash
+# Show detailed statistics for an interface
+ip -s link show dev eth0
+```
+
+## Comparison with Legacy Commands
+
+| Task | Legacy Command | IP Command |
+|------|---------------|------------|
+| Show interfaces | `ifconfig` | `ip link show` |
+| Show IP addresses | `ifconfig` | `ip addr show` |
+| Add IP address | `ifconfig eth0 192.168.1.1 netmask 255.255.255.0` | `ip addr add 192.168.1.1/24 dev eth0` |
+| Show routing table | `route -n` | `ip route show` |
+| Add default gateway | `route add default gw 192.168.1.1` | `ip route add default via 192.168.1.1` |
+| Show ARP cache | `arp -n` | `ip neigh show` |
+
+## Conclusion
+
+The `ip` command is a powerful and versatile tool for network configuration and management in Linux systems. It provides a unified interface for managing various aspects of networking, from interfaces and addresses to routes and ARP cache entries. By mastering the `ip` command, system administrators and network engineers can efficiently configure and troubleshoot network-related issues in modern Linux environments.
+
+As Linux networking continues to evolve, the `ip` command remains an essential tool in the administrator's toolkit, offering more features and better performance than its legacy counterparts. Whether you're configuring a simple home network or managing complex enterprise networking environments, the `ip` command provides the flexibility and power needed to get the job done efficiently.

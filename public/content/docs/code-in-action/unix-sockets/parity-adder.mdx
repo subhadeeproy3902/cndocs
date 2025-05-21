@@ -1,0 +1,291 @@
+---
+title: "Unix Parity Adder"
+description: "A client-server application using Unix File sockets to add parity bits to bit-streams"
+---
+
+# Unix Parity Adder
+
+This project implements a simple client-server application using Unix File sockets. The client takes a bit-stream from the user and sends it to the server. The server adds a parity bit to the bit-stream and sends the modified bit-stream back to the client. The client then displays the result.
+
+## Problem Statement
+
+Write C Programs to implement a simple client-server application using Unix File socket. The client will take a bit-stream from the user and send it to server. The server will add a parity bit to it and send the modified bit-stream to the corresponding client. The client will print the result.
+
+## Overview
+
+```
++-------------------+                  +-------------------+
+|                   |  1. Bit-stream   |                   |
+|  Client (Client.c)|----------------->|  Server (Server.c)|
+|                   |                  |                   |
+|                   |  2. Bit-stream   |                   |
+|                   |<-----------------|                   |
+|                   |  with parity bit |                   |
++-------------------+                  +-------------------+
+```
+
+The system consists of two programs that communicate through a Unix domain socket:
+
+1. **Client (Client.c)**: Takes bit-stream input from the user and sends it to the server
+2. **Server (Server.c)**: Receives the bit-stream, adds a parity bit, and sends it back to the client
+
+## Unix Domain Sockets
+
+Unix domain sockets (also known as IPC sockets) are a form of inter-process communication (IPC) that allows processes on the same host to communicate with each other. Unlike network sockets, Unix domain sockets use the file system as their address space. Processes reference Unix domain sockets as file system inodes, so two processes can communicate by opening the same socket.
+
+Key characteristics of Unix domain sockets:
+- They are faster and more efficient than network sockets for local communication
+- They can transmit data and file descriptors between processes
+- They use the file system namespace for addressing
+
+## Components
+
+### Client Program (Client.c)
+
+The client program connects to the server using a Unix domain socket and handles the user interaction.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/socket.h>
+
+#define MAX 100
+
+void main()
+{
+    int sockfd,result,len;
+    char input[MAX];
+
+    struct sockaddr_un address;
+    sockfd=socket(AF_UNIX,SOCK_STREAM,0);
+    address.sun_family=AF_UNIX;
+    strcpy(address.sun_path,"a2server");
+    len=sizeof(address);
+
+    printf("Client Running\n\n");
+
+    result=connect(sockfd,(struct sockaddr *)&address,len);
+    if(result==-1)
+    {
+        printf("Cannot connect to server\n");
+        exit(1);
+    }
+    
+    while(1)
+    {
+        printf("Enter the bit-stream : ");
+        scanf("%[^\n]",input);
+        getchar();
+        
+        printf("\nSending %s to the server\n",input);
+        write(sockfd,input,strlen(input)+1);
+
+        if(strcmp(input,"end")==0)
+        {
+            //close(sockfd);
+            break;
+        }
+
+        printf("Waiting for the server\n");
+        sleep(1);
+        read(sockfd,input,MAX);
+        printf("Received from the server with parity bit : %s\n\n",input);
+    }
+    close(sockfd);
+}
+```
+
+Key operations in this program:
+- Creates a socket with `AF_UNIX` domain and `SOCK_STREAM` type
+- Connects to the server socket at path "a2server"
+- Takes bit-stream input from the user
+- Sends the bit-stream to the server using `write()`
+- Receives the modified bit-stream from the server using `read()`
+- Displays the result to the user
+- Terminates when the user enters "end"
+
+### Server Program (Server.c)
+
+The server program listens for client connections, processes the bit-stream, and adds a parity bit.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/socket.h>
+
+#define MAX 100
+
+void main()
+{
+    int server_fd,client_fd;
+    int server_len,client_len;
+    char input[MAX];
+    int i,count,len=0;
+
+    struct sockaddr_un server_address,client_address;
+
+    unlink("a2server");
+    server_fd=socket(AF_UNIX,SOCK_STREAM,0);
+    server_address.sun_family=AF_UNIX;
+    strcpy(server_address.sun_path,"a2server");
+    server_len=sizeof(server_address);
+    bind(server_fd,(struct sockaddr *)&server_address,server_len);
+
+    listen(server_fd,5);
+    printf("Server Running\n\n");
+    
+    client_len=sizeof(client_address);
+    client_fd=accept(server_fd,(struct sockaddr *)&client_address,&client_len);
+
+    while(1)
+    {
+        printf("Waiting..\n");
+        sleep(2);
+        
+        read(client_fd,input,MAX);
+        printf("Server Received : %s\n",input);
+        
+        if(strcmp(input,"end")==0)
+        {
+            close(client_fd);
+            //close(server_fd);
+            break;
+        }
+        count=0;
+        len=strlen(input);
+        printf("%d\n",len);
+        for(i=0;i<len;i++)
+        {
+            //printf("%c ",input[i]);
+            if(input[i]=='1') 
+                count+=1;
+        }
+        //printf("\n%d\n",count);
+        if(count%2==0) input[i]='0';
+        else input[i]='1';
+        input[i+1]='\0';
+
+        printf("Sending back to the client\n");
+        write(client_fd,input,strlen(input)+1);
+        //close(client_fd);
+
+    }
+    close(server_fd);
+}
+```
+
+Key operations in this program:
+- Removes any existing socket file with `unlink()`
+- Creates a socket with `AF_UNIX` domain and `SOCK_STREAM` type
+- Binds the socket to the path "a2server"
+- Listens for client connections with `listen()`
+- Accepts a client connection with `accept()`
+- Receives bit-streams from the client using `read()`
+- Calculates the parity bit by counting the number of '1' bits
+- Adds the parity bit to the bit-stream
+- Sends the modified bit-stream back to the client using `write()`
+- Terminates when it receives "end" from the client
+
+## Parity Bit Calculation
+
+```
++-------------------+     +-------------------+     +-------------------+
+|                   |     |                   |     |                   |
+| 1. Receive        |---->| 2. Count number   |---->| 3. Add parity bit |
+|    bit-stream     |     |    of '1' bits    |     |                   |
+|                   |     |                   |     |                   |
++-------------------+     +-------------------+     +-------------------+
+```
+
+The server calculates an even parity bit for the received bit-stream:
+
+1. It counts the number of '1' bits in the input stream
+2. If the count is even, it adds '0' as the parity bit
+3. If the count is odd, it adds '1' as the parity bit
+
+This ensures that the total number of '1' bits (including the parity bit) is always even, which is the principle of even parity.
+
+## Socket Communication Flow
+
+```
++-------------+                                  +-------------+
+|             |                                  |             |
+| Client      |                                  | Server      |
+| (Client.c)  |                                  | (Server.c)  |
+|             |                                  |             |
++------+------+                                  +------+------+
+       |                                                |
+       | socket()                                       | socket()
+       |                                                |
+       | connect()                                      | bind()
+       |                                                |
+       |                                                | listen()
+       |                                                |
+       |                                                | accept()
+       |                                                |
+       | write() - Send bit-stream                      |
+       +----------------------------------------------->|
+       |                                                | read()
+       |                                                |
+       |                                                | Calculate parity
+       |                                                |
+       |                                                | write() - Send with parity
+       |<-----------------------------------------------+
+       | read()                                         |
+       |                                                |
+       | Display result                                 |
+       |                                                |
+       | write() - Send "end"                           |
+       +----------------------------------------------->|
+       |                                                | read()
+       |                                                |
+       | close()                                        | close()
+       |                                                |
+```
+
+## Compilation and Execution
+
+To compile the programs:
+
+```bash
+gcc -o server Server.c
+gcc -o client Client.c
+```
+
+To run the system, open two terminal windows and execute:
+
+```bash
+# In first terminal
+./server
+
+# In second terminal
+./client
+```
+
+## Example Output
+
+<img className="rounded-xl" src="/images/unix-file-sockets/1.png" alt="Unix Parity Adder Output" />
+
+## Conclusion
+
+This project demonstrates the use of Unix domain sockets for inter-process communication. The client and server programs communicate through a socket file in the file system, allowing them to exchange data efficiently on the same host.
+
+The implementation showcases:
+- Creating and using Unix domain sockets
+- Client-server communication model
+- Parity bit calculation for error detection
+- Proper socket cleanup and termination
+
+These concepts are fundamental to understanding inter-process communication in Unix/Linux systems and can be applied to more complex applications requiring local process communication.

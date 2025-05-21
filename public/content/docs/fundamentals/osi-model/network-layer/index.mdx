@@ -1,0 +1,74 @@
+---
+title: Network Layer
+description: Learn about the Network Layer in the OSI model, its protocols, addressing mechanisms, and routing functions.
+---
+
+# Network Layer in OSI Model
+
+The Network Layer is the third layer in the OSI (Open Systems Interconnection) model, responsible for routing data packets between different networks. It provides logical addressing, routing, and path determination to ensure data reaches its intended destination across interconnected networks.
+
+## Key Functions of the Network Layer
+
+The Network Layer performs several critical functions:
+
+1. **Logical Addressing**: Assigns unique addresses (like IP addresses) to devices on a network, allowing them to be identified and located.
+
+2. **Routing**: Determines the best path for data to travel from source to destination across multiple networks.
+
+3. **Packet Forwarding**: Moves packets from one router to another along the path to their final destination.
+
+4. **Fragmentation and Reassembly**: Breaks large packets into smaller ones to accommodate different network technologies and reassembles them at the destination.
+
+5. **Traffic Control**: Manages network congestion and ensures quality of service.
+
+6. **Error Handling**: Detects and attempts to correct errors that occur during transmission.
+
+## Network Layer Protocols
+
+The Network Layer employs various protocols to perform its functions:
+
+### Address Resolution Protocols
+
+- [Address Resolution Protocol (ARP)](/docs/fundamentals/osi-model/network-layer/arp): Maps IP addresses to MAC addresses on a local network.
+- [Reverse Address Resolution Protocol (RARP)](/docs/fundamentals/osi-model/network-layer/rarp): Maps MAC addresses to IP addresses.
+- [Bootstrap Protocol (BOOTP)](/docs/fundamentals/osi-model/network-layer/bootp): Provides IP addresses and boot information to diskless workstations.
+
+### Routing and Forwarding
+
+- [IP Forwarding](/docs/fundamentals/osi-model/network-layer/forwarding): The process of routing packets from source to destination through intermediate routers.
+- [Unicast Routing Protocols](/docs/fundamentals/osi-model/network-layer/unicast-routing): Protocols that determine the best path for data to travel from source to destination.
+
+## IP Addressing
+
+The Network Layer uses IP (Internet Protocol) addressing to uniquely identify devices on a network. IP addressing and related topics are covered in detail in the [IP and DNS](/docs/fundamentals/ip-and-dns) section.
+
+## Network Layer Devices
+
+The primary device operating at the Network Layer is the **router**. Routers:
+
+- Connect different networks together
+- Make forwarding decisions based on IP addresses
+- Maintain routing tables to determine the best path for data
+- Implement various routing protocols to exchange routing information
+
+## Relationship with Other Layers
+
+The Network Layer works closely with:
+
+- **Data Link Layer (Layer 2)**: Receives frames from the Data Link Layer, processes them, and passes them back for transmission.
+- **Transport Layer (Layer 4)**: Receives segments from the Transport Layer and encapsulates them into packets for routing.
+
+## Challenges at the Network Layer
+
+The Network Layer faces several challenges:
+
+1. **Scalability**: As networks grow, routing tables become larger and more complex.
+2. **Security**: Vulnerable to attacks like IP spoofing and routing table poisoning.
+3. **Quality of Service**: Ensuring timely delivery of critical data.
+4. **Congestion**: Managing network traffic to prevent bottlenecks.
+
+## Conclusion
+
+The Network Layer plays a crucial role in enabling communication between different networks. By providing logical addressing and routing capabilities, it ensures that data can travel across the complex web of interconnected networks that make up the internet and other large networks.
+
+In the following sections, we'll explore the various protocols and mechanisms used at the Network Layer in more detail.

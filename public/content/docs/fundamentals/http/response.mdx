@@ -1,0 +1,30 @@
+---
+title: Response Methods
+description: Understanding Server Feedback
+---
+
+# Categories of Status Codes
+
+HTTP status codes are grouped into five categories, based on the first digit:
+
+- **1xx (Informational):** These codes indicate that the request was received and the server is continuing to process it.
+  You don't usually see these codes directly in your browser.
+  - Example: `100 Continue`.
+
+- **2xx (Successful):** These codes mean that the request was successful.
+  The server received the request, understood it, and processed it without any problems.
+  - Example: `200 OK` (the most common success code), `201 Created` (for successful resource creation), `204 No Content` (successful request, but no content to return).
+
+- **3xx (Redirection):** These codes indicate that the client needs to take additional action to complete the request.
+  The requested resource has moved, either temporarily or permanently.
+  - Example: `301 Moved Permanently`, `302 Found` (temporary redirect), `307 Temporary Redirect`, `308 Permanent Redirect`.
+
+- **4xx (Client Error):** These codes indicate that there was a problem with the _client's_ request.
+  The request might be malformed, unauthorized, or the requested resource might not exist.
+  - Example: `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found` (the most famous error code!), `405 Method Not Allowed`.
+
+- **5xx (Server Error):** These codes indicate that there was a problem on the _server's_ side.
+  The server failed to fulfill a valid request.
+  - Example: `500 Internal Server Error`, `502 Bad Gateway`, `503 Service Unavailable`, `504 Gateway Timeout`.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://i.postimg.cc/pdhkTFkW/status.webp" alt="HTTP Connection" />

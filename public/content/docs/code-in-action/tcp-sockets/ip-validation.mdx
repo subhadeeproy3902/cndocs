@@ -1,0 +1,280 @@
+---
+title: "TCP Multi-Client IP Validator"
+description: "Implementation of a multi-client TCP server for validating IPv4 addresses"
+---
+
+# TCP Multi-Client IP Address Validator
+
+In this document, we'll explore a multi-client TCP server application that validates IPv4 addresses. The server can handle multiple clients simultaneously using threads. Each client can send IPv4 addresses to the server, which validates them and sends back "YES" or "NO" as a result.
+
+## Understanding IPv4 Address Validation
+
+IPv4 addresses are 32-bit addresses typically represented in dot-decimal notation, consisting of four decimal numbers (octets) separated by dots. Each octet must be between 0 and 255.
+
+For example:
+- Valid IPv4 address: `192.168.1.1`
+- Invalid IPv4 address: `256.168.1.1` (256 is greater than 255)
+- Invalid IPv4 address: `192.168.1` (missing one octet)
+- Invalid IPv4 address: `192.168.1.1.1` (too many octets)
+
+In our implementation, we use the `inet_pton()` function to validate IPv4 addresses. This function converts an IPv4 address from text to binary form and returns a non-zero value if the conversion succeeds (indicating a valid address).
+
+## Code Implementation
+
+Let's examine the three main components of our implementation:
+
+### 1. Header File (custom.h)
+
+The header file contains common definitions and includes:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+#define PORT_NO 8888
+#define MAX 100
+#define ip "127.0.0.1"
+```
+
+The header file includes necessary libraries for socket programming, thread handling, and defines constants for the port number, maximum buffer size, and default IP address.
+
+### 2. Server Implementation (server.c)
+
+The server creates a socket, binds it to an address, and listens for client connections. When a client connects, the server creates a new thread to handle the client:
+
+```c
+#include "custom.h"
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+int active_clients = 0;
+
+typedef struct {
+    int client_fd;
+    int client_no;
+    int server_fd;
+} client_data;
+
+void* pthBody(void* args) {
+    client_data* data = (client_data*)args;
+    int client_fd = data->client_fd;
+    int client_no = data->client_no;
+    int server_fd = data->server_fd;
+    free(data); // Free the malloc'd data
+
+    char buff[MAX];
+    struct sockaddr_in sa;
+    while (1) {
+        int m = read(client_fd, buff, sizeof(buff));
+        buff[m] = '\0';
+        printf("Address received from Client %d : %s\n", client_no, buff);
+
+        if (!strncmp(buff, "exit", 4)) break;
+        
+        if(inet_pton(AF_INET, buff, &(sa.sin_addr)) != 0) strcpy(buff, "YES");
+        else strcpy(buff, "NO");
+        write(client_fd, buff, strlen(buff));
+    }
+    close(client_fd);
+
+    pthread_mutex_lock(&lock);
+    active_clients--;
+    if (active_clients == 0) {
+        printf("All clients exited. Server shutting down.\n");
+        close(server_fd);
+        exit(0);
+    }
+    pthread_mutex_unlock(&lock);
+
+    return NULL;
+}
+
+int main() {
+    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in server_addr, client_addr;
+
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT_NO);
+    server_addr.sin_addr.s_addr = inet_addr(ip);
+
+    int server_len = sizeof(server_addr);
+    int client_len = sizeof(client_addr);
+
+    bind(server_fd, (struct sockaddr*)&server_addr, server_len);
+    listen(server_fd, 5);
+
+    int client_no = 0;
+
+    while (1) {
+        int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+
+        pthread_t th;
+
+        client_data* data = (client_data*)malloc(sizeof(client_data));
+        data->client_fd = client_fd;
+        data->client_no = client_no;
+        data->server_fd = server_fd;
+
+        pthread_mutex_lock(&lock);
+        active_clients++;
+        pthread_mutex_unlock(&lock);
+
+        pthread_create(&th, NULL, pthBody, data);
+        pthread_detach(th);  // Detach to reclaim memory automatically
+
+        printf("Created Thread for Client %d\n", client_no++);
+    }
+}
+```
+
+The server implementation includes:
+
+1. **Thread Management**:
+   - A mutex (`lock`) to protect the shared `active_clients` counter
+   - A structure (`client_data`) to pass data to threads
+   - A thread function (`pthBody`) to handle client connections
+
+2. **Socket Setup**:
+   - Creating a TCP socket
+   - Binding the socket to an address and port
+   - Listening for client connections
+
+3. **Client Handling**:
+   - Accepting client connections
+   - Creating a new thread for each client
+   - Passing client data to the thread
+   - Detaching the thread to automatically reclaim resources
+
+4. **IPv4 Validation**:
+   - Using `inet_pton()` to validate IPv4 addresses
+   - Sending "YES" or "NO" back to the client
+
+5. **Graceful Shutdown**:
+   - Tracking the number of active clients
+   - Shutting down the server when all clients have exited
+
+### 3. Client Implementation (client.c)
+
+The client connects to the server, sends IPv4 addresses, and displays the validation results:
+
+```c
+#include "custom.h"
+
+void main() {
+    char buffer[MAX];
+    struct sockaddr_in client_addr;
+
+    client_addr.sin_family = AF_INET;
+    client_addr.sin_port = htons(PORT_NO);
+    client_addr.sin_addr.s_addr = inet_addr(ip);    
+
+    int client_fd = socket(AF_INET, SOCK_STREAM, 0);
+    int client_len = sizeof(client_addr);
+    connect(client_fd, (struct sockaddr*)&client_addr, client_len);
+
+    while (1) {
+        printf("Enter the IPv4 address (or 'exit' to quit): ");
+        scanf(" %s", buffer);
+
+        // Send to server
+        write(client_fd, buffer, strlen(buffer));
+
+        // Break loop if client says END
+        if (strncmp(buffer, "exit", 4) == 0) break;
+
+        // Read server response
+        int m = read(client_fd, buffer, sizeof(buffer));
+        buffer[m] = '\0';
+        printf("Result: %s\n", buffer);
+        memset(buffer, 0, sizeof(buffer));
+    }
+
+    close(client_fd);
+}
+```
+
+The client implementation follows these steps:
+1. Create a TCP socket
+2. Connect to the server
+3. Get an IPv4 address from the user
+4. Send the address to the server
+5. Receive the validation result from the server
+6. Display the result
+7. Repeat until the user enters "exit"
+8. Close the connection and exit
+
+## Multi-Client Architecture
+
+The server uses a multi-threaded architecture to handle multiple clients simultaneously. Here's how it works:
+
+1. The main thread accepts client connections and creates a new thread for each client.
+2. Each client thread handles communication with a specific client.
+3. The main thread continues to accept new client connections.
+4. When a client disconnects, its thread terminates and updates the `active_clients` counter.
+5. When all clients have disconnected, the server shuts down.
+
+This architecture allows the server to handle multiple clients without blocking, providing a responsive experience for all clients.
+
+## IPv4 Validation Logic
+
+The server validates IPv4 addresses using the `inet_pton()` function:
+
+```c
+if(inet_pton(AF_INET, buff, &(sa.sin_addr)) != 0) strcpy(buff, "YES");
+else strcpy(buff, "NO");
+```
+
+The `inet_pton()` function attempts to convert the string representation of an IPv4 address to its binary form. If the conversion succeeds (returns a non-zero value), the address is valid; otherwise, it's invalid.
+
+This function checks for:
+- Correct format (four decimal numbers separated by dots)
+- Valid range for each octet (0-255)
+- No extra characters
+
+## Compiling and Running
+
+To compile the server and client programs:
+
+```bash
+gcc -o server server.c -lpthread
+gcc -o client client.c
+```
+
+Note: The `-lpthread` flag is required for the server to link the POSIX threads library.
+
+To run the programs:
+
+1. Start the server in one terminal:
+   ```bash
+   ./server
+   ```
+
+2. Start one or more clients in separate terminals:
+   ```bash
+   ./client
+   ```
+
+## Example Usage
+
+Here's an example of using the application:
+
+<img className="rounded-xl" src="/images/tcp-ip-check/1.png" alt="TCP IP Validation Example" />
+
+## Conclusion
+
+This implementation demonstrates how to use TCP sockets and threads to create a multi-client server that validates IPv4 addresses. The server can handle multiple clients simultaneously, providing a responsive experience for all users.
+
+Key concepts demonstrated in this implementation include:
+- TCP socket programming
+- Multi-threading with POSIX threads
+- Thread synchronization with mutexes
+- IPv4 address validation
+- Graceful server shutdown
+
+This application provides a practical example of how to implement a multi-client server using threads, which is a common pattern in network programming.

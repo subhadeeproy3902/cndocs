@@ -1,0 +1,116 @@
+---
+title: "Introduction"
+description: "Understanding the core concepts of sockets and their role in network communication"
+---
+
+# Socket Fundamentals
+
+Sockets are the fundamental building blocks of network communication in modern computing. They provide an abstraction layer that allows applications to send and receive data over a network without needing to understand the underlying network protocols and hardware.
+
+## What is a Socket?
+
+A socket is one endpoint of a two-way communication link between two programs running on a network. It is bound to a port number so that the TCP/IP layer can identify the application that data is destined to be sent to.
+
+Think of a socket as a telephone:
+- Just as you need a telephone to make and receive calls, a program needs a socket to send and receive data over a network.
+- Like a telephone number, a socket has an address (IP address and port number) that uniquely identifies it.
+- Just as a telephone converts your voice into electrical signals for transmission, a socket converts your program's data into network packets.
+
+## Socket Addressing
+
+Every socket is identified by a unique combination of:
+
+1. **IP Address**: Identifies the host machine on the network (e.g., 192.168.1.1)
+2. **Port Number**: Identifies the specific application or service on that host (e.g., 80 for HTTP)
+3. **Protocol**: Specifies how the data should be transmitted (e.g., TCP or UDP)
+
+This combination is often represented as:
+```
+protocol://ip_address:port
+```
+
+For example: `tcp://192.168.1.1:8080`
+
+## Socket Domains
+
+Sockets operate within specific domains that define the addressing scheme and protocols they use:
+
+1. **AF_INET (IPv4)**: Uses 32-bit IP addresses and 16-bit port numbers
+2. **AF_INET6 (IPv6)**: Uses 128-bit IP addresses and 16-bit port numbers
+3. **AF_UNIX/AF_LOCAL**: Used for local interprocess communication on the same machine
+
+## Socket Types
+
+Sockets come in different types, each with its own characteristics:
+
+1. **Stream Sockets (SOCK_STREAM)**: 
+   - Connection-oriented, reliable data delivery
+   - Uses TCP (Transmission Control Protocol)
+   - Guarantees that data arrives in the same order it was sent
+   - Automatically handles error detection, retransmission, and flow control
+
+2. **Datagram Sockets (SOCK_DGRAM)**:
+   - Connectionless, message-oriented
+   - Uses UDP (User Datagram Protocol)
+   - No guarantee of delivery or ordering
+   - Faster but less reliable than stream sockets
+
+3. **Raw Sockets (SOCK_RAW)**:
+   - Provide access to the underlying network protocols
+   - Allow direct sending and receiving of IP packets
+   - Typically used for network monitoring and protocol development
+
+## Socket States and Lifecycle
+
+Sockets go through various states during their lifecycle:
+
+1. **Creation**: A socket is created using the `socket()` system call
+2. **Binding**: The socket is bound to a specific address using `bind()`
+3. **Listening** (server only): The socket is put in a passive mode to listen for incoming connections using `listen()`
+4. **Connection** (client or server): 
+   - Server: Accepts a connection using `accept()`
+   - Client: Initiates a connection using `connect()`
+5. **Data Transfer**: Data is exchanged using `send()`, `recv()`, `write()`, `read()`, etc.
+6. **Closure**: The socket is closed using `close()` or `shutdown()`
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://developer.socket.tech/img/SendMessageOutbound.png" alt="Socket Lifecycle" />
+
+## Socket API Overview
+
+The Socket API provides a set of functions for creating and managing sockets:
+
+| Function | Description |
+|----------|-------------|
+| `socket()` | Creates a new socket |
+| `bind()` | Associates a socket with an address |
+| `listen()` | Marks a socket as passive to accept incoming connections |
+| `accept()` | Accepts an incoming connection |
+| `connect()` | Establishes a connection to a remote socket |
+| `send()`, `write()` | Sends data through a socket |
+| `recv()`, `read()` | Receives data from a socket |
+| `close()`, `shutdown()` | Closes a socket |
+
+## Client-Server Model
+
+The most common pattern in socket programming is the client-server model:
+
+1. **Server**:
+   - Creates a socket
+   - Binds it to a specific address and port
+   - Listens for incoming connections
+   - Accepts connections from clients
+   - Processes client requests and sends responses
+
+2. **Client**:
+   - Creates a socket
+   - Connects to the server's address and port
+   - Sends requests to the server
+   - Receives and processes responses
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="https://www.liquidweb.com/wp-content/uploads/2024/03/client-server-network-1024x653-1.jpg" alt="Client-Server Model" />
+
+## Conclusion
+
+Understanding socket fundamentals is essential for building networked applications. Sockets provide the foundation for all internet communication, from web browsing to email, file transfers, and online gaming.
+
+In the next sections, we'll explore the different types of sockets in more detail and learn how to implement basic client-server applications using the socket API.

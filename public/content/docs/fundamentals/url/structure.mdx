@@ -1,0 +1,76 @@
+---
+title: Structure
+description: Decoding the Address
+---
+
+# The Building Blocks of a URL
+
+A complete URL can be broken down into several parts, each with a specific purpose.
+Let's analyze this example:
+
+```
+https://www.example.com:443/path/to/page.html?param1=value1&param2=value2#section1
+```
+
+Here's a breakdown of each component:
+
+1.  **Scheme (or Protocol):**
+    - This is the very first part of the URL, followed by a colon (`:`) and two forward slashes (`//`).
+      It tells the browser _how_ to access the resource - which protocol to use.
+      - The most common scheme is `http://` (Hypertext Transfer Protocol), the foundation of data communication on the web.
+      - `https://` (HTTP Secure) is the secure version of HTTP, encrypting the communication between your browser and the server to protect your data.
+        While crucial for sites handling sensitive information like online banking or shopping, `https://` is now considered the standard for all websites, even those not dealing with sensitive data.
+    - Other schemes exist, such as `ftp://` (File Transfer Protocol) for file transfers and `mailto:` for initiating email messages.
+
+2.  **Domain Name:**
+    - This is the human-readable name of the website, like `example.com`.
+      It's what you typically remember and type into your browser.
+    - DNS (Domain Name System) translates this domain name into the server's numerical IP address.
+      For more information, see the [DNS page](../ip-and-dns/dns).
+    - The domain name often includes a _subdomain_, which appears before the main domain name.
+      The most common subdomain is `www`, but others exist, like `blog.example.com` or `shop.example.com`.
+
+3.  **Port (Optional):**
+    - The port number, preceded by a colon (`:`), is like a specific "door" on the server.
+      Different services on a server listen on different ports.
+    - If the port is omitted, the browser uses the default port for the specified protocol.
+      For `http://`, the default port is 80.
+      For `https://`, the default port is 443.
+    - Because these are the defaults, you usually _don't_ see the port number in most URLs.
+
+4.  **Path:**
+    - The path, starting with a forward slash (`/`), specifies the location of the resource _within_ the website's file structure on the server.
+      It's like a directory path on your computer.
+    - For example, `/products/shoes/running.html` would point to a file named `running.html` located in the `/products/shoes/` directory on the server.
+
+5.  **Query String (Optional):**
+    - The query string, starting with a question mark (`?`), allows you to pass additional information to the server.
+    - It consists of _key-value pairs_, separated by ampersands (`&`).
+      For example, `?category=shoes&color=blue` would send two parameters to the server: `category` with a value of `shoes`, and `color` with a value of `blue`.
+    - Query strings are often used for search queries, filtering data, or form submissions.
+
+6.  **Fragment Identifier (Optional):**
+    - The fragment identifier, starting with a hash symbol (`#`), points to a specific section _within_ the web page.
+    - For example, `#reviews` would tell the browser to scroll to the element on the page with the ID `reviews`.
+      This is often used for navigating to specific sections within a long document or for creating single-page applications.
+
+## Absolute vs. Relative URLs
+
+URLs can also be categorized as absolute or relative:
+
+- **Absolute URLs:** Provide the _complete_ address of the resource, including the scheme, domain name, and path.
+  They are unambiguous and can be used from anywhere.
+- **Relative URLs:** Specify the location of a resource _relative_ to the current page.
+  For example, if you're on `https://www.example.com/about.html` and there's a link to `contact.html`, that's a relative URL.
+  The browser infers the full URL as `https://www.example.com/contact.html`.
+  Relative URLs are shorter and can make website maintenance easier.
+
+There are also Protocol-relative URLs that start with `//`.
+These take the actual protocol of the page.
+
+## URL Encoding
+
+Sometimes, URLs need to include characters that are not allowed in their raw form (like spaces or special characters).
+In these cases, **URL encoding** (also called percent-encoding) is used.
+This replaces the unsafe characters with a percent sign (`%`) followed by a two-digit hexadecimal code.
+For example, a space is encoded as `%20`.

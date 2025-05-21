@@ -1,0 +1,599 @@
+---
+title: "Unix Domain Sockets"
+description: "Learn how to use Unix domain sockets for efficient inter-process communication on the same system"
+---
+
+# Unix Domain Sockets
+
+Unix domain sockets (also known as IPC sockets or local sockets) provide a way for processes on the same system to communicate with each other. Unlike Internet sockets, which use the TCP/IP protocol stack, Unix domain sockets operate entirely within the kernel and do not require network protocol processing, making them more efficient for local inter-process communication (IPC).
+
+## Understanding Unix Domain Sockets
+
+### Key Characteristics
+
+1. **Local Communication**: Unix domain sockets are used for communication between processes on the same system
+2. **File System Representation**: They are represented as special files in the file system
+3. **Higher Performance**: They avoid the overhead of network protocol processing
+4. **Security**: They can use file system permissions for access control
+5. **Credentials Passing**: They support passing process credentials (user ID, group ID) between processes
+6. **File Descriptor Passing**: They allow passing open file descriptors between processes
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/socket-programming/unix-domain-sockets.png" alt="Unix Domain Sockets" />
+
+### Comparison with Internet Sockets
+
+| Feature | Unix Domain Sockets | Internet Sockets |
+|---------|---------------------|------------------|
+| Communication Scope | Same system only | Local or remote systems |
+| Addressing | File system paths | IP addresses and ports |
+| Performance | Higher (no protocol overhead) | Lower (protocol processing) |
+| Security | File system permissions | Network-level security |
+| Special Features | Credential and FD passing | Network routing, NAT traversal |
+| Protocol Support | Stream, Datagram, Sequenced Packet | TCP, UDP, SCTP, etc. |
+
+## Creating Unix Domain Sockets
+
+Unix domain sockets are created using the same `socket()` function as Internet sockets, but with the `AF_UNIX` or `AF_LOCAL` address family:
+
+```c
+#include <sys/socket.h>
+#include <sys/un.h>
+
+int sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+```
+
+The socket types are similar to Internet sockets:
+- `SOCK_STREAM`: Connection-oriented, reliable byte stream (similar to TCP)
+- `SOCK_DGRAM`: Connectionless, message-oriented (similar to UDP)
+- `SOCK_SEQPACKET`: Connection-oriented, message-oriented, with preserved message boundaries
+
+## Unix Domain Socket Addressing
+
+Unix domain sockets use file system paths for addressing. The address structure is defined as:
+
+```c
+struct sockaddr_un {
+    sa_family_t sun_family;    /* AF_UNIX */
+    char        sun_path[108]; /* Pathname */
+};
+```
+
+The `sun_path` field contains the file system path that identifies the socket. This path must be unique and accessible to both the server and client processes.
+
+## Unix Domain Socket Server Example
+
+Here's an example of a simple Unix domain socket server:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#define SOCKET_PATH "/tmp/example_socket"
+#define BUFFER_SIZE 1024
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_un server_addr, client_addr;
+    socklen_t client_len;
+    char buffer[BUFFER_SIZE];
+    
+    // Create socket
+    server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sun_family = AF_UNIX;
+    strncpy(server_addr.sun_path, SOCKET_PATH, sizeof(server_addr.sun_path) - 1);
+    
+    // Remove any existing socket file
+    unlink(SOCKET_PATH);
+    
+    // Bind socket
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("bind failed");
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Listen for connections
+    if (listen(server_fd, 5) < 0) {
+        perror("listen failed");
+        close(server_fd);
+        unlink(SOCKET_PATH);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Server listening on %s\n", SOCKET_PATH);
+    
+    // Accept and handle client connections
+    while (1) {
+        client_len = sizeof(client_addr);
+        client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+        
+        if (client_fd < 0) {
+            perror("accept failed");
+            continue;
+        }
+        
+        printf("Client connected\n");
+        
+        // Receive and echo data
+        ssize_t bytes_received;
+        while ((bytes_received = read(client_fd, buffer, BUFFER_SIZE - 1)) > 0) {
+            buffer[bytes_received] = '\0';  // Null-terminate the string
+            printf("Received: %s\n", buffer);
+            
+            // Echo back to client
+            write(client_fd, buffer, bytes_received);
+        }
+        
+        if (bytes_received < 0) {
+            perror("read failed");
+        }
+        
+        printf("Client disconnected\n");
+        close(client_fd);
+    }
+    
+    // Clean up
+    close(server_fd);
+    unlink(SOCKET_PATH);
+    
+    return 0;
+}
+```
+
+## Unix Domain Socket Client Example
+
+Here's a corresponding client for the Unix domain socket server:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#define SOCKET_PATH "/tmp/example_socket"
+#define BUFFER_SIZE 1024
+
+int main() {
+    int sockfd;
+    struct sockaddr_un server_addr;
+    char buffer[BUFFER_SIZE];
+    
+    // Create socket
+    sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sun_family = AF_UNIX;
+    strncpy(server_addr.sun_path, SOCKET_PATH, sizeof(server_addr.sun_path) - 1);
+    
+    // Connect to server
+    if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("connect failed");
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Connected to server at %s\n", SOCKET_PATH);
+    
+    // Send and receive data
+    while (1) {
+        printf("Enter message (or 'exit' to quit): ");
+        if (fgets(buffer, BUFFER_SIZE, stdin) == NULL) {
+            break;
+        }
+        
+        // Remove newline character
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] == '\n') {
+            buffer[len - 1] = '\0';
+            len--;
+        }
+        
+        // Check if user wants to exit
+        if (strcmp(buffer, "exit") == 0) {
+            break;
+        }
+        
+        // Send message to server
+        if (write(sockfd, buffer, len) < 0) {
+            perror("write failed");
+            break;
+        }
+        
+        // Receive response from server
+        ssize_t bytes_received = read(sockfd, buffer, BUFFER_SIZE - 1);
+        if (bytes_received < 0) {
+            perror("read failed");
+            break;
+        } else if (bytes_received == 0) {
+            printf("Server closed connection\n");
+            break;
+        }
+        
+        buffer[bytes_received] = '\0';  // Null-terminate the string
+        printf("Server response: %s\n", buffer);
+    }
+    
+    // Clean up
+    close(sockfd);
+    
+    return 0;
+}
+```
+
+## Abstract Namespace Sockets (Linux-specific)
+
+Linux supports an "abstract namespace" for Unix domain sockets, which doesn't create a file in the file system. This is useful for temporary sockets or when you want to avoid file system permission issues.
+
+To use the abstract namespace, set the first byte of `sun_path` to a null byte (`\0`), followed by the abstract name:
+
+```c
+struct sockaddr_un addr;
+addr.sun_family = AF_UNIX;
+addr.sun_path[0] = '\0';                      // Abstract namespace
+strcpy(addr.sun_path + 1, "my_abstract_socket");
+```
+
+The address length must include the null byte:
+
+```c
+socklen_t addr_len = sizeof(addr.sun_family) + 1 + strlen("my_abstract_socket");
+```
+
+## Passing Credentials
+
+Unix domain sockets allow processes to verify the identity of the peer process by passing credentials:
+
+### Enabling Credential Passing
+
+```c
+int enable = 1;
+setsockopt(sockfd, SOL_SOCKET, SO_PASSCRED, &enable, sizeof(enable));
+```
+
+### Receiving Credentials
+
+```c
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <sys/types.h>
+
+struct msghdr msg = {0};
+struct iovec iov;
+char buf[BUFFER_SIZE];
+char control[CMSG_SPACE(sizeof(struct ucred))];
+struct cmsghdr *cmsg;
+struct ucred *ucred;
+
+// Set up the message structure
+iov.iov_base = buf;
+iov.iov_len = sizeof(buf);
+msg.msg_iov = &iov;
+msg.msg_iovlen = 1;
+msg.msg_control = control;
+msg.msg_controllen = sizeof(control);
+
+// Receive the message
+ssize_t bytes_received = recvmsg(sockfd, &msg, 0);
+if (bytes_received < 0) {
+    perror("recvmsg failed");
+    return -1;
+}
+
+// Extract credentials
+cmsg = CMSG_FIRSTHDR(&msg);
+if (cmsg && cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == SCM_CREDENTIALS) {
+    ucred = (struct ucred *)CMSG_DATA(cmsg);
+    printf("Received credentials - PID: %d, UID: %d, GID: %d\n",
+           ucred->pid, ucred->uid, ucred->gid);
+}
+```
+
+## Passing File Descriptors
+
+One of the most powerful features of Unix domain sockets is the ability to pass open file descriptors between processes:
+
+### Sending a File Descriptor
+
+```c
+#include <sys/socket.h>
+#include <sys/un.h>
+
+int send_fd(int sock, int fd_to_send) {
+    struct msghdr msg = {0};
+    struct iovec iov;
+    char buf[1] = {0};  // Dummy data
+    
+    // Set up the message data
+    iov.iov_base = buf;
+    iov.iov_len = sizeof(buf);
+    msg.msg_iov = &iov;
+    msg.msg_iovlen = 1;
+    
+    // Allocate control buffer for the file descriptor
+    char control[CMSG_SPACE(sizeof(int))];
+    msg.msg_control = control;
+    msg.msg_controllen = sizeof(control);
+    
+    // Initialize the control message
+    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
+    cmsg->cmsg_level = SOL_SOCKET;
+    cmsg->cmsg_type = SCM_RIGHTS;
+    cmsg->cmsg_len = CMSG_LEN(sizeof(int));
+    
+    // Copy the file descriptor
+    *((int *)CMSG_DATA(cmsg)) = fd_to_send;
+    
+    // Send the message
+    if (sendmsg(sock, &msg, 0) < 0) {
+        perror("sendmsg failed");
+        return -1;
+    }
+    
+    return 0;
+}
+```
+
+### Receiving a File Descriptor
+
+```c
+#include <sys/socket.h>
+#include <sys/un.h>
+
+int recv_fd(int sock) {
+    struct msghdr msg = {0};
+    struct iovec iov;
+    char buf[1];  // Dummy data
+    
+    // Set up the message data
+    iov.iov_base = buf;
+    iov.iov_len = sizeof(buf);
+    msg.msg_iov = &iov;
+    msg.msg_iovlen = 1;
+    
+    // Allocate control buffer for the file descriptor
+    char control[CMSG_SPACE(sizeof(int))];
+    msg.msg_control = control;
+    msg.msg_controllen = sizeof(control);
+    
+    // Receive the message
+    if (recvmsg(sock, &msg, 0) < 0) {
+        perror("recvmsg failed");
+        return -1;
+    }
+    
+    // Extract the file descriptor
+    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
+    if (!cmsg || cmsg->cmsg_level != SOL_SOCKET || cmsg->cmsg_type != SCM_RIGHTS) {
+        fprintf(stderr, "Invalid control message\n");
+        return -1;
+    }
+    
+    int fd;
+    memcpy(&fd, CMSG_DATA(cmsg), sizeof(int));
+    
+    return fd;
+}
+```
+
+## Datagram Unix Domain Sockets
+
+Unix domain sockets also support datagram mode, which is connectionless like UDP but still local to the system:
+
+### Datagram Server
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#define SOCKET_PATH "/tmp/example_dgram_socket"
+#define BUFFER_SIZE 1024
+
+int main() {
+    int sockfd;
+    struct sockaddr_un server_addr, client_addr;
+    socklen_t client_len;
+    char buffer[BUFFER_SIZE];
+    
+    // Create datagram socket
+    sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if (sockfd < 0) {
+        perror("socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sun_family = AF_UNIX;
+    strncpy(server_addr.sun_path, SOCKET_PATH, sizeof(server_addr.sun_path) - 1);
+    
+    // Remove any existing socket file
+    unlink(SOCKET_PATH);
+    
+    // Bind socket
+    if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("bind failed");
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Datagram server listening on %s\n", SOCKET_PATH);
+    
+    // Receive and respond to datagrams
+    while (1) {
+        client_len = sizeof(client_addr);
+        ssize_t bytes_received = recvfrom(sockfd, buffer, BUFFER_SIZE - 1, 0,
+                                         (struct sockaddr *)&client_addr, &client_len);
+        
+        if (bytes_received < 0) {
+            perror("recvfrom failed");
+            continue;
+        }
+        
+        buffer[bytes_received] = '\0';  // Null-terminate the string
+        printf("Received: %s\n", buffer);
+        
+        // Echo back to client
+        if (sendto(sockfd, buffer, bytes_received, 0,
+                  (struct sockaddr *)&client_addr, client_len) < 0) {
+            perror("sendto failed");
+        }
+    }
+    
+    // Clean up
+    close(sockfd);
+    unlink(SOCKET_PATH);
+    
+    return 0;
+}
+```
+
+### Datagram Client
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
+#define SERVER_SOCKET_PATH "/tmp/example_dgram_socket"
+#define CLIENT_SOCKET_PATH "/tmp/example_dgram_client"
+#define BUFFER_SIZE 1024
+
+int main() {
+    int sockfd;
+    struct sockaddr_un server_addr, client_addr;
+    char buffer[BUFFER_SIZE];
+    
+    // Create datagram socket
+    sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if (sockfd < 0) {
+        perror("socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize client address
+    memset(&client_addr, 0, sizeof(client_addr));
+    client_addr.sun_family = AF_UNIX;
+    strncpy(client_addr.sun_path, CLIENT_SOCKET_PATH, sizeof(client_addr.sun_path) - 1);
+    
+    // Remove any existing socket file
+    unlink(CLIENT_SOCKET_PATH);
+    
+    // Bind client socket (needed for receiving responses)
+    if (bind(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr)) < 0) {
+        perror("bind failed");
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+    
+    // Initialize server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sun_family = AF_UNIX;
+    strncpy(server_addr.sun_path, SERVER_SOCKET_PATH, sizeof(server_addr.sun_path) - 1);
+    
+    printf("Client ready to communicate with server at %s\n", SERVER_SOCKET_PATH);
+    
+    // Send and receive datagrams
+    while (1) {
+        printf("Enter message (or 'exit' to quit): ");
+        if (fgets(buffer, BUFFER_SIZE, stdin) == NULL) {
+            break;
+        }
+        
+        // Remove newline character
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] == '\n') {
+            buffer[len - 1] = '\0';
+            len--;
+        }
+        
+        // Check if user wants to exit
+        if (strcmp(buffer, "exit") == 0) {
+            break;
+        }
+        
+        // Send datagram to server
+        if (sendto(sockfd, buffer, len, 0,
+                  (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+            perror("sendto failed");
+            break;
+        }
+        
+        // Receive response from server
+        ssize_t bytes_received = recvfrom(sockfd, buffer, BUFFER_SIZE - 1, 0, NULL, NULL);
+        if (bytes_received < 0) {
+            perror("recvfrom failed");
+            break;
+        }
+        
+        buffer[bytes_received] = '\0';  // Null-terminate the string
+        printf("Server response: %s\n", buffer);
+    }
+    
+    // Clean up
+    close(sockfd);
+    unlink(CLIENT_SOCKET_PATH);
+    
+    return 0;
+}
+```
+
+## Use Cases for Unix Domain Sockets
+
+1. **Inter-Process Communication**: Communication between processes on the same system
+2. **Database Connections**: Local connections to database servers (e.g., PostgreSQL, MySQL)
+3. **System Services**: Communication with system daemons and services
+4. **X Window System**: Communication between X clients and the X server
+5. **Container Communication**: Communication between containers on the same host
+6. **Web Servers**: Communication between web server and application server (e.g., Nginx and PHP-FPM)
+7. **Microservices**: Communication between microservices deployed on the same host
+8. **Privilege Separation**: Communication between privileged and unprivileged processes
+
+## Best Practices
+
+1. **Clean Up Socket Files**: Always remove socket files when your application exits
+2. **Set Appropriate Permissions**: Use file system permissions to control access to your sockets
+3. **Handle Path Length Limitations**: Be aware of the maximum path length (typically 108 bytes)
+4. **Consider Abstract Namespace**: On Linux, use the abstract namespace for temporary sockets
+5. **Use Appropriate Socket Type**: Choose stream, datagram, or sequenced packet based on your needs
+6. **Implement Proper Error Handling**: Check return values and handle errors appropriately
+7. **Be Careful with Blocking Operations**: Consider using non-blocking mode or multiplexing
+8. **Secure Credential Passing**: Verify credentials when security is important
+9. **Document File Descriptor Usage**: When passing file descriptors, document ownership and responsibility
+10. **Consider Portability**: Be aware of platform-specific features and limitations
+
+## Conclusion
+
+Unix domain sockets provide a powerful and efficient mechanism for inter-process communication on the same system. They combine the familiar socket API with file system semantics, offering unique features like credential and file descriptor passing.
+
+By understanding how to use Unix domain sockets effectively, you can build high-performance, secure, and robust applications that leverage the full potential of local inter-process communication.
+
+In the next section, we'll explore raw sockets, which provide low-level access to network protocols for specialized applications like network monitoring and protocol development.

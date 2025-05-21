@@ -1,0 +1,423 @@
+---
+title: "netstat"
+description: "A comprehensive guide to showing network connections, routing tables, and interface statistics with the netstat command"
+draft: false
+toc: true
+---
+
+# Netstat Command in Linux
+
+## Introduction
+
+The `netstat` (network statistics) command is a powerful networking tool used in Linux and Unix-like operating systems to display various network-related information. It provides insights into network connections, routing tables, interface statistics, masquerade connections, and multicast memberships. System administrators and network engineers frequently use netstat for network troubleshooting, monitoring, and diagnostics.
+
+Despite being considered deprecated in favor of newer tools like `ss`, netstat remains widely used due to its simplicity, familiarity, and availability across most Linux distributions. Its comprehensive output helps users understand the state of their network and identify potential issues.
+
+<img className="max-w-xl w-full rounded-xl mx-auto" src="/images/netstat-command.png" alt="Netstat Command Output Example" />
+
+## Basic Syntax
+
+The basic syntax of the netstat command is:
+
+```bash
+netstat [options]
+```
+
+Where `options` are various flags that modify the behavior and output of the command.
+
+## Installation
+
+Netstat is typically included in the `net-tools` package, which is pre-installed on many Linux distributions. If it's not available, you can install it using your distribution's package manager:
+
+For Debian/Ubuntu-based systems:
+```bash
+sudo apt update
+sudo apt install net-tools
+```
+
+For Red Hat/CentOS/Fedora systems:
+```bash
+sudo yum install net-tools
+# or
+sudo dnf install net-tools
+```
+
+## Basic Usage
+
+### Displaying All Connections
+
+To display all active connections (both listening and non-listening sockets):
+
+```bash
+netstat -a
+```
+
+This command shows a comprehensive list of all network connections, including TCP, UDP, and Unix domain sockets.
+
+### Displaying TCP Connections
+
+To list only TCP connections:
+
+```bash
+netstat -at
+```
+
+The `-t` option filters the output to show only TCP connections.
+
+### Displaying UDP Connections
+
+To list only UDP connections:
+
+```bash
+netstat -au
+```
+
+The `-u` option filters the output to show only UDP connections.
+
+### Displaying Listening Ports
+
+To show only the ports that are in a listening state:
+
+```bash
+netstat -l
+```
+
+This is useful for identifying which services are actively waiting for connections.
+
+### Displaying Listening TCP Ports
+
+To show only TCP ports in a listening state:
+
+```bash
+netstat -lt
+```
+
+### Displaying Listening UDP Ports
+
+To show only UDP ports in a listening state:
+
+```bash
+netstat -lu
+```
+
+### Displaying Unix Socket Connections
+
+To show Unix domain socket connections:
+
+```bash
+netstat -x
+```
+
+### Displaying Listening Unix Sockets
+
+To show only Unix domain sockets in a listening state:
+
+```bash
+netstat -lx
+```
+
+## Advanced Usage
+
+### Displaying Numeric Addresses
+
+To display addresses and port numbers in numerical form without resolving hostnames or port names:
+
+```bash
+netstat -n
+```
+
+This speeds up the command execution as it skips DNS lookups.
+
+### Displaying Process Information
+
+To show the process ID (PID) and name of the program to which each socket belongs:
+
+```bash
+netstat -p
+```
+
+This requires root privileges to display information for all processes. Without root privileges, it will only show information for processes owned by the current user.
+
+### Combining Options
+
+Options can be combined for more specific output. For example, to show all TCP connections with numeric addresses and process information:
+
+```bash
+netstat -atnp
+```
+
+### Displaying Routing Information
+
+To display the kernel routing table:
+
+```bash
+netstat -r
+```
+
+This is equivalent to the `route` command.
+
+### Displaying Interface Statistics
+
+To show network interface statistics:
+
+```bash
+netstat -i
+```
+
+This displays information similar to the `ifconfig` command.
+
+### Displaying Extended Interface Information
+
+For more detailed interface information:
+
+```bash
+netstat -ie
+```
+
+### Displaying Network Statistics
+
+To show statistics for various network protocols:
+
+```bash
+netstat -s
+```
+
+You can also filter for specific protocols:
+
+```bash
+netstat -st  # TCP statistics
+netstat -su  # UDP statistics
+```
+
+### Continuous Display
+
+To update the display every few seconds:
+
+```bash
+netstat -c
+```
+
+This is useful for monitoring network activity in real-time.
+
+## Practical Examples
+
+### Finding Processes Using a Specific Port
+
+To identify which process is using port 80 (HTTP):
+
+```bash
+sudo netstat -tulpn | grep :80
+```
+
+The options used are:
+- `-t`: TCP connections
+- `-u`: UDP connections
+- `-l`: Listening sockets
+- `-p`: Show process information
+- `-n`: Show numeric addresses
+
+### Checking for Established Connections
+
+To see all established TCP connections:
+
+```bash
+netstat -ant | grep ESTABLISHED
+```
+
+### Monitoring Connection States
+
+To count connections by state:
+
+```bash
+netstat -ant | awk '{print $6}' | sort | uniq -c
+```
+
+This command counts how many connections are in each state (ESTABLISHED, TIME_WAIT, etc.).
+
+### Finding Connections to a Specific IP
+
+To see all connections to a specific IP address:
+
+```bash
+netstat -an | grep 192.168.1.1
+```
+
+### Checking for Listening Services
+
+To see which services are listening on which ports:
+
+```bash
+sudo netstat -tulpn
+```
+
+### Finding Programs Using a Specific Protocol
+
+To find all programs using SSH:
+
+```bash
+netstat -ap | grep ssh
+```
+
+### Checking Network Interface Performance
+
+To monitor network interface performance:
+
+```bash
+netstat -i
+```
+
+This shows packet statistics for each interface, including errors and drops.
+
+## Understanding the Output
+
+### Connection Output Format
+
+The standard connection output includes several columns:
+
+- **Proto**: The protocol (TCP, UDP, etc.)
+- **Recv-Q**: The count of bytes not copied by the user program connected to this socket
+- **Send-Q**: The count of bytes not acknowledged by the remote host
+- **Local Address**: The local end of the socket (address and port)
+- **Foreign Address**: The remote end of the socket (address and port)
+- **State**: The state of the socket (for TCP connections)
+
+### Common TCP States
+
+- **LISTEN**: The socket is listening for incoming connections
+- **ESTABLISHED**: The connection is established and data can be transferred
+- **TIME_WAIT**: The socket is waiting after close to handle packets still in the network
+- **CLOSE_WAIT**: The remote end has shut down, waiting for the socket to close
+- **SYN_SENT**: The socket is actively attempting to establish a connection
+- **SYN_RECV**: A connection request has been received from the network
+
+### Routing Table Output Format
+
+The routing table output includes:
+
+- **Destination**: The destination network or host
+- **Gateway**: The gateway address (an asterisk indicates no gateway is needed)
+- **Genmask**: The netmask for the destination
+- **Flags**: Various routing flags
+- **MSS**: Default maximum segment size for TCP connections
+- **Window**: Default window size for TCP connections
+- **irtt**: Initial round trip time
+- **Iface**: The interface to which packets for this route will be sent
+
+### Interface Statistics Output Format
+
+The interface statistics output includes:
+
+- **Iface**: The interface name
+- **MTU**: Maximum Transmission Unit
+- **RX-OK/RX-ERR/RX-DRP/RX-OVR**: Received packets (OK, errors, dropped, overruns)
+- **TX-OK/TX-ERR/TX-DRP/TX-OVR**: Transmitted packets (OK, errors, dropped, overruns)
+
+## Common Options Reference
+
+| Option | Description |
+|--------|-------------|
+| `-a` | Show all sockets (both listening and non-listening) |
+| `-t` | Show TCP connections |
+| `-u` | Show UDP connections |
+| `-x` | Show Unix domain sockets |
+| `-l` | Show only listening sockets |
+| `-n` | Show numeric addresses and ports (no name resolution) |
+| `-p` | Show the PID and name of the program to which each socket belongs |
+| `-r` | Show the kernel routing table |
+| `-i` | Show network interface statistics |
+| `-s` | Show network statistics by protocol |
+| `-c` | Continuously display information |
+| `-e` | Display extended information |
+| `-v` | Verbose mode |
+| `-o` | Include timers |
+| `-M` | Show masqueraded connections |
+| `-W` | Show RAW sockets |
+
+## Netstat vs. SS Command
+
+The `ss` command is considered the modern replacement for netstat. Here's how they compare:
+
+### Advantages of SS over Netstat
+
+1. **Performance**: `ss` is faster, especially on systems with many connections
+2. **More Information**: `ss` can display more TCP states and socket information
+3. **Active Development**: `ss` is actively maintained, while netstat is considered deprecated
+4. **Direct Access**: `ss` directly accesses kernel data structures rather than parsing `/proc`
+
+### Equivalent Commands
+
+| Netstat Command | SS Equivalent |
+|-----------------|---------------|
+| `netstat -tulpn` | `ss -tulpn` |
+| `netstat -ant` | `ss -ant` |
+| `netstat -r` | `ip route` |
+| `netstat -i` | `ip -s link` |
+
+Despite these advantages, many users still prefer netstat due to familiarity and its availability on most systems.
+
+## Troubleshooting with Netstat
+
+### Identifying Port Conflicts
+
+If an application fails to start because a port is already in use, you can identify the conflicting process:
+
+```bash
+sudo netstat -tulpn | grep :8080
+```
+
+This shows which process is using port 8080.
+
+### Detecting Unusual Connections
+
+To check for unexpected or potentially malicious connections:
+
+```bash
+sudo netstat -antp | grep ESTABLISHED
+```
+
+Review the list for connections to unfamiliar IP addresses or unusual programs making network connections.
+
+### Monitoring Network Load
+
+To monitor network load on interfaces:
+
+```bash
+watch -n 1 'netstat -i'
+```
+
+This updates the interface statistics every second, allowing you to observe changes in traffic patterns.
+
+### Checking for Network Bottlenecks
+
+High values in the RX-DRP (receive dropped) or TX-DRP (transmit dropped) columns in the interface statistics may indicate network bottlenecks:
+
+```bash
+netstat -i
+```
+
+### Verifying Service Availability
+
+To check if a service is properly listening on the expected port:
+
+```bash
+sudo netstat -tulpn | grep nginx
+```
+
+This example checks if the Nginx web server is listening on its configured ports.
+
+## Security Considerations
+
+When using netstat for security auditing, consider the following:
+
+1. **Unexpected Listening Ports**: Check for services listening on unexpected ports, which could indicate unauthorized services or malware
+2. **Unusual Connections**: Look for established connections to suspicious IP addresses
+3. **High Connection Counts**: An unusually high number of connections might indicate a DoS attack or compromised system
+4. **Non-Standard Services**: Services running on non-standard ports might be attempting to evade detection
+
+Regular monitoring with netstat can help identify potential security issues before they become serious problems.
+
+## Conclusion
+
+The netstat command remains a valuable tool for network diagnostics and monitoring in Linux systems. Despite being considered deprecated in favor of newer tools like `ss`, its simplicity and widespread availability ensure its continued relevance for system administrators and network engineers.
+
+By mastering netstat's various options and understanding its output, users can effectively troubleshoot network issues, monitor system performance, and identify potential security concerns. Whether you're checking for listening services, analyzing connection states, or investigating network performance problems, netstat provides the insights needed to maintain a healthy and secure network environment.
