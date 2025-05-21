@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import DownloadPDFButton from './download';
 
 interface DocActionsProps {
   title: string;
@@ -88,8 +87,6 @@ export default function DocActions({ title }: DocActionsProps) {
           {isCopied ? <Check size={16} /> : <Copy size={16} />}
           {isCopied ? 'Copied!' : 'Copy Link'}
         </Button>
-
-        <DownloadPDFButton />
       </div>
     </div>
   );
