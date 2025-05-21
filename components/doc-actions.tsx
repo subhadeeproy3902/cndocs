@@ -1,37 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Copy, Check, BookOpen, PenSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface DocActionsProps {
   title: string;
-  path?: string; // Made optional since we're not using it currently
+  path?: string;
 }
 
 export default function DocActions({ title }: DocActionsProps) {
   const [isCopied, setIsCopied] = useState(false);
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
   const router = useRouter();
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  // Create a more descriptive share text
+  // Create share text
   const shareText = `Check out this awesome documentation on "${title}" from CNDocs - The Ultimate Networking Documentation`;
 
-  // WhatsApp share URL with better formatting
+  // Share URLs
   const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(
     `${shareText}\n\n${currentUrl}`
   )}`;
 
-  // Twitter share URL with better formatting
   const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    `${shareText}`
-  )}&url=${encodeURIComponent(
-    currentUrl
-  )}&hashtags=networking,documentation,cndocs`;
+    shareText
+  )}&url=${encodeURIComponent(currentUrl)}&hashtags=networking,documentation,cndocs`;
 
   // Copy link to clipboard
   const copyToClipboard = async () => {
@@ -44,23 +41,42 @@ export default function DocActions({ title }: DocActionsProps) {
       alert("Failed to copy link. Please try again.");
     }
   };
-  
-  const getPath = () => {
+
+  // Handle quiz navigation
+  const handleTakeQuiz = useCallback(() => {
+    if (isGeneratingQuiz) return;
+    setIsGeneratingQuiz(true);
+
     if (typeof window !== "undefined") {
       const currentPath = window.location.pathname;
       const docPathMatch = currentPath.match(/^\/docs\/(.+)$/);
 
       if (docPathMatch && docPathMatch[1]) {
-        // Remove .mdx extension if present
+        // Remove .mdx extension if present and add timestamp
         const slug = docPathMatch[1].replace(/\.mdx$/, "");
-        return `/quiz/${slug}`;
+        const timestamp = Date.now();
+        const quizPath = `/quiz/${slug}?t=${timestamp}`;
+
+        // Force navigation to the new quiz
+        router.push(quizPath);
+
+        // Request fullscreen after a short delay
+        setTimeout(() => {
+          try {
+            document.documentElement.requestFullscreen();
+          } catch (err) {
+            console.error("Failed to enter fullscreen:", err);
+          }
+        }, 1000);
       } else {
         console.error("Invalid document path:", currentPath);
-        return "";
+        alert(
+          "Cannot create quiz for this page. Please navigate to a documentation page."
+        );
       }
     }
-    return "";
-  }
+    setIsGeneratingQuiz(false);
+  }, [router, isGeneratingQuiz]);
 
   return (
     <>
@@ -78,12 +94,14 @@ export default function DocActions({ title }: DocActionsProps) {
               </p>
             </div>
           </div>
-          <Link href={getPath()}>
-            <Button className="cursor-pointer">
-              <PenSquare className="h-4 w-4" />
-              Take a Test
-            </Button>
-          </Link>
+          <Button
+            onClick={handleTakeQuiz}
+            disabled={isGeneratingQuiz}
+            className="cursor-pointer gap-2"
+          >
+            <PenSquare className="h-4 w-4" />
+            {isGeneratingQuiz ? "Generating..." : "Take a Test"}
+          </Button>
         </div>
       </div>
 

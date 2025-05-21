@@ -23,19 +23,35 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [securityError, setSecurityError] = useState<string | null>(null);
 
-  // Function to handle full screen
-  const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-      });
-      setIsFullScreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullScreen(false);
+  // Function to handle quiz security
+  useEffect(() => {
+    if (quizData) {
+      const securityTimer = setTimeout(() => {
+        if (!document.fullscreenElement) {
+          setSecurityError("Quiz terminated: Please enter fullscreen mode to take the quiz. Don't try to cheat!");
+          setQuizData(null); // Reset quiz data
+        }
+      }, 3000);
+
+      // Setup fullscreen change listener
+      const handleFullscreenChange = () => {
+        setIsFullScreen(!!document.fullscreenElement);
+        if (!document.fullscreenElement && !securityError) {
+          setSecurityError("Quiz terminated: Fullscreen mode exited. Don't try to cheat!");
+          setQuizData(null); // Reset quiz data
+        }
+      };
+
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+      return () => {
+        clearTimeout(securityTimer);
+        document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      };
     }
-  };
+  }, [quizData, securityError]);
 
   // Get the slug from params
   const slug = Array.isArray(params.slug) ? params.slug : params.slug ? [params.slug as string] : [];
@@ -145,7 +161,11 @@ export default function QuizPage() {
 
   // Handle back to docs
   const handleBackToDocs = () => {
-    router.back();
+    // Get current path and push to the path without the quiz and appending docs
+    const currentPath = window.location.pathname;
+    // Current path is /quiz/[...slug] but we want to go back to /docs/[...slug]
+    const newPath = currentPath.replace('/quiz', '/docs');
+    router.push(newPath);
   };
 
   // Loading state
@@ -158,6 +178,39 @@ export default function QuizPage() {
           <p className="text-muted-foreground">
             Our AI is creating challenging questions based on the content...
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Security Error state
+  if (securityError) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-2xl font-bold mb-4 text-destructive">Security Warning</h1>
+          <div className="flex items-center justify-center mb-6 text-red-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <p className="mb-6 text-lg font-semibold text-red-600">{securityError}</p>
+          <Button onClick={handleBackToDocs} className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Documentation
+          </Button>
         </div>
       </div>
     );
@@ -197,50 +250,6 @@ export default function QuizPage() {
     return (
       <div className={`flex min-h-screen flex-col items-center justify-center p-4 ${isFullScreen ? 'bg-background' : ''}`}>
         <div className="w-full max-w-4xl mx-auto">
-          <div className="flex justify-end mb-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleFullScreen}
-              className="gap-2"
-            >
-              {isFullScreen ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-                  </svg>
-                  Exit Fullscreen
-                </>
-              ) : (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M3 3h7v7H3zm11 0h7v7h-7zm0 11h7v7h-7zM3 14h7v7H3z" />
-                  </svg>
-                  Enter Fullscreen
-                </>
-              )}
-            </Button>
-          </div>
           <Quiz
             title={quizData.title}
             description={quizData.description}
