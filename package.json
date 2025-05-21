@@ -11,9 +11,11 @@
     "add-doc": "node scripts/add-doc-new.js"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^1.2.9",
     "@radix-ui/react-slot": "^1.2.2",
     "@types/mdx": "^2.0.13",
     "@vercel/og": "^0.6.8",
+    "ai": "^4.3.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dom-to-image-more": "^3.6.0",
