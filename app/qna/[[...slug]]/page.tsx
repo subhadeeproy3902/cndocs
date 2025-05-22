@@ -2,17 +2,12 @@ import { Metadata } from "next";
 import { createMetadata, metadataImage } from "@/lib/metadata";
 import Qnaclient from "@/components/qnaclient";
 // Generate metadata for the page
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug?: string[] };
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
   // Get the slug from params
-  const slug = Array.isArray(params.slug)
-    ? params.slug
-    : params.slug
-    ? [params.slug]
-    : [];
+  const params = await props.params;
+  const slug = Array.isArray(params.slug) ? params.slug : [params.slug];
 
   // Create a title based on the slug
   const pageTitle =
