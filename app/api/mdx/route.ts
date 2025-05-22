@@ -60,12 +60,31 @@ export async function POST(request: NextRequest) {
       const frontmatterMatch = fileContent.match(/---\n([\s\S]*?)\n---/);
       const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
 
-      // Extract title and description from frontmatter
-      const titleMatch = frontmatter.match(/title:\s*"([^"]*)"/);
-      const descriptionMatch = frontmatter.match(/description:\s*"([^"]*)"/);
+      console.log("Extracted frontmatter:", frontmatter);
 
-      const title = titleMatch ? titleMatch[1] : "";
-      const description = descriptionMatch ? descriptionMatch[1] : "";
+      // Extract title and description from frontmatter with improved regex
+      // This handles both quoted and unquoted values
+      const titleMatch = frontmatter.match(/title:\s*(?:"([^"]*)"|'([^']*)'|([^\n]*))/);
+      const descriptionMatch = frontmatter.match(/description:\s*(?:"([^"]*)"|'([^']*)'|([^\n]*))/);
+
+      console.log("Title match:", titleMatch);
+      console.log("Description match:", descriptionMatch);
+
+      // Extract the first non-empty capture group
+      let title = "";
+      if (titleMatch) {
+        title = titleMatch[1] || titleMatch[2] || titleMatch[3] || "";
+        title = title.trim();
+      }
+
+      let description = "";
+      if (descriptionMatch) {
+        description = descriptionMatch[1] || descriptionMatch[2] || descriptionMatch[3] || "";
+        description = description.trim();
+      }
+
+      console.log("Extracted title:", title);
+      console.log("Extracted description:", description);
 
       // Remove frontmatter from content
       const content = fileContent.replace(/---\n[\s\S]*?\n---/, "").trim();
@@ -80,8 +99,8 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error("Error reading MDX file:", error);
       return NextResponse.json(
-        { 
-          error: "Failed to read MDX file", 
+        {
+          error: "Failed to read MDX file",
           details: error instanceof Error ? error.message : String(error)
         },
         { status: 500 }
@@ -90,8 +109,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error in MDX API:", error);
     return NextResponse.json(
-      { 
-        error: "Internal server error", 
+      {
+        error: "Internal server error",
         details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
