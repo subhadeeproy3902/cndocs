@@ -34,17 +34,6 @@ const quizSchema = z.object({
         explanation: z.string(),
         difficulty: z.enum(['easy', 'medium', 'hard']),
       }),
-      // Matching questions
-      z.object({
-        type: z.literal('matching'),
-        question: z.string(),
-        pairs: z.array(z.object({
-          term: z.string(),
-          definition: z.string(),
-        })),
-        explanation: z.string(),
-        difficulty: z.enum(['easy', 'medium', 'hard']),
-      }),
     ])
   ),
 });
@@ -68,7 +57,7 @@ export async function POST(request: NextRequest) {
       prompt: `Generate a comprehensive quiz based on the following content about ${title}.
       The content is: ${content}
 
-      Create any number of questions (but equal to or more than 5) depending on the content length and flexibility with the following distribution:
+      Create any number of questions (but equal to or more than 5) depending strictly on the content with the following distribution:
       - multiple-choice questions (type: 'multiple-choice')
       - true/false questions (type: 'true-false')
       - fill-in-the-blank questions (type: 'fill-blank')
