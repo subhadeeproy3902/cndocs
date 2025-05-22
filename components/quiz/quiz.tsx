@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '../ui/card';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle, AlertCircle, ArrowRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { ArrowRight, Send } from 'lucide-react';
 
 // Base question interface
 interface BaseQuestion {
@@ -33,10 +32,14 @@ interface FillBlankQuestion extends BaseQuestion {
   correctAnswer: string;
 }
 
-// Matching question
-interface MatchingQuestion extends BaseQuestion {
-  type: 'matching';
-  pairs: { term: string; definition: string }[];
+// User answer type
+interface UserAnswer {
+  questionIndex: number;
+  question: string;
+  answer: number | boolean | string | null;
+  correctAnswer: number | boolean | string;
+  isCorrect: boolean;
+  explanation?: string;
 }
 
 // Union type for all question types
@@ -44,13 +47,12 @@ export type QuizQuestion =
   | MultipleChoiceQuestion
   | TrueFalseQuestion
   | FillBlankQuestion
-  | MatchingQuestion;
 
 export interface QuizProps {
   title: string;
   description: string;
   questions: QuizQuestion[];
-  onComplete: (score: number, totalQuestions: number) => void;
+  onComplete: (score: number, totalQuestions: number, answers?: UserAnswer[]) => void;
 }
 
 export default function Quiz({ title, description, questions, onComplete }: QuizProps) {
@@ -58,46 +60,96 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [selectedTrueFalse, setSelectedTrueFalse] = useState<boolean | null>(null);
   const [fillBlankAnswer, setFillBlankAnswer] = useState<string>('');
-  const [matchingPairs, setMatchingPairs] = useState<Record<number, number>>({});
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [score, setScore] = useState(0);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  // Track fullscreen state for UI updates
+  const [, setIsFullScreen] = useState(false);
   const [showExitWarning, setShowExitWarning] = useState(false);
-  const router = useRouter();
+  const [warningCountdown, setWarningCountdown] = useState(5);
+  const [showCheatingMessage, setShowCheatingMessage] = useState(false);
+  const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const totalQuestions = questions.length;
 
-  // Handle full screen mode
+  // State to track if a question has been answered
+  const [isAnswered, setIsAnswered] = useState(false);
+
+  // Handle full screen mode with enhanced security
   useEffect(() => {
     const handleFullScreen = () => {
       if (document.fullscreenElement) {
         setIsFullScreen(true);
       } else {
         setIsFullScreen(false);
-        // Show warning if quiz is not completed and user exits full screen
-        if (currentQuestionIndex < totalQuestions - 1) {
+        // Show warning if quiz is not completed
+        if (!userAnswers.length || userAnswers.length < totalQuestions) {
           setShowExitWarning(true);
-          // Try to re-enter full screen after a short delay
-          setTimeout(() => {
-            if (!document.fullscreenElement) {
-              document.documentElement.requestFullscreen().catch(err => {
-                console.error('Failed to re-enter full screen mode:', err);
-              });
-            }
+          setWarningCountdown(5);
+
+          // Start countdown timer
+          if (countdownIntervalRef.current) {
+            clearInterval(countdownIntervalRef.current);
+          }
+
+          countdownIntervalRef.current = setInterval(() => {
+            setWarningCountdown(prev => {
+              if (prev <= 1) {
+                // Time's up - show cheating message
+                if (countdownIntervalRef.current) {
+                  clearInterval(countdownIntervalRef.current);
+                }
+                setShowCheatingMessage(true);
+                return 0;
+              }
+              return prev - 1;
+            });
           }, 1000);
         }
       }
     };
 
+    // Handle visibility change (tab switching)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden' && (!userAnswers.length || userAnswers.length < totalQuestions)) {
+        setShowExitWarning(true);
+        setWarningCountdown(5);
+
+        // Start countdown timer
+        if (countdownIntervalRef.current) {
+          clearInterval(countdownIntervalRef.current);
+        }
+
+        countdownIntervalRef.current = setInterval(() => {
+          setWarningCountdown(prev => {
+            if (prev <= 1) {
+              // Time's up - show cheating message
+              if (countdownIntervalRef.current) {
+                clearInterval(countdownIntervalRef.current);
+              }
+              setShowCheatingMessage(true);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+    };
+
     document.addEventListener('fullscreenchange', handleFullScreen);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Prevent navigation
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = 'You are in the middle of a quiz. Are you sure you want to leave?';
-      return e.returnValue;
+      // Standard way to show a confirmation dialog when leaving the page
+      const message = 'You are in the middle of a quiz. Are you sure you want to leave?';
+      // For modern browsers
+      e.preventDefault();
+      // For older browsers
+      // @ts-ignore - returnValue is deprecated but still needed for some browsers
+      e.returnValue = message;
+      return message;
     };
 
     // Prevent keyboard shortcuts that might exit full screen
@@ -122,123 +174,166 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullScreen);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('contextmenu', handleContextMenu);
+
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+      }
     };
-  }, [currentQuestionIndex, totalQuestions]);
+  }, [currentQuestionIndex, totalQuestions, userAnswers.length]);
 
   // Enter full screen mode when component mounts
   useEffect(() => {
     const enterFullScreen = async () => {
       try {
-        if (document.documentElement.requestFullscreen) {
-          await document.documentElement.requestFullscreen();
+        // Check if fullscreen is already active
+        if (!document.fullscreenElement) {
+          // Check if the browser supports fullscreen
+          if (document.documentElement.requestFullscreen) {
+            // Request fullscreen with a user gesture handler
+            const handleUserGesture = () => {
+              document.documentElement.requestFullscreen().catch(err => {
+                console.error('Failed to enter full screen mode:', err);
+              });
+              // Remove the event listener after use
+              document.removeEventListener('click', handleUserGesture);
+            };
+
+            // Add a one-time click event listener
+            document.addEventListener('click', handleUserGesture, { once: true });
+
+            // Simulate a click to trigger the fullscreen (this is a workaround)
+            setTimeout(() => {
+              // Only try direct request if we haven't entered fullscreen yet
+              if (!document.fullscreenElement) {
+                try {
+                  document.documentElement.requestFullscreen();
+                } catch (err) {
+                  console.error('Direct fullscreen request failed:', err);
+                  // Keep the click handler active if direct request fails
+                }
+              }
+            }, 500);
+          }
         }
       } catch (error) {
-        console.error('Failed to enter full screen mode:', error);
+        console.error('Failed to setup full screen mode:', error);
       }
     };
 
     enterFullScreen();
   }, []);
 
-  // Check if answer is correct based on question type
-  const isAnswerCorrect = () => {
-    switch (currentQuestion.type) {
-      case 'multiple-choice':
-        return selectedOption === currentQuestion.correctAnswer;
-      case 'true-false':
-        return selectedTrueFalse === currentQuestion.correctAnswer;
-      case 'fill-blank':
-        // Case-insensitive comparison for fill-in-the-blank
-        return fillBlankAnswer.trim().toLowerCase() === currentQuestion.correctAnswer.toLowerCase();
-      case 'matching':
-        // Check if all pairs are matched correctly
-        return currentQuestion.pairs.every((_, index) => matchingPairs[index] === index);
-      default:
-        return false;
-    }
-  };
-
   // Handle multiple choice selection
   const handleMultipleChoiceSelect = (optionIndex: number) => {
-    if (isAnswered) return;
-
+    // Allow changing answers anytime
     setSelectedOption(optionIndex);
-    setIsAnswered(true);
 
-    // Update score if correct
-    if (optionIndex === (currentQuestion as MultipleChoiceQuestion).correctAnswer) {
-      setScore(score + 1);
-    }
+    // Store answer without showing result
+    const mcQuestion = currentQuestion as MultipleChoiceQuestion;
+    const isCorrect = optionIndex === mcQuestion.correctAnswer;
+    const newAnswer: UserAnswer = {
+      questionIndex: currentQuestionIndex,
+      question: mcQuestion.question,
+      answer: optionIndex,
+      correctAnswer: mcQuestion.correctAnswer,
+      isCorrect,
+      explanation: mcQuestion.explanation
+    };
+
+    // Update user answers
+    setUserAnswers(prev => {
+      // Replace if already answered
+      const existingIndex = prev.findIndex(a => a.questionIndex === currentQuestionIndex);
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex] = newAnswer;
+        return updated;
+      }
+      // Add new answer
+      return [...prev, newAnswer];
+    });
+
+    // Mark as answered for navigation purposes
+    setIsAnswered(true);
   };
 
   // Handle true/false selection
   const handleTrueFalseSelect = (value: boolean) => {
-    if (isAnswered) return;
-
+    // Allow changing answers anytime
     setSelectedTrueFalse(value);
-    setIsAnswered(true);
 
-    // Update score if correct
-    if (value === (currentQuestion as TrueFalseQuestion).correctAnswer) {
-      setScore(score + 1);
-    }
+    // Store answer without showing result
+    const tfQuestion = currentQuestion as TrueFalseQuestion;
+    const isCorrect = value === tfQuestion.correctAnswer;
+    const newAnswer: UserAnswer = {
+      questionIndex: currentQuestionIndex,
+      question: tfQuestion.question,
+      answer: value,
+      correctAnswer: tfQuestion.correctAnswer,
+      isCorrect,
+      explanation: tfQuestion.explanation
+    };
+
+    // Update user answers
+    setUserAnswers(prev => {
+      // Replace if already answered
+      const existingIndex = prev.findIndex(a => a.questionIndex === currentQuestionIndex);
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex] = newAnswer;
+        return updated;
+      }
+      // Add new answer
+      return [...prev, newAnswer];
+    });
+
+    // Mark as answered for navigation purposes
+    setIsAnswered(true);
   };
 
   // Handle fill in the blank submission
   const handleFillBlankSubmit = () => {
-    if (isAnswered || !fillBlankAnswer.trim()) return;
+    if (!fillBlankAnswer.trim()) return;
 
-    setIsAnswered(true);
+    // Store answer without showing result
+    const fbQuestion = currentQuestion as FillBlankQuestion;
+    const isCorrect = fillBlankAnswer.trim().toLowerCase() === fbQuestion.correctAnswer.toLowerCase();
 
-    // Update score if correct (case-insensitive)
-    if (fillBlankAnswer.trim().toLowerCase() === (currentQuestion as FillBlankQuestion).correctAnswer.toLowerCase()) {
-      setScore(score + 1);
-    }
-  };
+    const newAnswer: UserAnswer = {
+      questionIndex: currentQuestionIndex,
+      question: fbQuestion.question,
+      answer: fillBlankAnswer.trim(),
+      correctAnswer: fbQuestion.correctAnswer,
+      isCorrect,
+      explanation: fbQuestion.explanation
+    };
 
-  // Handle matching pair selection
-  const handleMatchingPairSelect = (termIndex: number, definitionIndex: number) => {
-    if (isAnswered) return;
-
-    // Update the matching pairs
-    setMatchingPairs({
-      ...matchingPairs,
-      [termIndex]: definitionIndex,
+    // Update user answers
+    setUserAnswers(prev => {
+      // Replace if already answered
+      const existingIndex = prev.findIndex(a => a.questionIndex === currentQuestionIndex);
+      if (existingIndex >= 0) {
+        const updated = [...prev];
+        updated[existingIndex] = newAnswer;
+        return updated;
+      }
+      // Add new answer
+      return [...prev, newAnswer];
     });
 
-    // Check if all pairs have been matched
-    const updatedPairs = { ...matchingPairs, [termIndex]: definitionIndex };
-    const allPairsMatched = (currentQuestion as MatchingQuestion).pairs.every((_, index) =>
-      updatedPairs[index] !== undefined
-    );
-
-    if (allPairsMatched) {
-      setIsAnswered(true);
-
-      // Update score if all pairs are matched correctly
-      const allCorrect = (currentQuestion as MatchingQuestion).pairs.every((_, index) =>
-        updatedPairs[index] === index
-      );
-
-      if (allCorrect) {
-        setScore(score + 1);
-      }
-    }
+    // Mark as answered for navigation purposes
+    setIsAnswered(true);
   };
 
   // Handle next question
   const handleNextQuestion = () => {
     if (isLastQuestion) {
-      // Exit full screen mode
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
-
-      // Complete quiz
-      onComplete(score, questions.length);
+      // Don't complete quiz yet, just stay on the last question
+      // User will need to click the submit button
     } else {
       // Move to next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -247,25 +342,45 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
       setSelectedOption(null);
       setSelectedTrueFalse(null);
       setFillBlankAnswer('');
-      setMatchingPairs({});
       setIsAnswered(false);
     }
   };
 
+  // Handle quiz submission
+  const handleSubmitQuiz = () => {
+    // Calculate final score
+    const finalScore = userAnswers.filter(answer => answer.isCorrect).length;
+
+    // Exit full screen mode
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+
+    // Complete quiz with answers for detailed feedback
+    onComplete(finalScore, questions.length, userAnswers);
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-4 md:p-8">
-      {/* Exit Warning Modal */}
-      {showExitWarning && (
+      {/* Exit Warning Modal with Countdown */}
+      {showExitWarning && !showCheatingMessage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <Card className="w-full max-w-md p-6 animate-in fade-in zoom-in">
             <h2 className="text-xl font-bold text-red-500 mb-4">Warning!</h2>
-            <p className="mb-6">
-              You are in the middle of a quiz. Exiting full screen mode is not allowed.
-              Please continue with the quiz in full screen mode.
+            <p className="mb-2">
+              You are in the middle of a quiz. Exiting full screen mode or switching tabs is not allowed.
             </p>
+            <div className="mb-6 text-center">
+              <p className="text-sm text-muted-foreground mb-2">Return to the quiz within:</p>
+              <div className="text-4xl font-bold text-red-500">{warningCountdown}</div>
+              <p className="text-sm text-muted-foreground mt-1">seconds</p>
+            </div>
             <Button
               onClick={() => {
                 setShowExitWarning(false);
+                if (countdownIntervalRef.current) {
+                  clearInterval(countdownIntervalRef.current);
+                }
                 document.documentElement.requestFullscreen().catch(err => {
                   console.error('Failed to re-enter full screen mode:', err);
                 });
@@ -273,6 +388,35 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
               className="w-full"
             >
               Return to Quiz
+            </Button>
+          </Card>
+        </div>
+      )}
+
+      {/* Cheating Warning */}
+      {showCheatingMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+          <Card className="w-full max-w-md p-6 animate-in fade-in zoom-in border-red-500 border-2">
+            <h2 className="text-2xl font-bold text-red-500 mb-4">No Cheating!</h2>
+            <p className="mb-6">
+              You have been detected attempting to exit the quiz or switch tabs.
+              This is considered cheating and your quiz session has been terminated.
+            </p>
+            <Button
+              onClick={() => {
+                // Exit fullscreen
+                if (document.fullscreenElement) {
+                  document.exitFullscreen();
+                }
+                // Go back to documentation
+                if (typeof window !== 'undefined') {
+                  window.history.back();
+                }
+              }}
+              className="w-full"
+              variant="destructive"
+            >
+              Back to Documentation
             </Button>
           </Card>
         </div>
@@ -327,7 +471,6 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
             {currentQuestion.type === 'multiple-choice' && 'Multiple Choice'}
             {currentQuestion.type === 'true-false' && 'True or False'}
             {currentQuestion.type === 'fill-blank' && 'Fill in the Blank'}
-            {currentQuestion.type === 'matching' && 'Matching'}
           </span>
         </div>
 
@@ -338,31 +481,19 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
               <button
                 key={index}
                 onClick={() => handleMultipleChoiceSelect(index)}
-                disabled={isAnswered}
                 className={cn(
                   "w-full text-left p-4 rounded-lg border transition-all",
                   "hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20",
-                  isAnswered && index === selectedOption && index === (currentQuestion as MultipleChoiceQuestion).correctAnswer &&
-                    "bg-green-50 border-green-500 dark:bg-green-900/20 dark:border-green-500",
-                  isAnswered && index === selectedOption && index !== (currentQuestion as MultipleChoiceQuestion).correctAnswer &&
-                    "bg-red-50 border-red-500 dark:bg-red-900/20 dark:border-red-500",
-                  isAnswered && index !== selectedOption && index === (currentQuestion as MultipleChoiceQuestion).correctAnswer &&
-                    "bg-green-50 border-green-500 dark:bg-green-900/20 dark:border-green-500",
-                  isAnswered && index !== selectedOption && index !== (currentQuestion as MultipleChoiceQuestion).correctAnswer &&
-                    "opacity-70",
-                  !isAnswered && "bg-card hover:bg-accent"
+                  index === selectedOption && "bg-primary/10 border-primary/50",
+                  index !== selectedOption && "bg-card hover:bg-accent"
                 )}
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-0.5">
-                    {isAnswered ? (
-                      index === (currentQuestion as MultipleChoiceQuestion).correctAnswer ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      ) : index === selectedOption ? (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      ) : (
-                        <div className="h-5 w-5 rounded-full border border-muted-foreground/30" />
-                      )
+                    {index === selectedOption ? (
+                      <div className="h-5 w-5 rounded-full bg-primary/20 border border-primary flex items-center justify-center">
+                        <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      </div>
                     ) : (
                       <div className="h-5 w-5 rounded-full border border-muted-foreground/30" />
                     )}
@@ -383,31 +514,19 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
               <button
                 key={index}
                 onClick={() => handleTrueFalseSelect(value)}
-                disabled={isAnswered}
                 className={cn(
                   "w-full text-left p-4 rounded-lg border transition-all",
                   "hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20",
-                  isAnswered && value === selectedTrueFalse && value === (currentQuestion as TrueFalseQuestion).correctAnswer &&
-                    "bg-green-50 border-green-500 dark:bg-green-900/20 dark:border-green-500",
-                  isAnswered && value === selectedTrueFalse && value !== (currentQuestion as TrueFalseQuestion).correctAnswer &&
-                    "bg-red-50 border-red-500 dark:bg-red-900/20 dark:border-red-500",
-                  isAnswered && value !== selectedTrueFalse && value === (currentQuestion as TrueFalseQuestion).correctAnswer &&
-                    "bg-green-50 border-green-500 dark:bg-green-900/20 dark:border-green-500",
-                  isAnswered && value !== selectedTrueFalse && value !== (currentQuestion as TrueFalseQuestion).correctAnswer &&
-                    "opacity-70",
-                  !isAnswered && "bg-card hover:bg-accent"
+                  value === selectedTrueFalse && "bg-primary/10 border-primary/50",
+                  value !== selectedTrueFalse && "bg-card hover:bg-accent"
                 )}
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-0.5">
-                    {isAnswered ? (
-                      value === (currentQuestion as TrueFalseQuestion).correctAnswer ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      ) : value === selectedTrueFalse ? (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      ) : (
-                        <div className="h-5 w-5 rounded-full border border-muted-foreground/30" />
-                      )
+                    {value === selectedTrueFalse ? (
+                      <div className="h-5 w-5 rounded-full bg-primary/20 border border-primary flex items-center justify-center">
+                        <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      </div>
                     ) : (
                       <div className="h-5 w-5 rounded-full border border-muted-foreground/30" />
                     )}
@@ -429,152 +548,67 @@ export default function Quiz({ title, description, questions, onComplete }: Quiz
                 type="text"
                 value={fillBlankAnswer}
                 onChange={(e) => setFillBlankAnswer(e.target.value)}
-                disabled={isAnswered}
                 placeholder="Type your answer here..."
                 className={cn(
                   "w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary/20",
-                  isAnswered && fillBlankAnswer.trim().toLowerCase() === (currentQuestion as FillBlankQuestion).correctAnswer.toLowerCase() &&
-                    "bg-green-50 border-green-500 dark:bg-green-900/20 dark:border-green-500",
-                  isAnswered && fillBlankAnswer.trim().toLowerCase() !== (currentQuestion as FillBlankQuestion).correctAnswer.toLowerCase() &&
-                    "bg-red-50 border-red-500 dark:bg-red-900/20 dark:border-red-500",
-                  !isAnswered && "bg-card"
+                  "bg-card pr-20" // Always add padding for the button
                 )}
               />
-              {!isAnswered && (
-                <Button
-                  onClick={handleFillBlankSubmit}
-                  disabled={!fillBlankAnswer.trim()}
-                  className="absolute right-1 top-1 h-8"
-                  size="sm"
-                >
-                  Submit
-                </Button>
-              )}
+              <Button
+                onClick={handleFillBlankSubmit}
+                disabled={!fillBlankAnswer.trim()}
+                className="absolute right-1 top-1 h-8"
+                size="sm"
+              >
+                Submit
+              </Button>
             </div>
 
-            {isAnswered && (
-              <div className={cn(
-                "p-3 rounded-lg",
-                fillBlankAnswer.trim().toLowerCase() === (currentQuestion as FillBlankQuestion).correctAnswer.toLowerCase() ?
-                  "bg-green-50 dark:bg-green-900/20" :
-                  "bg-red-50 dark:bg-red-900/20"
-              )}>
+            {/* Show current answer if provided */}
+            {userAnswers.find(a => a.questionIndex === currentQuestionIndex) && (
+              <div className="p-3 rounded-lg bg-primary/5">
                 <p className="font-medium">
-                  {fillBlankAnswer.trim().toLowerCase() === (currentQuestion as FillBlankQuestion).correctAnswer.toLowerCase() ?
-                    'Correct!' :
-                    'Incorrect!'}
-                </p>
-                <p className="text-sm mt-1">
-                  The correct answer is: <span className="font-bold">{(currentQuestion as FillBlankQuestion).correctAnswer}</span>
+                  Your answer: <span className="font-bold">
+                    {userAnswers.find(a => a.questionIndex === currentQuestionIndex)?.answer as string}
+                  </span>
                 </p>
               </div>
             )}
           </div>
         )}
-
-        {/* Matching Question */}
-        {currentQuestion.type === 'matching' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Terms Column */}
-              <div className="space-y-2">
-                <h3 className="font-medium text-sm text-muted-foreground mb-2">Terms</h3>
-                {(currentQuestion as MatchingQuestion).pairs.map((pair, termIndex) => (
-                  <div
-                    key={termIndex}
-                    className={cn(
-                      "p-3 rounded-lg border bg-card",
-                      isAnswered && matchingPairs[termIndex] === termIndex && "border-green-500 bg-green-50 dark:bg-green-900/20",
-                      isAnswered && matchingPairs[termIndex] !== undefined && matchingPairs[termIndex] !== termIndex && "border-red-500 bg-red-50 dark:bg-red-900/20"
-                    )}
-                  >
-                    <p className="font-medium">{pair.term}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Definitions Column */}
-              <div className="space-y-2">
-                <h3 className="font-medium text-sm text-muted-foreground mb-2">Definitions</h3>
-                {(currentQuestion as MatchingQuestion).pairs.map((pair, definitionIndex) => (
-                  <button
-                    key={definitionIndex}
-                    onClick={() => {
-                      // Find the term that's currently being matched
-                      const selectedTermIndex = Object.keys(matchingPairs).find(
-                        key => matchingPairs[parseInt(key)] === definitionIndex
-                      );
-
-                      // If this definition is already matched, unselect it
-                      if (selectedTermIndex !== undefined) {
-                        const newPairs = { ...matchingPairs };
-                        delete newPairs[parseInt(selectedTermIndex)];
-                        setMatchingPairs(newPairs);
-                      }
-
-                      // Find the first unmatched term
-                      const unmatchedTermIndex = (currentQuestion as MatchingQuestion).pairs.findIndex(
-                        (_, index) => matchingPairs[index] === undefined
-                      );
-
-                      if (unmatchedTermIndex !== -1 && !isAnswered) {
-                        handleMatchingPairSelect(unmatchedTermIndex, definitionIndex);
-                      }
-                    }}
-                    disabled={isAnswered}
-                    className={cn(
-                      "w-full text-left p-3 rounded-lg border transition-all",
-                      "hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20",
-                      !isAnswered && "bg-card hover:bg-accent",
-                      isAnswered && Object.values(matchingPairs).includes(definitionIndex) &&
-                        Object.entries(matchingPairs).some(([termIdx, defIdx]) =>
-                          parseInt(termIdx) === defIdx && defIdx === definitionIndex
-                        ) && "bg-green-50 border-green-500 dark:bg-green-900/20",
-                      isAnswered && Object.values(matchingPairs).includes(definitionIndex) &&
-                        !Object.entries(matchingPairs).some(([termIdx, defIdx]) =>
-                          parseInt(termIdx) === defIdx && defIdx === definitionIndex
-                        ) && "bg-red-50 border-red-500 dark:bg-red-900/20"
-                    )}
-                  >
-                    <p className="font-medium">{pair.definition}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Matching Lines */}
-            {Object.entries(matchingPairs).map(([termIndex, definitionIndex]) => (
-              <div key={termIndex} className="hidden md:block">
-                {/* This would be a visual line connecting matched pairs */}
-                {/* For simplicity, we're not implementing the actual visual lines */}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Explanation */}
-        {isAnswered && currentQuestion.explanation && (
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg flex gap-3">
-            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-primary" />
-            <div>
-              <p className="font-medium mb-1">Explanation:</p>
-              <p className="text-muted-foreground">{currentQuestion.explanation}</p>
-            </div>
-          </div>
-        )}
       </Card>
 
-      {/* Navigation */}
-      <div className="flex justify-end">
-        <Button
-          onClick={handleNextQuestion}
-          disabled={!isAnswered}
-          className="gap-2"
-          size="lg"
-        >
-          {isLastQuestion ? 'Finish Quiz' : 'Next Question'}
-          <ArrowRight className="h-4 w-4" />
-        </Button>
+      {/* Navigation and Submit */}
+      <div className="flex justify-between mt-6">
+        <div>
+          {/* Progress indicator */}
+          <p className="text-sm text-muted-foreground">
+            Question {currentQuestionIndex + 1} of {totalQuestions}
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          {isLastQuestion && userAnswers.length === totalQuestions ? (
+            <Button
+              onClick={handleSubmitQuiz}
+              className="gap-2 bg-green-600 hover:bg-green-700"
+              size="lg"
+            >
+              Submit Quiz
+              <Send className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNextQuestion}
+              disabled={!isAnswered}
+              className="gap-2"
+              size="lg"
+            >
+              Next Question
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -153,18 +153,18 @@ pre code {
 
 
 /* animation: {
-        marquee: "marquee var(--duration) linear infinite", 
-        "marquee-vertical": "marquee-vertical var(--duration) linear infinite", 
-      }, 
-      keyframes: { 
-        marquee: { 
-          from: { transform: "translateX(0)" }, 
-          to: { transform: "translateX(calc(-100% - var(--gap)))" }, 
-        }, 
-        "marquee-vertical": { 
-          from: { transform: "translateY(0)" }, 
-          to: { transform: "translateY(calc(-100% - var(--gap)))" }, 
-        }, 
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
       },  */
 
 @keyframes marquee {
@@ -191,4 +191,29 @@ pre code {
 
 .animation-marquee-vertical {
   animation: marquee-vertical var(--duration) linear infinite;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: oklch(var(--muted) / 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: oklch(var(--primary) / 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: oklch(var(--primary) / 0.5);
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(var(--primary) / 0.3) oklch(var(--muted) / 0.3);
 }

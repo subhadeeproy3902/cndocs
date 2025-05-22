@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Quiz, { QuizQuestion } from '@/components/quiz/quiz';
-import QuizResults from '@/components/quiz/quiz-results';
+import QuizResults from '@/components/quiz/quiz-results-new';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
@@ -43,9 +43,33 @@ export default function QuizPage() {
 
   // Ensure the slug doesn't contain .mdx extension
   const cleanSlug = slug.map(part => part.replace(/\.mdx$/, ''));
-  
+
+  // Try to get the stored path from sessionStorage if the slug is empty
+  const [storedPath, setStoredPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== 'undefined' && cleanSlug.length === 0) {
+      try {
+        const lastPath = sessionStorage.getItem('lastQuizPath');
+        if (lastPath) {
+          console.log("Retrieved stored path:", lastPath);
+          setStoredPath(lastPath);
+        }
+      } catch (e) {
+        console.error('Failed to retrieve path from sessionStorage:', e);
+      }
+    }
+  }, [cleanSlug.length]);
+
   // Construct the file path for the MDX file in content/docs
-  const filePath = cleanSlug.length > 0 ? cleanSlug.join('/') + '.mdx' : '';
+  // Use the stored path if available and the slug is empty
+  const filePath = cleanSlug.length > 0
+    ? cleanSlug.join('/') + '.mdx'
+    : storedPath
+      ? storedPath + '.mdx'
+      : '';
+
   console.log("Quiz page filePath:", filePath); // Debug log
   console.log("Full params:", params); // Debug log
 
@@ -78,11 +102,11 @@ export default function QuizPage() {
         }
 
         const mdxData = await mdxResponse.json();
-        console.log("MDX data received:", { 
-          title: mdxData.title, 
+        console.log("MDX data received:", {
+          title: mdxData.title,
           contentLength: mdxData.content?.length,
           error: mdxData.error,
-          message: mdxData.message 
+          message: mdxData.message
         }); // Debug log
 
         if (mdxData.error || mdxData.message) {
@@ -113,9 +137,9 @@ export default function QuizPage() {
         }
 
         const quizData = await quizResponse.json();
-        console.log("Quiz data received:", { 
+        console.log("Quiz data received:", {
           hasQuiz: !!quizData.quiz,
-          questionCount: quizData.quiz?.questions?.length 
+          questionCount: quizData.quiz?.questions?.length
         }); // Debug log
 
         if (!quizData.quiz || !quizData.quiz.questions || quizData.quiz.questions.length === 0) {
@@ -131,13 +155,20 @@ export default function QuizPage() {
       }
     };
 
-    fetchQuizData();
-  }, [filePath]);
+    // Only fetch if we have a filePath
+    if (filePath) {
+      fetchQuizData();
+    }
+  }, [filePath, storedPath]);
+
+  // State for storing detailed answers
+  const [quizAnswers, setQuizAnswers] = useState<any[]>([]);
 
   // Handle quiz completion
-  const handleQuizComplete = (finalScore: number, questions: number) => {
+  const handleQuizComplete = (finalScore: number, questions: number, answers: any[] = []) => {
     setScore(finalScore);
     setTotalQuestions(questions);
+    setQuizAnswers(answers);
     setQuizCompleted(true);
   };
 
@@ -187,6 +218,7 @@ export default function QuizPage() {
           score={score}
           totalQuestions={totalQuestions}
           title={quizData.title}
+          answers={quizAnswers}
         />
       </div>
     );

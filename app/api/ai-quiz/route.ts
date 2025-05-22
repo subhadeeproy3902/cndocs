@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       prompt: `Generate a comprehensive quiz based on the following content about ${title}.
       The content is: ${content}
 
-      Create any number of questions (but equal to or more than 5) depending strictly on the content with the following distribution:
+      Create any number of questions (it can be 5 or less or 15 or more) depending strictly on the content length. The questions should be a mix of different types with the following distribution:
       - multiple-choice questions (type: 'multiple-choice')
       - true/false questions (type: 'true-false')
       - fill-in-the-blank questions (type: 'fill-blank')

@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { Copy, Check, BookOpen, PenSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface DocActionsProps {
   title: string;
@@ -14,7 +12,6 @@ interface DocActionsProps {
 
 export default function DocActions({ title }: DocActionsProps) {
   const [isCopied, setIsCopied] = useState(false);
-  const router = useRouter();
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
@@ -44,7 +41,7 @@ export default function DocActions({ title }: DocActionsProps) {
       alert("Failed to copy link. Please try again.");
     }
   };
-  
+
   const getPath = () => {
     if (typeof window !== "undefined") {
       const currentPath = window.location.pathname;
@@ -53,6 +50,14 @@ export default function DocActions({ title }: DocActionsProps) {
       if (docPathMatch && docPathMatch[1]) {
         // Remove .mdx extension if present
         const slug = docPathMatch[1].replace(/\.mdx$/, "");
+
+        // Store the current path in sessionStorage to ensure consistency
+        try {
+          sessionStorage.setItem('lastQuizPath', slug);
+        } catch (e) {
+          console.error('Failed to store path in sessionStorage:', e);
+        }
+
         return `/quiz/${slug}`;
       } else {
         console.error("Invalid document path:", currentPath);
@@ -78,12 +83,19 @@ export default function DocActions({ title }: DocActionsProps) {
               </p>
             </div>
           </div>
-          <Link href={getPath()}>
-            <Button className="cursor-pointer">
-              <PenSquare className="h-4 w-4" />
-              Take a Test
-            </Button>
-          </Link>
+          <Button
+            className="cursor-pointer"
+            onClick={() => {
+              const path = getPath();
+              if (path) {
+                // Force a hard navigation to ensure fresh state
+                window.location.href = path;
+              }
+            }}
+          >
+            <PenSquare className="h-4 w-4 mr-2" />
+            Take a Test
+          </Button>
         </div>
       </div>
 
