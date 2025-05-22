@@ -13,6 +13,8 @@ import { jsPDF } from 'jspdf';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Metadata } from 'next';
+import { createMetadata, metadataImage } from '@/lib/metadata';
 
 // Define question types
 interface Question {
@@ -31,6 +33,27 @@ interface QnAData {
   description: string;
   questions: Question[];
   lastUpdated?: string;
+}
+
+// Generate metadata for the page
+export async function generateMetadata({ params }: { params: { slug?: string[] } }): Promise<Metadata> {
+  // Get the slug from params
+  const slug = Array.isArray(params.slug) ? params.slug : params.slug ? [params.slug] : [];
+
+  // Create a title based on the slug
+  const pageTitle = slug.length > 0
+    ? `${slug[slug.length - 1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Exam Q&A`
+    : 'Exam Questions & Answers';
+
+  const description = 'Practice with exam-style questions and detailed answers generated from our documentation content.';
+
+  return createMetadata({
+    title: pageTitle,
+    description,
+    openGraph: {
+      url: `/qna/${slug.join('/')}`,
+    },
+  });
 }
 
 export default function QnAPage() {
@@ -769,4 +792,7 @@ export default function QnAPage() {
   );
 }
 
-
+// Generate static params for all possible QnA pages
+export async function generateStaticParams() {
+  return metadataImage.generateParams();
+}
