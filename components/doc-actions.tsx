@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Copy, Check, BookOpen, PenSquare } from "lucide-react";
+import {
+  Copy,
+  Check,
+  BookOpen,
+  PenSquare,
+  FileText,
+  Lightbulb,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -53,9 +60,9 @@ export default function DocActions({ title }: DocActionsProps) {
 
         // Store the current path in sessionStorage to ensure consistency
         try {
-          sessionStorage.setItem('lastQuizPath', slug);
+          sessionStorage.setItem("lastQuizPath", slug);
         } catch (e) {
-          console.error('Failed to store path in sessionStorage:', e);
+          console.error("Failed to store path in sessionStorage:", e);
         }
 
         return `/quiz/${slug}`;
@@ -65,7 +72,7 @@ export default function DocActions({ title }: DocActionsProps) {
       }
     }
     return "";
-  }
+  };
 
   return (
     <>
@@ -95,6 +102,36 @@ export default function DocActions({ title }: DocActionsProps) {
           >
             <PenSquare className="h-4 w-4 mr-2" />
             Take a Test
+          </Button>
+        </div>
+
+        {/* Quiz Button */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 p-2 w-fit h-fit rounded-full bg-blue-500/10">
+              <FileText className="h-5 w-5 text-blue-500" />
+            </div>
+            <div>
+              <h3 className="font-medium mt-0 mb-2">Exam Preparation</h3>
+              <p className="text-sm text-muted-foreground mb-1">
+                Access short and long answer questions for written exams
+              </p>
+            </div>
+          </div>
+          <Button
+            className="cursor-pointer text-white bg-blue-500 hover:bg-blue-600"
+            onClick={() => {
+              const path = getPath();
+              if (path) {
+                // Get the path without the /quiz prefix
+                const qnaPath = path.replace("/quiz", "/qna");
+                // Force a hard navigation to ensure fresh state
+                window.location.href = qnaPath;
+              }
+            }}
+          >
+            <Lightbulb className="h-4 w-4 mr-2" />
+            Exam Q&A
           </Button>
         </div>
       </div>
