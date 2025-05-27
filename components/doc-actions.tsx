@@ -78,7 +78,7 @@ export default function DocActions({ title }: DocActionsProps) {
     <>
       <div className="mt-8 pt-4 border-t border-border">
         {/* Quiz Button */}
-        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between p-4 rounded-lg bg-primary/5 border border-primary/20">
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between p-4 rounded-lg bg-primary/5 border border-primary/20">
           <div className="flex gap-3">
             <div className="flex-shrink-0 p-2 w-fit h-fit rounded-full bg-primary/10">
               <BookOpen className="h-5 w-5 text-primary" />
@@ -106,7 +106,7 @@ export default function DocActions({ title }: DocActionsProps) {
         </div>
 
         {/* Quiz Button */}
-        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
           <div className="flex gap-3">
             <div className="flex-shrink-0 p-2 w-fit h-fit rounded-full bg-blue-500/10">
               <FileText className="h-5 w-5 text-blue-500" />
