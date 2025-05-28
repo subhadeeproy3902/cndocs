@@ -18,6 +18,7 @@ import type { MDXComponents } from "mdx/types";
 import { type ComponentProps, type FC } from "react";
 import type { Metadata } from "next";
 import DocActions from "@/components/doc-actions";
+import AudioPlayerWrapper from "@/components/audio-player-wrapper";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -66,6 +67,10 @@ export default async function Page(props: {
         // lastUpdate={lastModified ? new Date(lastModified) : undefined}
       >
         <DocsBody>
+          <AudioPlayerWrapper
+            filePath={page.file.path}
+            title={page.data.title}
+          />
           <MDX
             components={{
               ...defaultMdxComponents,
