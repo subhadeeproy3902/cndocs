@@ -1,0 +1,34 @@
+{
+  "pages": [
+    ["/x", 49],
+    ["/", 3],
+    ["/about", 2],
+    ["/docs/fundamentals", 2],
+    ["/docs/fundamentals/osi-model/data-link-layer", 2],
+    ["/dashboard", 1],
+    [
+      "/docs/fundamentals/osi-model/data-link-layer/error-detection-correction/block-coding",
+      1
+    ]
+  ],
+  "devices": [["Desktop", 60]],
+  "browsers": [["Chrome", 60]],
+  "countries": [["India", 60]],
+  "referrers": [["$direct", 60]],
+  "oss": [["Windows", 60]],
+  "visitors": 2,
+  "pageviews": 60,
+  "bounceRate": 0,
+  "chart": [
+    {
+      "date": "2025-08-29T00:00:00+05:30",
+      "visitors": 2,
+      "pageviews": 33
+    },
+    {
+      "date": "2025-08-30T00:00:00+05:30",
+      "visitors": 1,
+      "pageviews": 26
+    }
+  ]
+}
