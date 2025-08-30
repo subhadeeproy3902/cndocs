@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-
-const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST!;
-const PROJECT_ID = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_ID!;
-const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY!;
+import { runHogqlQuery } from "@/lib/hogql";
 
 // Add the following to the query for dynamic URL filtering
 // AND properties.$host = 'localhost:3001'
@@ -17,25 +14,6 @@ const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY!;
 // GROUP BY page ORDER BY views DESC
 
 // Where projectHost is the vercel deployed link (Maybe without https://)
-
-
-// Helper for running a HogQL query
-async function runHogqlQuery(query: string) {
-  const res = await fetch(`${POSTHOG_HOST}/api/projects/${PROJECT_ID}/query/`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: {
-        kind: "HogQLQuery",
-        query,
-      },
-    }),
-  });
-  return res.json();
-}
 
 export async function GET(req: Request) {
   try {
