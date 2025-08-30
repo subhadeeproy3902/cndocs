@@ -4,7 +4,20 @@ const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST!;
 const PROJECT_ID = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_ID!;
 const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY!;
 
+// Add the following to the query for dynamic URL filtering
 // AND properties.$host = 'localhost:3001'
+
+// Overall the query becomes like for example
+
+// SELECT properties.$pathname as page, COUNT(*) as views 
+// FROM events 
+// WHERE event = '$pageview' 
+//   AND properties.$host = '{projectHost}' 
+//   AND timestamp >= NOW() - toIntervalDay(${period}) 
+// GROUP BY page ORDER BY views DESC
+
+// Where projectHost is the vercel deployed link (Maybe without https://)
+
 
 // Helper for running a HogQL query
 async function runHogqlQuery(query: string) {
