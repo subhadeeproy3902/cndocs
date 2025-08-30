@@ -4,6 +4,13 @@ import { memo, useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import AnimationContainer from "../ui/animation-container";
 import { LineChart } from "./LineChart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Pie, PieChart } from "recharts";
 
 interface AnalyticsOverlayProps {
   isVisible: boolean;
@@ -26,11 +33,10 @@ const MetricCard = memo(({ label, value, isActive, onClick }: MetricCardProps) =
   return (
     <div
       onClick={onClick}
-      className={`p-4 rounded-lg border cursor-pointer transition-all ${
-        isActive 
-          ? "bg-primary/10 border-primary text-primary" 
+      className={`p-4 rounded-lg border cursor-pointer transition-all ${isActive
+          ? "bg-primary/10 border-primary text-primary"
           : "bg-secondary/50 border-border hover:bg-secondary"
-      }`}
+        }`}
     >
       <div className="text-sm text-muted-foreground">{label}</div>
       <div className="text-2xl font-bold">{value.toLocaleString()}</div>
@@ -40,11 +46,44 @@ const MetricCard = memo(({ label, value, isActive, onClick }: MetricCardProps) =
 
 MetricCard.displayName = "MetricCard";
 
+const chartConfig = {
+  value: {
+    label: "Value",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
+
 const AnalyticsPanel = memo(({ title, items }: AnalyticsPanelProps) => {
+  const chartData = items.map((item, index) => ({
+    name: item[0],
+    value: item[1],
+    fill: `var(--chart-${(index % 5) + 1})`,
+  }));
+
   return (
     <div className="border-border from-secondary/10 to-card relative w-full overflow-hidden bg-gradient-to-b shadow-[0px_2px_0px_0px_rgba(255,255,255,0.1)_inset] rounded-lg p-4 border">
       <div className="bg-primary/20 absolute -top-10 left-0 h-16 w-full blur-2xl"></div>
-      <h3 className="text-foreground text-lg font-medium mb-4">{title}</h3>
+      <h3 className="text-foreground text-lg font-medium">{title}</h3>
+
+      <ChartContainer
+        config={chartConfig}
+        className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-56"
+      >
+        <PieChart>
+          <ChartTooltip
+            content={<ChartTooltipContent nameKey="name" hideLabel />}
+          />
+          <Pie
+            data={chartData}
+            innerRadius={60}
+            dataKey="value"
+            radius={8}
+            cornerRadius={6}
+            paddingAngle={6}
+          />
+        </PieChart>
+      </ChartContainer>
+
       <ScrollArea className="h-48">
         <div className="space-y-2">
           {items.map(([label, value], index) => (
@@ -73,8 +112,8 @@ const AnalyticsOverlay = memo(({
   return (
     <div
       className={`w-full h-full flex flex-col ${isVisible
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
+        ? "opacity-100 pointer-events-auto"
+        : "opacity-0 pointer-events-none"
         }`}
     >
       <div className="w-full flex items-center justify-between mb-6">
@@ -119,7 +158,7 @@ const AnalyticsOverlay = memo(({
         </div>
 
         {/* Data Panels */}
-        <div className="grid grid-cols-3 gap-6 flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
           <AnalyticsPanel title="Pages" items={data.pages} />
           <AnalyticsPanel title="Devices" items={data.devices} />
           <AnalyticsPanel title="Referrers" items={data.referrers} />
