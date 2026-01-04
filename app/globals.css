@@ -9,6 +9,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--muted);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

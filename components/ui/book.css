@@ -1,0 +1,376 @@
+.book-perspective {
+  --book-default-width: 196;
+  --book-depth: 29cqw;
+  --book-border-radius: 6px 4px 4px 6px;
+  --hover-rotate: -20deg;
+  --hover-scale: 1.066;
+  --hover-translate-x: -8px;
+  --aspect-ratio: 49 / 60;
+  --bg-shadow: linear-gradient(
+      90deg,
+      hsla(0, 0%, 100%, 0),
+      hsla(0, 0%, 100%, 0) 12%,
+      hsla(0, 0%, 100%, 0.25) 29.25%,
+      hsla(0, 0%, 100%, 0) 50.5%,
+      hsla(0, 0%, 100%, 0) 75.25%,
+      hsla(0, 0%, 100%, 0.25) 91%,
+      hsla(0, 0%, 100%, 0)
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.03),
+      rgba(0, 0, 0, 0.1) 12%,
+      transparent 30%,
+      rgba(0, 0, 0, 0.02) 50%,
+      rgba(0, 0, 0, 0.2) 73.5%,
+      rgba(0, 0, 0, 0.5) 75.25%,
+      rgba(0, 0, 0, 0.15) 85.25%,
+      transparent
+    );
+  perspective: 900px;
+  display: inline-block;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+@media (hover: hover) {
+  .book-perspective:hover .book-rotate-wrapper {
+    transform: rotateY(var(--hover-rotate)) scale(var(--hover-scale))
+      translateX(var(--hover-translate-x));
+  }
+}
+
+.book-rotate-wrapper {
+  aspect-ratio: var(--aspect-ratio);
+  width: -moz-fit-content;
+  width: fit-content;
+  transform: rotate(0deg);
+  position: relative;
+  transform-style: preserve-3d;
+  min-width: calc(var(--book-width) * 1px);
+  transition: transform .25s ease-out;
+  container-type: inline-size;
+}
+
+.book-rotate-wrapper > :first-child {
+  position: absolute;
+  min-width: calc(var(--book-width) * 1px);
+}
+
+.book-rotate-wrapper .book-pages {
+  background: linear-gradient(90deg, #eaeaea, transparent 70%),
+    linear-gradient(#fff, #fafafa);
+}
+
+.book-rotate-wrapper .book-pages.book-textured {
+  background: repeating-linear-gradient(
+    90deg,
+    #fff,
+    #efefef 1px,
+    #fff 3px,
+    #9a9a9a 0
+  );
+}
+
+.book-rotate-wrapper .book-pages {
+  height: calc(100% - 2 * 3px);
+  width: calc(var(--book-depth) - 2px);
+  top: 3px;
+  position: absolute;
+  transform: translateX(
+      calc(var(--book-width) * 1px - var(--book-depth) / 2 - 3px)
+    )
+    rotateY(90deg) translateX(calc(var(--book-depth) / 2));
+}
+
+.book-rotate-wrapper .book-back {
+  position: absolute;
+  left: 0;
+  width: calc(var(--book-width) * 1px);
+  height: 100%;
+  border-radius: var(--book-border-radius);
+  transform: translateZ(calc(-1 * var(--book-depth)));
+}
+
+.book-rotate-wrapper.book-stripe .book-content {
+  gap: calc((24px / var(--book-default-width)) * var(--book-width));
+}
+
+.book-rotate-wrapper.book-stripe .book-content .book-title {
+  line-height: 1.25em;
+  font-size: 11cqw;
+  letter-spacing: -.02em;
+}
+
+.book-rotate-wrapper.book-stripe .book-back {
+  background-color: var(--book-color);
+}
+
+.book-rotate-wrapper.book-stripe .book-stripe {
+  background: var(--book-color);
+  width: 100%;
+  position: relative;
+  flex: 1 1;
+  overflow: hidden;
+}
+
+.book-rotate-wrapper.book-stripe .book-stripe .book-illustration {
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.book-rotate-wrapper.book-stripe .book-stripe .book-bind {
+  position: absolute;
+  background: var(--bg-shadow);
+  mix-blend-mode: overlay;
+}
+
+.book-rotate-wrapper.book-simple.book-color .book-book {
+  background: var(--book-color);
+}
+
+.book-rotate-wrapper.book-simple.book-color .book-bind {
+  mix-blend-mode: overlay;
+  opacity: 1;
+}
+
+.book-rotate-wrapper.book-simple:not(.book-color) .book-book:after {
+  box-shadow: inset 0 1px 2px 0 hsla(0, 0%, 100%, 0.1);
+}
+
+.book-rotate-wrapper.book-simple .book-back {
+  background: var(--book-color);
+}
+
+.book-rotate-wrapper.book-simple .book-body {
+  width: 100%;
+  height: 100%;
+}
+
+.book-rotate-wrapper.book-simple .book-content {
+  gap: calc((16px / var(--book-default-width)) * var(--book-width));
+}
+
+.book-rotate-wrapper.book-simple .book-content .book-title {
+  line-height: 1.25em;
+  font-size: 12cqw;
+  letter-spacing: -.02em;
+  text-shadow: 0 .025em .5px hsla(0, 0%, 100%, 0.5), -.02em -.02em .5px
+    rgba(0, 0, 0, 0.5);
+  text-shadow: 0 .025em .5px color-mix(in srgb, var(--book-color) 80%, #fff 20%),
+    -.02em -.02em .5px color-mix(in srgb, var(--book-color) 80%, #000 20%);
+}
+
+.book-book {
+  width: calc(var(--book-width) * 1px);
+  height: 100%;
+  border-radius: var(--book-border-radius);
+  overflow: hidden;
+  /* background: var(--ds-background-200); */
+  position: relative;
+  /* box-shadow: 0 1px 1px 0 rgba(0,0,0,.02),0 4px 8px -4px rgba(0,0,0,.1),0 16px 24px -8px rgba(0,0,0,.03); */
+  background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 100%, 0.1),
+      hsla(0, 0%, 100%, 0) 50%,
+      hsla(0, 0%, 100%, 0)
+    ), #1f1f1f;
+  box-shadow:
+    0 1.8px 3.6px rgba(0, 0, 0, 0.05), 0 10.8px 21.6px rgba(0, 0, 0, 0.08), inset 0 -.9px 0 rgba(
+      0,
+      0,
+      0,
+      0.1
+    ), inset 0 1.8px 1.8px hsla(0, 0%, 100%, 0.1), inset 3.6px 0 3.6px rgba(
+      0,
+      0,
+      0,
+      0.1
+    );
+}
+
+.book-book .book-texture {
+  background-image: url(https://assets.vercel.com/image/upload/v1720554484/front/design/book-texture.avif);
+  background-size: cover;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--book-border-radius);
+  mix-blend-mode: hard-light;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  pointer-events: none;
+  filter: brightness(1.1);
+}
+
+.book-book .book-texture {
+  opacity: 1;
+  filter: brightness(1);
+}
+
+.book-book:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--ds-gray-alpha-400);
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 2px 0 hsla(0, 0%, 100%, 0.3);
+  pointer-events: none;
+}
+
+.book-book:after {
+  border: none;
+}
+
+.book-book .book-bind {
+  height: 100%;
+  width: 8.2%;
+}
+
+.book-book .book-content {
+  padding: 6.1%;
+  container-type: inline-size;
+  width: 100%;
+}
+
+.book-book .book-content .book-title {
+  text-wrap: balance;
+  color: var(--book-text-color);
+}
+
+.book-body .book-bind {
+  min-width: 8.2%;
+  background: var(--bg-shadow);
+  opacity: 0.2;
+}
+
+@media screen and (max-width: 400px) {
+  .book-perspective {
+    --book-width: var(--xs-book-width, var(--sm-book-width));
+  }
+}
+
+@media screen and (min-width: 401px) and (max-width: 600px) {
+  .book-perspective {
+    --book-width: var(--sm-book-width);
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 768px) {
+  .book-perspective {
+    --book-width: var(
+      --smd-book-width,
+      var(--md-book-width, var(--sm-book-width))
+    );
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 960px) {
+  .book-perspective {
+    --book-width: var(
+      --md-book-width,
+      var(--smd-book-width, var(--sm-book-width))
+    );
+  }
+}
+
+@media screen and (min-width: 961px) {
+  .book-perspective {
+    --book-width: var(
+      --lg-book-width,
+      var(--md-book-width, var(--smd-book-width, var(--sm-book-width)))
+    );
+  }
+}
+
+@layer geist {
+  .stack-stack {
+    display: flex;
+    flex-direction: var(--stack-direction, column);
+    align-items: var(--stack-align, stretch);
+    justify-content: var(--stack-justify, flex-start);
+    flex: var(--stack-flex, initial);
+    gap: var(--stack-gap, 0);
+  }
+
+  /* .stack_padding__ox8JS {
+        padding: var(--stack-padding,0)
+    } */
+
+  @media screen and (max-width: 600px) {
+    .stack-stack {
+      --stack-direction: var(--sm-stack-direction);
+      --stack-align: var(--sm-stack-align);
+      --stack-justify: var(--sm-stack-justify);
+      --stack-padding: var(--sm-stack-padding);
+      --stack-gap: var(--sm-stack-gap);
+    }
+  }
+
+  @media screen and (min-width: 601px) and (max-width: 960px) {
+    .stack-stack {
+      --stack-direction: var(--md-stack-direction, var(--sm-stack-direction));
+      --stack-align: var(--md-stack-align, var(--sm-stack-align));
+      --stack-justify: var(--md-stack-justify, var(--sm-stack-justify));
+      --stack-padding: var(--md-stack-padding, var(--sm-stack-padding));
+      --stack-gap: var(--md-stack-gap, var(--sm-stack-gap));
+    }
+  }
+
+  @media screen and (min-width: 961px) and (max-width: 1200px) {
+    .stack-stack {
+      --stack-direction: var(
+        --lg-stack-direction,
+        var(--md-stack-direction, var(--sm-stack-direction))
+      );
+      --stack-align: var(
+        --lg-stack-align,
+        var(--md-stack-align, var(--sm-stack-align))
+      );
+      --stack-justify: var(
+        --lg-stack-justify,
+        var(--md-stack-justify, var(--sm-stack-justify))
+      );
+      --stack-padding: var(
+        --lg-stack-padding,
+        var(--md-stack-padding, var(--sm-stack-padding))
+      );
+      --stack-gap: var(--lg-stack-gap, var(--md-stack-gap, var(--sm-stack-gap)));
+    }
+  }
+
+  @media screen and (min-width: 1201px) {
+    .stack-stack {
+      --stack-direction: var(
+        --xl-stack-direction,
+        var(
+          --lg-stack-direction,
+          var(--md-stack-direction, var(--sm-stack-direction))
+        )
+      );
+      --stack-align: var(
+        --xl-stack-align,
+        var(--lg-stack-align, var(--md-stack-align, var(--sm-stack-align)))
+      );
+      --stack-justify: var(
+        --xl-stack-justify,
+        var(
+          --lg-stack-justify,
+          var(--md-stack-justify, var(--sm-stack-justify))
+        )
+      );
+      --stack-padding: var(
+        --xl-stack-padding,
+        var(
+          --lg-stack-padding,
+          var(--md-stack-padding, var(--sm-stack-padding))
+        )
+      );
+      --stack-gap: var(
+        --xl-stack-gap,
+        var(--lg-stack-gap, var(--md-stack-gap, var(--sm-stack-gap)))
+      );
+    }
+  }
+}

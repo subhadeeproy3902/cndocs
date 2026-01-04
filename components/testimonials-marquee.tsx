@@ -47,9 +47,7 @@ export function TestimonialCard({
       </div>
 
       <div className="flex w-full select-none items-center justify-start gap-5">
-        <Image
-          width={40}
-          height={40}
+        <img
           src={img || ""}
           alt={name}
           className="size-10 rounded-full ring-1 ring-primary/20 ring-offset-2"
@@ -67,7 +65,7 @@ const testimonials = [
   {
     name: "Alex Chen",
     role: "Computer Science Professor",
-    img: "https://randomuser.me/api/portraits/men/22.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         CNdocs has transformed how I teach networking concepts to my students. The clear explanations and practical examples make complex topics accessible. My students consistently praise the socket programming guides.
@@ -77,7 +75,7 @@ const testimonials = [
   {
     name: "Priya Sharma",
     role: "Network Engineer",
-    img: "https://randomuser.me/api/portraits/women/33.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         As a professional network engineer, I&apos;m impressed by CNdocs&apos; comprehensive coverage of both theoretical concepts and practical implementations. The TCP/IP model explanations are the clearest I&apos;ve seen anywhere.
@@ -87,7 +85,7 @@ const testimonials = [
   {
     name: "Marcus Johnson",
     role: "CS Student at MIT",
-    img: "https://randomuser.me/api/portraits/men/32.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         CNdocs helped me ace my networking course! The interactive visualizations made it easy to understand complex protocols, and the C code examples were invaluable for my lab assignments.
@@ -97,7 +95,7 @@ const testimonials = [
   {
     name: "Emma Wilson",
     role: "DevOps Specialist",
-    img: "https://randomuser.me/api/portraits/women/44.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         The documentation on inter-process communication in CNdocs is exceptional. I reference it regularly in my work. The message queue examples were particularly helpful for a recent project.
@@ -107,7 +105,7 @@ const testimonials = [
   {
     name: "Raj Patel",
     role: "Security Analyst",
-    img: "https://randomuser.me/api/portraits/men/55.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         CNdocs&apos; explanations of network security principles are outstanding. I appreciate how the documentation connects theoretical concepts with practical implementation details. A must-read resource.
@@ -117,7 +115,7 @@ const testimonials = [
   {
     name: "Sophia Lee",
     role: "Full Stack Developer",
-    img: "https://randomuser.me/api/portraits/women/67.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         The socket programming tutorials on CNdocs helped me implement real-time features in my web applications. The step-by-step guides and code examples made it easy to follow along and adapt to my needs.
@@ -127,7 +125,7 @@ const testimonials = [
   {
     name: "David Rodriguez",
     role: "Systems Administrator",
-    img: "https://randomuser.me/api/portraits/men/78.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         CNdocs has become my go-to reference for troubleshooting network issues. The clear explanations of protocols and network architecture have helped me resolve complex problems quickly and efficiently.
@@ -137,7 +135,7 @@ const testimonials = [
   {
     name: "Aisha Khan",
     role: "IoT Developer",
-    img: "https://randomuser.me/api/portraits/women/89.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         Working with IoT devices requires solid networking knowledge, and CNdocs delivers exactly what I need. The documentation on low-level protocols and efficient communication patterns has been invaluable.
@@ -147,7 +145,7 @@ const testimonials = [
   {
     name: "Thomas Wright",
     role: "Cybersecurity Researcher",
-    img: "https://randomuser.me/api/portraits/men/92.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         CNdocs provides an excellent foundation for understanding network vulnerabilities. The clear explanations of how protocols work have helped me develop more effective security testing methodologies.
@@ -157,7 +155,7 @@ const testimonials = [
   {
     name: "Mei Lin",
     role: "Computer Engineering Student",
-    img: "https://randomuser.me/api/portraits/women/29.jpg",
+    img: "https://i.pravatar.cc/",
     description: (
       <p>
         As someone new to networking, CNdocs has been an incredible learning resource. The progression from basic concepts to advanced topics is well-structured, and the visual aids really help with understanding.
